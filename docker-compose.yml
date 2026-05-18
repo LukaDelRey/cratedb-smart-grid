@@ -1,0 +1,45 @@
+version: "3.9"
+
+services:
+  cratedb:
+    image: crate:latest
+    container_name: cratedb
+
+    ports:
+      - "4200:4200"
+      - "5432:5432"
+
+    command: >
+      crate
+      -Ccluster.name=trafostanice
+      -Cnode.name=node1
+      -Cauth.host_based.enabled=false
+
+  emqx:
+    image: emqx/emqx:latest
+    container_name: emqx
+
+    ports:
+      - "1883:1883"
+      - "18083:18083"
+
+  backend:
+    build: ./backend
+    container_name: backend
+
+    ports:
+      - "8000:8000"
+
+    depends_on:
+      - cratedb
+      - emqx
+
+  frontend:
+    build: ./frontend
+    container_name: frontend
+
+    ports:
+      - "5173:5173"
+
+    depends_on:
+      - backend
