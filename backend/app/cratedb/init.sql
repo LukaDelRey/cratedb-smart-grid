@@ -1,4 +1,4 @@
-CREATE TABLE trafostanice_sensors (
+CREATE TABLE IF NOT EXISTS trafostanice_sensors (
     timestamp TIMESTAMP,
     station_id TEXT,
     station_name TEXT,
