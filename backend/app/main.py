@@ -1,13 +1,32 @@
-from fastapi import FastAPI
+import asyncio
+from contextlib import asynccontextmanager
+from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from crate import client
 from app.services.mqtt_client import start_mqtt
 from app.db.init_db import init_db
+from app.services.event_bus import event_queue
+from app.services.websocket_manager import manager
 
-app = FastAPI()
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+
+    asyncio.create_task(event_loop())
+    print("Event loop started")
+
+
+    print(f"Lifespan function called with app: {app}")
+
+    yield
+
+    print("Shutting down...")
+    
+    
+app = FastAPI(lifespan=lifespan)
 init_db()
-start_mqtt()
+loop = asyncio.get_event_loop()
+start_mqtt(loop)
 
 stations = [
     {
@@ -88,3 +107,23 @@ def get_sensors():
     return {
         "data": rows
     }
+
+@app.websocket("/ws")
+async def websocket_endpoint(websocket: WebSocket):
+
+    await manager.connect(websocket)
+
+    try:
+        while True:
+            await asyncio.sleep(60)
+
+    except WebSocketDisconnect:
+        manager.disconnect(websocket)
+
+
+async def event_loop():
+
+    while True:
+        payload = await event_queue.get()
+
+        await manager.broadcast(payload)
