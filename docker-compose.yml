@@ -10,7 +10,7 @@ services:
 
     command: >
       crate
-      -Ccluster.name=trafostanice
+      -Ccluster.name=smart-grid
       -Cnode.name=node1
       -Cauth.host_based.enabled=false
 
@@ -42,3 +42,13 @@ services:
 
     depends_on:
       - backend
+
+  locust:
+    build: ./locust
+    container_name: locust
+
+    ports:
+      - "8089:8089"
+
+    depends_on:
+      - emqx

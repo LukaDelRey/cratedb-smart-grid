@@ -19,7 +19,7 @@ def wait_for_cratedb():
             print(e)
 
             time.sleep(5)
-
+            
 
 def init_db():
 
@@ -29,10 +29,14 @@ def init_db():
 
     sql = """
     CREATE TABLE IF NOT EXISTS trafostanice_sensors (
+
         timestamp TIMESTAMP,
         station_id TEXT,
         station_name TEXT,
-        location GEO_POINT,
+
+        location GEO_POINT INDEX USING GEOHASH WITH (
+            precision = '1m'
+        ),
 
         electrical OBJECT(DYNAMIC) AS (
             voltage_kv DOUBLE,
@@ -57,8 +61,15 @@ def init_db():
             hydrogen_ppm DOUBLE,
             methane_ppm DOUBLE,
             acetylene_ppm DOUBLE
+        ),
+
+        alarms OBJECT(DYNAMIC) AS (
+            overload BOOLEAN,
+            overheating BOOLEAN
         )
+
     )
+    CLUSTERED INTO 4 SHARDS
     """
 
     cursor.execute(sql)
