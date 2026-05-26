@@ -1,0 +1,6002 @@
+[
+  {
+    "id": "TS-0001",
+    "name": "Trafostanica 1",
+    "lat": 46.390232,
+    "lon": 16.467642
+  },
+  {
+    "id": "TS-0002",
+    "name": "Trafostanica 2",
+    "lat": 46.356236,
+    "lon": 16.436798
+  },
+  {
+    "id": "TS-0003",
+    "name": "Trafostanica 3",
+    "lat": 46.421479,
+    "lon": 16.408994
+  },
+  {
+    "id": "TS-0004",
+    "name": "Trafostanica 4",
+    "lat": 46.425604,
+    "lon": 16.472438
+  },
+  {
+    "id": "TS-0005",
+    "name": "Trafostanica 5",
+    "lat": 46.426476,
+    "lon": 16.403907
+  },
+  {
+    "id": "TS-0006",
+    "name": "Trafostanica 6",
+    "lat": 46.428818,
+    "lon": 16.438715
+  },
+  {
+    "id": "TS-0007",
+    "name": "Trafostanica 7",
+    "lat": 46.348388,
+    "lon": 16.478638
+  },
+  {
+    "id": "TS-0008",
+    "name": "Trafostanica 8",
+    "lat": 46.417135,
+    "lon": 16.439585
+  },
+  {
+    "id": "TS-0009",
+    "name": "Trafostanica 9",
+    "lat": 46.411587,
+    "lon": 16.449128
+  },
+  {
+    "id": "TS-0010",
+    "name": "Trafostanica 10",
+    "lat": 46.411586,
+    "lon": 16.38456
+  },
+  {
+    "id": "TS-0011",
+    "name": "Trafostanica 11",
+    "lat": 46.413888,
+    "lon": 16.461021
+  },
+  {
+    "id": "TS-0012",
+    "name": "Trafostanica 12",
+    "lat": 46.402034,
+    "lon": 16.436098
+  },
+  {
+    "id": "TS-0013",
+    "name": "Trafostanica 13",
+    "lat": 46.339788,
+    "lon": 16.407728
+  },
+  {
+    "id": "TS-0014",
+    "name": "Trafostanica 14",
+    "lat": 46.42002,
+    "lon": 16.482523
+  },
+  {
+    "id": "TS-0015",
+    "name": "Trafostanica 15",
+    "lat": 46.356238,
+    "lon": 16.399599
+  },
+  {
+    "id": "TS-0016",
+    "name": "Trafostanica 16",
+    "lat": 46.34161,
+    "lon": 16.39053
+  },
+  {
+    "id": "TS-0017",
+    "name": "Trafostanica 17",
+    "lat": 46.406871,
+    "lon": 16.474705
+  },
+  {
+    "id": "TS-0018",
+    "name": "Trafostanica 18",
+    "lat": 46.343301,
+    "lon": 16.47588
+  },
+  {
+    "id": "TS-0019",
+    "name": "Trafostanica 19",
+    "lat": 46.364441,
+    "lon": 16.403818
+  },
+  {
+    "id": "TS-0020",
+    "name": "Trafostanica 20",
+    "lat": 46.386669,
+    "lon": 16.404905
+  },
+  {
+    "id": "TS-0021",
+    "name": "Trafostanica 21",
+    "lat": 46.373956,
+    "lon": 16.464454
+  },
+  {
+    "id": "TS-0022",
+    "name": "Trafostanica 22",
+    "lat": 46.434061,
+    "lon": 16.481631
+  },
+  {
+    "id": "TS-0023",
+    "name": "Trafostanica 23",
+    "lat": 46.362068,
+    "lon": 16.455122
+  },
+  {
+    "id": "TS-0024",
+    "name": "Trafostanica 24",
+    "lat": 46.4005,
+    "lon": 16.425697
+  },
+  {
+    "id": "TS-0025",
+    "name": "Trafostanica 25",
+    "lat": 46.371391,
+    "lon": 16.401233
+  },
+  {
+    "id": "TS-0026",
+    "name": "Trafostanica 26",
+    "lat": 46.337061,
+    "lon": 16.431089
+  },
+  {
+    "id": "TS-0027",
+    "name": "Trafostanica 27",
+    "lat": 46.36367,
+    "lon": 16.449315
+  },
+  {
+    "id": "TS-0028",
+    "name": "Trafostanica 28",
+    "lat": 46.414816,
+    "lon": 16.455926
+  },
+  {
+    "id": "TS-0029",
+    "name": "Trafostanica 29",
+    "lat": 46.418593,
+    "lon": 16.384016
+  },
+  {
+    "id": "TS-0030",
+    "name": "Trafostanica 30",
+    "lat": 46.408502,
+    "lon": 16.386631
+  },
+  {
+    "id": "TS-0031",
+    "name": "Trafostanica 31",
+    "lat": 46.375726,
+    "lon": 16.394125
+  },
+  {
+    "id": "TS-0032",
+    "name": "Trafostanica 32",
+    "lat": 46.342153,
+    "lon": 16.467791
+  },
+  {
+    "id": "TS-0033",
+    "name": "Trafostanica 33",
+    "lat": 46.339086,
+    "lon": 16.403796
+  },
+  {
+    "id": "TS-0034",
+    "name": "Trafostanica 34",
+    "lat": 46.386764,
+    "lon": 16.478856
+  },
+  {
+    "id": "TS-0035",
+    "name": "Trafostanica 35",
+    "lat": 46.396261,
+    "lon": 16.392394
+  },
+  {
+    "id": "TS-0036",
+    "name": "Trafostanica 36",
+    "lat": 46.391345,
+    "lon": 16.387244
+  },
+  {
+    "id": "TS-0037",
+    "name": "Trafostanica 37",
+    "lat": 46.407803,
+    "lon": 16.455535
+  },
+  {
+    "id": "TS-0038",
+    "name": "Trafostanica 38",
+    "lat": 46.408995,
+    "lon": 16.480714
+  },
+  {
+    "id": "TS-0039",
+    "name": "Trafostanica 39",
+    "lat": 46.388472,
+    "lon": 16.400939
+  },
+  {
+    "id": "TS-0040",
+    "name": "Trafostanica 40",
+    "lat": 46.372211,
+    "lon": 16.454842
+  },
+  {
+    "id": "TS-0041",
+    "name": "Trafostanica 41",
+    "lat": 46.403343,
+    "lon": 16.412556
+  },
+  {
+    "id": "TS-0042",
+    "name": "Trafostanica 42",
+    "lat": 46.353007,
+    "lon": 16.460212
+  },
+  {
+    "id": "TS-0043",
+    "name": "Trafostanica 43",
+    "lat": 46.339039,
+    "lon": 16.399096
+  },
+  {
+    "id": "TS-0044",
+    "name": "Trafostanica 44",
+    "lat": 46.345516,
+    "lon": 16.402024
+  },
+  {
+    "id": "TS-0045",
+    "name": "Trafostanica 45",
+    "lat": 46.344551,
+    "lon": 16.472576
+  },
+  {
+    "id": "TS-0046",
+    "name": "Trafostanica 46",
+    "lat": 46.336236,
+    "lon": 16.428105
+  },
+  {
+    "id": "TS-0047",
+    "name": "Trafostanica 47",
+    "lat": 46.390025,
+    "lon": 16.398552
+  },
+  {
+    "id": "TS-0048",
+    "name": "Trafostanica 48",
+    "lat": 46.37029,
+    "lon": 16.415293
+  },
+  {
+    "id": "TS-0049",
+    "name": "Trafostanica 49",
+    "lat": 46.434319,
+    "lon": 16.410227
+  },
+  {
+    "id": "TS-0050",
+    "name": "Trafostanica 50",
+    "lat": 46.432326,
+    "lon": 16.437602
+  },
+  {
+    "id": "TS-0051",
+    "name": "Trafostanica 51",
+    "lat": 46.346995,
+    "lon": 16.421723
+  },
+  {
+    "id": "TS-0052",
+    "name": "Trafostanica 52",
+    "lat": 46.339602,
+    "lon": 16.465337
+  },
+  {
+    "id": "TS-0053",
+    "name": "Trafostanica 53",
+    "lat": 46.407775,
+    "lon": 16.403801
+  },
+  {
+    "id": "TS-0054",
+    "name": "Trafostanica 54",
+    "lat": 46.431655,
+    "lon": 16.47465
+  },
+  {
+    "id": "TS-0055",
+    "name": "Trafostanica 55",
+    "lat": 46.343934,
+    "lon": 16.445387
+  },
+  {
+    "id": "TS-0056",
+    "name": "Trafostanica 56",
+    "lat": 46.3702,
+    "lon": 16.405784
+  },
+  {
+    "id": "TS-0057",
+    "name": "Trafostanica 57",
+    "lat": 46.391324,
+    "lon": 16.387301
+  },
+  {
+    "id": "TS-0058",
+    "name": "Trafostanica 58",
+    "lat": 46.365635,
+    "lon": 16.482483
+  },
+  {
+    "id": "TS-0059",
+    "name": "Trafostanica 59",
+    "lat": 46.380055,
+    "lon": 16.456041
+  },
+  {
+    "id": "TS-0060",
+    "name": "Trafostanica 60",
+    "lat": 46.342534,
+    "lon": 16.450665
+  },
+  {
+    "id": "TS-0061",
+    "name": "Trafostanica 61",
+    "lat": 46.388247,
+    "lon": 16.433838
+  },
+  {
+    "id": "TS-0062",
+    "name": "Trafostanica 62",
+    "lat": 46.344225,
+    "lon": 16.387063
+  },
+  {
+    "id": "TS-0063",
+    "name": "Trafostanica 63",
+    "lat": 46.356511,
+    "lon": 16.460429
+  },
+  {
+    "id": "TS-0064",
+    "name": "Trafostanica 64",
+    "lat": 46.354281,
+    "lon": 16.437867
+  },
+  {
+    "id": "TS-0065",
+    "name": "Trafostanica 65",
+    "lat": 46.419589,
+    "lon": 16.404748
+  },
+  {
+    "id": "TS-0066",
+    "name": "Trafostanica 66",
+    "lat": 46.401763,
+    "lon": 16.473759
+  },
+  {
+    "id": "TS-0067",
+    "name": "Trafostanica 67",
+    "lat": 46.362157,
+    "lon": 16.459291
+  },
+  {
+    "id": "TS-0068",
+    "name": "Trafostanica 68",
+    "lat": 46.434197,
+    "lon": 16.432813
+  },
+  {
+    "id": "TS-0069",
+    "name": "Trafostanica 69",
+    "lat": 46.380003,
+    "lon": 16.469287
+  },
+  {
+    "id": "TS-0070",
+    "name": "Trafostanica 70",
+    "lat": 46.403982,
+    "lon": 16.38452
+  },
+  {
+    "id": "TS-0071",
+    "name": "Trafostanica 71",
+    "lat": 46.392086,
+    "lon": 16.423333
+  },
+  {
+    "id": "TS-0072",
+    "name": "Trafostanica 72",
+    "lat": 46.374981,
+    "lon": 16.469231
+  },
+  {
+    "id": "TS-0073",
+    "name": "Trafostanica 73",
+    "lat": 46.424604,
+    "lon": 16.38553
+  },
+  {
+    "id": "TS-0074",
+    "name": "Trafostanica 74",
+    "lat": 46.337966,
+    "lon": 16.474866
+  },
+  {
+    "id": "TS-0075",
+    "name": "Trafostanica 75",
+    "lat": 46.430101,
+    "lon": 16.393437
+  },
+  {
+    "id": "TS-0076",
+    "name": "Trafostanica 76",
+    "lat": 46.406211,
+    "lon": 16.469316
+  },
+  {
+    "id": "TS-0077",
+    "name": "Trafostanica 77",
+    "lat": 46.348406,
+    "lon": 16.407202
+  },
+  {
+    "id": "TS-0078",
+    "name": "Trafostanica 78",
+    "lat": 46.379344,
+    "lon": 16.42248
+  },
+  {
+    "id": "TS-0079",
+    "name": "Trafostanica 79",
+    "lat": 46.375905,
+    "lon": 16.418927
+  },
+  {
+    "id": "TS-0080",
+    "name": "Trafostanica 80",
+    "lat": 46.404274,
+    "lon": 16.416195
+  },
+  {
+    "id": "TS-0081",
+    "name": "Trafostanica 81",
+    "lat": 46.368992,
+    "lon": 16.39894
+  },
+  {
+    "id": "TS-0082",
+    "name": "Trafostanica 82",
+    "lat": 46.403089,
+    "lon": 16.445121
+  },
+  {
+    "id": "TS-0083",
+    "name": "Trafostanica 83",
+    "lat": 46.357286,
+    "lon": 16.406212
+  },
+  {
+    "id": "TS-0084",
+    "name": "Trafostanica 84",
+    "lat": 46.404409,
+    "lon": 16.391418
+  },
+  {
+    "id": "TS-0085",
+    "name": "Trafostanica 85",
+    "lat": 46.335698,
+    "lon": 16.410108
+  },
+  {
+    "id": "TS-0086",
+    "name": "Trafostanica 86",
+    "lat": 46.334888,
+    "lon": 16.45359
+  },
+  {
+    "id": "TS-0087",
+    "name": "Trafostanica 87",
+    "lat": 46.395699,
+    "lon": 16.40976
+  },
+  {
+    "id": "TS-0088",
+    "name": "Trafostanica 88",
+    "lat": 46.402351,
+    "lon": 16.38399
+  },
+  {
+    "id": "TS-0089",
+    "name": "Trafostanica 89",
+    "lat": 46.408976,
+    "lon": 16.471397
+  },
+  {
+    "id": "TS-0090",
+    "name": "Trafostanica 90",
+    "lat": 46.388124,
+    "lon": 16.470415
+  },
+  {
+    "id": "TS-0091",
+    "name": "Trafostanica 91",
+    "lat": 46.359165,
+    "lon": 16.467003
+  },
+  {
+    "id": "TS-0092",
+    "name": "Trafostanica 92",
+    "lat": 46.389409,
+    "lon": 16.421208
+  },
+  {
+    "id": "TS-0093",
+    "name": "Trafostanica 93",
+    "lat": 46.387275,
+    "lon": 16.464375
+  },
+  {
+    "id": "TS-0094",
+    "name": "Trafostanica 94",
+    "lat": 46.400298,
+    "lon": 16.41216
+  },
+  {
+    "id": "TS-0095",
+    "name": "Trafostanica 95",
+    "lat": 46.38962,
+    "lon": 16.432286
+  },
+  {
+    "id": "TS-0096",
+    "name": "Trafostanica 96",
+    "lat": 46.405791,
+    "lon": 16.3987
+  },
+  {
+    "id": "TS-0097",
+    "name": "Trafostanica 97",
+    "lat": 46.355385,
+    "lon": 16.399972
+  },
+  {
+    "id": "TS-0098",
+    "name": "Trafostanica 98",
+    "lat": 46.372457,
+    "lon": 16.445634
+  },
+  {
+    "id": "TS-0099",
+    "name": "Trafostanica 99",
+    "lat": 46.338768,
+    "lon": 16.45401
+  },
+  {
+    "id": "TS-0100",
+    "name": "Trafostanica 100",
+    "lat": 46.395348,
+    "lon": 16.440321
+  },
+  {
+    "id": "TS-0101",
+    "name": "Trafostanica 101",
+    "lat": 46.358292,
+    "lon": 16.471143
+  },
+  {
+    "id": "TS-0102",
+    "name": "Trafostanica 102",
+    "lat": 46.34404,
+    "lon": 16.386704
+  },
+  {
+    "id": "TS-0103",
+    "name": "Trafostanica 103",
+    "lat": 46.424247,
+    "lon": 16.466491
+  },
+  {
+    "id": "TS-0104",
+    "name": "Trafostanica 104",
+    "lat": 46.415967,
+    "lon": 16.394856
+  },
+  {
+    "id": "TS-0105",
+    "name": "Trafostanica 105",
+    "lat": 46.418647,
+    "lon": 16.385106
+  },
+  {
+    "id": "TS-0106",
+    "name": "Trafostanica 106",
+    "lat": 46.4187,
+    "lon": 16.425039
+  },
+  {
+    "id": "TS-0107",
+    "name": "Trafostanica 107",
+    "lat": 46.431241,
+    "lon": 16.471174
+  },
+  {
+    "id": "TS-0108",
+    "name": "Trafostanica 108",
+    "lat": 46.419006,
+    "lon": 16.38745
+  },
+  {
+    "id": "TS-0109",
+    "name": "Trafostanica 109",
+    "lat": 46.345013,
+    "lon": 16.435644
+  },
+  {
+    "id": "TS-0110",
+    "name": "Trafostanica 110",
+    "lat": 46.398821,
+    "lon": 16.397538
+  },
+  {
+    "id": "TS-0111",
+    "name": "Trafostanica 111",
+    "lat": 46.360819,
+    "lon": 16.433263
+  },
+  {
+    "id": "TS-0112",
+    "name": "Trafostanica 112",
+    "lat": 46.432302,
+    "lon": 16.391197
+  },
+  {
+    "id": "TS-0113",
+    "name": "Trafostanica 113",
+    "lat": 46.426008,
+    "lon": 16.477415
+  },
+  {
+    "id": "TS-0114",
+    "name": "Trafostanica 114",
+    "lat": 46.353656,
+    "lon": 16.418964
+  },
+  {
+    "id": "TS-0115",
+    "name": "Trafostanica 115",
+    "lat": 46.369311,
+    "lon": 16.441753
+  },
+  {
+    "id": "TS-0116",
+    "name": "Trafostanica 116",
+    "lat": 46.405565,
+    "lon": 16.447088
+  },
+  {
+    "id": "TS-0117",
+    "name": "Trafostanica 117",
+    "lat": 46.347011,
+    "lon": 16.40663
+  },
+  {
+    "id": "TS-0118",
+    "name": "Trafostanica 118",
+    "lat": 46.383293,
+    "lon": 16.480079
+  },
+  {
+    "id": "TS-0119",
+    "name": "Trafostanica 119",
+    "lat": 46.394259,
+    "lon": 16.421194
+  },
+  {
+    "id": "TS-0120",
+    "name": "Trafostanica 120",
+    "lat": 46.411197,
+    "lon": 16.427217
+  },
+  {
+    "id": "TS-0121",
+    "name": "Trafostanica 121",
+    "lat": 46.373956,
+    "lon": 16.465114
+  },
+  {
+    "id": "TS-0122",
+    "name": "Trafostanica 122",
+    "lat": 46.361489,
+    "lon": 16.403355
+  },
+  {
+    "id": "TS-0123",
+    "name": "Trafostanica 123",
+    "lat": 46.354258,
+    "lon": 16.396113
+  },
+  {
+    "id": "TS-0124",
+    "name": "Trafostanica 124",
+    "lat": 46.371362,
+    "lon": 16.386963
+  },
+  {
+    "id": "TS-0125",
+    "name": "Trafostanica 125",
+    "lat": 46.410876,
+    "lon": 16.447705
+  },
+  {
+    "id": "TS-0126",
+    "name": "Trafostanica 126",
+    "lat": 46.403818,
+    "lon": 16.412478
+  },
+  {
+    "id": "TS-0127",
+    "name": "Trafostanica 127",
+    "lat": 46.359968,
+    "lon": 16.455499
+  },
+  {
+    "id": "TS-0128",
+    "name": "Trafostanica 128",
+    "lat": 46.358441,
+    "lon": 16.440895
+  },
+  {
+    "id": "TS-0129",
+    "name": "Trafostanica 129",
+    "lat": 46.385864,
+    "lon": 16.396821
+  },
+  {
+    "id": "TS-0130",
+    "name": "Trafostanica 130",
+    "lat": 46.360983,
+    "lon": 16.452101
+  },
+  {
+    "id": "TS-0131",
+    "name": "Trafostanica 131",
+    "lat": 46.386471,
+    "lon": 16.465319
+  },
+  {
+    "id": "TS-0132",
+    "name": "Trafostanica 132",
+    "lat": 46.390953,
+    "lon": 16.422913
+  },
+  {
+    "id": "TS-0133",
+    "name": "Trafostanica 133",
+    "lat": 46.429101,
+    "lon": 16.423368
+  },
+  {
+    "id": "TS-0134",
+    "name": "Trafostanica 134",
+    "lat": 46.345092,
+    "lon": 16.467298
+  },
+  {
+    "id": "TS-0135",
+    "name": "Trafostanica 135",
+    "lat": 46.354399,
+    "lon": 16.470322
+  },
+  {
+    "id": "TS-0136",
+    "name": "Trafostanica 136",
+    "lat": 46.417844,
+    "lon": 16.471304
+  },
+  {
+    "id": "TS-0137",
+    "name": "Trafostanica 137",
+    "lat": 46.372802,
+    "lon": 16.452307
+  },
+  {
+    "id": "TS-0138",
+    "name": "Trafostanica 138",
+    "lat": 46.368976,
+    "lon": 16.460916
+  },
+  {
+    "id": "TS-0139",
+    "name": "Trafostanica 139",
+    "lat": 46.336643,
+    "lon": 16.388051
+  },
+  {
+    "id": "TS-0140",
+    "name": "Trafostanica 140",
+    "lat": 46.385561,
+    "lon": 16.392165
+  },
+  {
+    "id": "TS-0141",
+    "name": "Trafostanica 141",
+    "lat": 46.413258,
+    "lon": 16.447275
+  },
+  {
+    "id": "TS-0142",
+    "name": "Trafostanica 142",
+    "lat": 46.357166,
+    "lon": 16.407193
+  },
+  {
+    "id": "TS-0143",
+    "name": "Trafostanica 143",
+    "lat": 46.39428,
+    "lon": 16.460755
+  },
+  {
+    "id": "TS-0144",
+    "name": "Trafostanica 144",
+    "lat": 46.346744,
+    "lon": 16.474566
+  },
+  {
+    "id": "TS-0145",
+    "name": "Trafostanica 145",
+    "lat": 46.403535,
+    "lon": 16.387451
+  },
+  {
+    "id": "TS-0146",
+    "name": "Trafostanica 146",
+    "lat": 46.399744,
+    "lon": 16.418288
+  },
+  {
+    "id": "TS-0147",
+    "name": "Trafostanica 147",
+    "lat": 46.421095,
+    "lon": 16.418324
+  },
+  {
+    "id": "TS-0148",
+    "name": "Trafostanica 148",
+    "lat": 46.41784,
+    "lon": 16.409369
+  },
+  {
+    "id": "TS-0149",
+    "name": "Trafostanica 149",
+    "lat": 46.37272,
+    "lon": 16.392188
+  },
+  {
+    "id": "TS-0150",
+    "name": "Trafostanica 150",
+    "lat": 46.411811,
+    "lon": 16.479724
+  },
+  {
+    "id": "TS-0151",
+    "name": "Trafostanica 151",
+    "lat": 46.430358,
+    "lon": 16.461118
+  },
+  {
+    "id": "TS-0152",
+    "name": "Trafostanica 152",
+    "lat": 46.384625,
+    "lon": 16.431333
+  },
+  {
+    "id": "TS-0153",
+    "name": "Trafostanica 153",
+    "lat": 46.348807,
+    "lon": 16.435916
+  },
+  {
+    "id": "TS-0154",
+    "name": "Trafostanica 154",
+    "lat": 46.392653,
+    "lon": 16.44828
+  },
+  {
+    "id": "TS-0155",
+    "name": "Trafostanica 155",
+    "lat": 46.342538,
+    "lon": 16.433254
+  },
+  {
+    "id": "TS-0156",
+    "name": "Trafostanica 156",
+    "lat": 46.349267,
+    "lon": 16.426308
+  },
+  {
+    "id": "TS-0157",
+    "name": "Trafostanica 157",
+    "lat": 46.428379,
+    "lon": 16.450621
+  },
+  {
+    "id": "TS-0158",
+    "name": "Trafostanica 158",
+    "lat": 46.363897,
+    "lon": 16.422474
+  },
+  {
+    "id": "TS-0159",
+    "name": "Trafostanica 159",
+    "lat": 46.38559,
+    "lon": 16.433045
+  },
+  {
+    "id": "TS-0160",
+    "name": "Trafostanica 160",
+    "lat": 46.415568,
+    "lon": 16.46486
+  },
+  {
+    "id": "TS-0161",
+    "name": "Trafostanica 161",
+    "lat": 46.350481,
+    "lon": 16.391466
+  },
+  {
+    "id": "TS-0162",
+    "name": "Trafostanica 162",
+    "lat": 46.387774,
+    "lon": 16.473579
+  },
+  {
+    "id": "TS-0163",
+    "name": "Trafostanica 163",
+    "lat": 46.339818,
+    "lon": 16.477856
+  },
+  {
+    "id": "TS-0164",
+    "name": "Trafostanica 164",
+    "lat": 46.404003,
+    "lon": 16.432806
+  },
+  {
+    "id": "TS-0165",
+    "name": "Trafostanica 165",
+    "lat": 46.410074,
+    "lon": 16.384741
+  },
+  {
+    "id": "TS-0166",
+    "name": "Trafostanica 166",
+    "lat": 46.368125,
+    "lon": 16.393599
+  },
+  {
+    "id": "TS-0167",
+    "name": "Trafostanica 167",
+    "lat": 46.344242,
+    "lon": 16.445395
+  },
+  {
+    "id": "TS-0168",
+    "name": "Trafostanica 168",
+    "lat": 46.390699,
+    "lon": 16.391603
+  },
+  {
+    "id": "TS-0169",
+    "name": "Trafostanica 169",
+    "lat": 46.357492,
+    "lon": 16.43848
+  },
+  {
+    "id": "TS-0170",
+    "name": "Trafostanica 170",
+    "lat": 46.37629,
+    "lon": 16.436116
+  },
+  {
+    "id": "TS-0171",
+    "name": "Trafostanica 171",
+    "lat": 46.395639,
+    "lon": 16.393082
+  },
+  {
+    "id": "TS-0172",
+    "name": "Trafostanica 172",
+    "lat": 46.338024,
+    "lon": 16.449608
+  },
+  {
+    "id": "TS-0173",
+    "name": "Trafostanica 173",
+    "lat": 46.347685,
+    "lon": 16.464516
+  },
+  {
+    "id": "TS-0174",
+    "name": "Trafostanica 174",
+    "lat": 46.392722,
+    "lon": 16.442454
+  },
+  {
+    "id": "TS-0175",
+    "name": "Trafostanica 175",
+    "lat": 46.40372,
+    "lon": 16.461929
+  },
+  {
+    "id": "TS-0176",
+    "name": "Trafostanica 176",
+    "lat": 46.420973,
+    "lon": 16.424912
+  },
+  {
+    "id": "TS-0177",
+    "name": "Trafostanica 177",
+    "lat": 46.41934,
+    "lon": 16.46284
+  },
+  {
+    "id": "TS-0178",
+    "name": "Trafostanica 178",
+    "lat": 46.344228,
+    "lon": 16.480221
+  },
+  {
+    "id": "TS-0179",
+    "name": "Trafostanica 179",
+    "lat": 46.432948,
+    "lon": 16.455674
+  },
+  {
+    "id": "TS-0180",
+    "name": "Trafostanica 180",
+    "lat": 46.350569,
+    "lon": 16.404039
+  },
+  {
+    "id": "TS-0181",
+    "name": "Trafostanica 181",
+    "lat": 46.429015,
+    "lon": 16.467741
+  },
+  {
+    "id": "TS-0182",
+    "name": "Trafostanica 182",
+    "lat": 46.390763,
+    "lon": 16.457389
+  },
+  {
+    "id": "TS-0183",
+    "name": "Trafostanica 183",
+    "lat": 46.385986,
+    "lon": 16.416085
+  },
+  {
+    "id": "TS-0184",
+    "name": "Trafostanica 184",
+    "lat": 46.352709,
+    "lon": 16.408588
+  },
+  {
+    "id": "TS-0185",
+    "name": "Trafostanica 185",
+    "lat": 46.370062,
+    "lon": 16.392603
+  },
+  {
+    "id": "TS-0186",
+    "name": "Trafostanica 186",
+    "lat": 46.411238,
+    "lon": 16.420146
+  },
+  {
+    "id": "TS-0187",
+    "name": "Trafostanica 187",
+    "lat": 46.419776,
+    "lon": 16.432687
+  },
+  {
+    "id": "TS-0188",
+    "name": "Trafostanica 188",
+    "lat": 46.36669,
+    "lon": 16.42808
+  },
+  {
+    "id": "TS-0189",
+    "name": "Trafostanica 189",
+    "lat": 46.383409,
+    "lon": 16.453428
+  },
+  {
+    "id": "TS-0190",
+    "name": "Trafostanica 190",
+    "lat": 46.41386,
+    "lon": 16.479378
+  },
+  {
+    "id": "TS-0191",
+    "name": "Trafostanica 191",
+    "lat": 46.412325,
+    "lon": 16.455114
+  },
+  {
+    "id": "TS-0192",
+    "name": "Trafostanica 192",
+    "lat": 46.35176,
+    "lon": 16.390517
+  },
+  {
+    "id": "TS-0193",
+    "name": "Trafostanica 193",
+    "lat": 46.392861,
+    "lon": 16.472451
+  },
+  {
+    "id": "TS-0194",
+    "name": "Trafostanica 194",
+    "lat": 46.389163,
+    "lon": 16.465153
+  },
+  {
+    "id": "TS-0195",
+    "name": "Trafostanica 195",
+    "lat": 46.42035,
+    "lon": 16.418709
+  },
+  {
+    "id": "TS-0196",
+    "name": "Trafostanica 196",
+    "lat": 46.350243,
+    "lon": 16.393882
+  },
+  {
+    "id": "TS-0197",
+    "name": "Trafostanica 197",
+    "lat": 46.346202,
+    "lon": 16.445687
+  },
+  {
+    "id": "TS-0198",
+    "name": "Trafostanica 198",
+    "lat": 46.344289,
+    "lon": 16.477946
+  },
+  {
+    "id": "TS-0199",
+    "name": "Trafostanica 199",
+    "lat": 46.380381,
+    "lon": 16.441216
+  },
+  {
+    "id": "TS-0200",
+    "name": "Trafostanica 200",
+    "lat": 46.39133,
+    "lon": 16.433752
+  },
+  {
+    "id": "TS-0201",
+    "name": "Trafostanica 201",
+    "lat": 46.415422,
+    "lon": 16.389973
+  },
+  {
+    "id": "TS-0202",
+    "name": "Trafostanica 202",
+    "lat": 46.3572,
+    "lon": 16.451002
+  },
+  {
+    "id": "TS-0203",
+    "name": "Trafostanica 203",
+    "lat": 46.356327,
+    "lon": 16.433552
+  },
+  {
+    "id": "TS-0204",
+    "name": "Trafostanica 204",
+    "lat": 46.416749,
+    "lon": 16.440209
+  },
+  {
+    "id": "TS-0205",
+    "name": "Trafostanica 205",
+    "lat": 46.362518,
+    "lon": 16.475827
+  },
+  {
+    "id": "TS-0206",
+    "name": "Trafostanica 206",
+    "lat": 46.367216,
+    "lon": 16.454545
+  },
+  {
+    "id": "TS-0207",
+    "name": "Trafostanica 207",
+    "lat": 46.395646,
+    "lon": 16.453024
+  },
+  {
+    "id": "TS-0208",
+    "name": "Trafostanica 208",
+    "lat": 46.424058,
+    "lon": 16.468712
+  },
+  {
+    "id": "TS-0209",
+    "name": "Trafostanica 209",
+    "lat": 46.416189,
+    "lon": 16.414138
+  },
+  {
+    "id": "TS-0210",
+    "name": "Trafostanica 210",
+    "lat": 46.40494,
+    "lon": 16.438437
+  },
+  {
+    "id": "TS-0211",
+    "name": "Trafostanica 211",
+    "lat": 46.408476,
+    "lon": 16.393175
+  },
+  {
+    "id": "TS-0212",
+    "name": "Trafostanica 212",
+    "lat": 46.431232,
+    "lon": 16.425575
+  },
+  {
+    "id": "TS-0213",
+    "name": "Trafostanica 213",
+    "lat": 46.387178,
+    "lon": 16.394107
+  },
+  {
+    "id": "TS-0214",
+    "name": "Trafostanica 214",
+    "lat": 46.354724,
+    "lon": 16.442246
+  },
+  {
+    "id": "TS-0215",
+    "name": "Trafostanica 215",
+    "lat": 46.36634,
+    "lon": 16.429446
+  },
+  {
+    "id": "TS-0216",
+    "name": "Trafostanica 216",
+    "lat": 46.387187,
+    "lon": 16.455141
+  },
+  {
+    "id": "TS-0217",
+    "name": "Trafostanica 217",
+    "lat": 46.351146,
+    "lon": 16.406037
+  },
+  {
+    "id": "TS-0218",
+    "name": "Trafostanica 218",
+    "lat": 46.386214,
+    "lon": 16.425302
+  },
+  {
+    "id": "TS-0219",
+    "name": "Trafostanica 219",
+    "lat": 46.419974,
+    "lon": 16.446027
+  },
+  {
+    "id": "TS-0220",
+    "name": "Trafostanica 220",
+    "lat": 46.428914,
+    "lon": 16.417644
+  },
+  {
+    "id": "TS-0221",
+    "name": "Trafostanica 221",
+    "lat": 46.357474,
+    "lon": 16.408198
+  },
+  {
+    "id": "TS-0222",
+    "name": "Trafostanica 222",
+    "lat": 46.429168,
+    "lon": 16.427684
+  },
+  {
+    "id": "TS-0223",
+    "name": "Trafostanica 223",
+    "lat": 46.369187,
+    "lon": 16.473854
+  },
+  {
+    "id": "TS-0224",
+    "name": "Trafostanica 224",
+    "lat": 46.388435,
+    "lon": 16.392309
+  },
+  {
+    "id": "TS-0225",
+    "name": "Trafostanica 225",
+    "lat": 46.402585,
+    "lon": 16.452483
+  },
+  {
+    "id": "TS-0226",
+    "name": "Trafostanica 226",
+    "lat": 46.403119,
+    "lon": 16.465571
+  },
+  {
+    "id": "TS-0227",
+    "name": "Trafostanica 227",
+    "lat": 46.432672,
+    "lon": 16.403383
+  },
+  {
+    "id": "TS-0228",
+    "name": "Trafostanica 228",
+    "lat": 46.401177,
+    "lon": 16.413792
+  },
+  {
+    "id": "TS-0229",
+    "name": "Trafostanica 229",
+    "lat": 46.380776,
+    "lon": 16.430816
+  },
+  {
+    "id": "TS-0230",
+    "name": "Trafostanica 230",
+    "lat": 46.382924,
+    "lon": 16.438195
+  },
+  {
+    "id": "TS-0231",
+    "name": "Trafostanica 231",
+    "lat": 46.4306,
+    "lon": 16.444832
+  },
+  {
+    "id": "TS-0232",
+    "name": "Trafostanica 232",
+    "lat": 46.387746,
+    "lon": 16.416293
+  },
+  {
+    "id": "TS-0233",
+    "name": "Trafostanica 233",
+    "lat": 46.369345,
+    "lon": 16.431782
+  },
+  {
+    "id": "TS-0234",
+    "name": "Trafostanica 234",
+    "lat": 46.409815,
+    "lon": 16.458863
+  },
+  {
+    "id": "TS-0235",
+    "name": "Trafostanica 235",
+    "lat": 46.420506,
+    "lon": 16.482142
+  },
+  {
+    "id": "TS-0236",
+    "name": "Trafostanica 236",
+    "lat": 46.358893,
+    "lon": 16.471874
+  },
+  {
+    "id": "TS-0237",
+    "name": "Trafostanica 237",
+    "lat": 46.399571,
+    "lon": 16.446207
+  },
+  {
+    "id": "TS-0238",
+    "name": "Trafostanica 238",
+    "lat": 46.353527,
+    "lon": 16.451476
+  },
+  {
+    "id": "TS-0239",
+    "name": "Trafostanica 239",
+    "lat": 46.425644,
+    "lon": 16.465771
+  },
+  {
+    "id": "TS-0240",
+    "name": "Trafostanica 240",
+    "lat": 46.402575,
+    "lon": 16.403848
+  },
+  {
+    "id": "TS-0241",
+    "name": "Trafostanica 241",
+    "lat": 46.371529,
+    "lon": 16.466012
+  },
+  {
+    "id": "TS-0242",
+    "name": "Trafostanica 242",
+    "lat": 46.38649,
+    "lon": 16.479426
+  },
+  {
+    "id": "TS-0243",
+    "name": "Trafostanica 243",
+    "lat": 46.374993,
+    "lon": 16.471062
+  },
+  {
+    "id": "TS-0244",
+    "name": "Trafostanica 244",
+    "lat": 46.370876,
+    "lon": 16.459843
+  },
+  {
+    "id": "TS-0245",
+    "name": "Trafostanica 245",
+    "lat": 46.425022,
+    "lon": 16.438891
+  },
+  {
+    "id": "TS-0246",
+    "name": "Trafostanica 246",
+    "lat": 46.420975,
+    "lon": 16.432454
+  },
+  {
+    "id": "TS-0247",
+    "name": "Trafostanica 247",
+    "lat": 46.363665,
+    "lon": 16.38991
+  },
+  {
+    "id": "TS-0248",
+    "name": "Trafostanica 248",
+    "lat": 46.34165,
+    "lon": 16.437172
+  },
+  {
+    "id": "TS-0249",
+    "name": "Trafostanica 249",
+    "lat": 46.423053,
+    "lon": 16.415223
+  },
+  {
+    "id": "TS-0250",
+    "name": "Trafostanica 250",
+    "lat": 46.425209,
+    "lon": 16.413783
+  },
+  {
+    "id": "TS-0251",
+    "name": "Trafostanica 251",
+    "lat": 46.351088,
+    "lon": 16.480337
+  },
+  {
+    "id": "TS-0252",
+    "name": "Trafostanica 252",
+    "lat": 46.391592,
+    "lon": 16.433852
+  },
+  {
+    "id": "TS-0253",
+    "name": "Trafostanica 253",
+    "lat": 46.406465,
+    "lon": 16.431879
+  },
+  {
+    "id": "TS-0254",
+    "name": "Trafostanica 254",
+    "lat": 46.394632,
+    "lon": 16.387535
+  },
+  {
+    "id": "TS-0255",
+    "name": "Trafostanica 255",
+    "lat": 46.412544,
+    "lon": 16.452212
+  },
+  {
+    "id": "TS-0256",
+    "name": "Trafostanica 256",
+    "lat": 46.422761,
+    "lon": 16.470649
+  },
+  {
+    "id": "TS-0257",
+    "name": "Trafostanica 257",
+    "lat": 46.41142,
+    "lon": 16.483617
+  },
+  {
+    "id": "TS-0258",
+    "name": "Trafostanica 258",
+    "lat": 46.383055,
+    "lon": 16.477612
+  },
+  {
+    "id": "TS-0259",
+    "name": "Trafostanica 259",
+    "lat": 46.337579,
+    "lon": 16.387307
+  },
+  {
+    "id": "TS-0260",
+    "name": "Trafostanica 260",
+    "lat": 46.400887,
+    "lon": 16.412098
+  },
+  {
+    "id": "TS-0261",
+    "name": "Trafostanica 261",
+    "lat": 46.402687,
+    "lon": 16.42961
+  },
+  {
+    "id": "TS-0262",
+    "name": "Trafostanica 262",
+    "lat": 46.409562,
+    "lon": 16.42241
+  },
+  {
+    "id": "TS-0263",
+    "name": "Trafostanica 263",
+    "lat": 46.339384,
+    "lon": 16.468915
+  },
+  {
+    "id": "TS-0264",
+    "name": "Trafostanica 264",
+    "lat": 46.346502,
+    "lon": 16.478238
+  },
+  {
+    "id": "TS-0265",
+    "name": "Trafostanica 265",
+    "lat": 46.37627,
+    "lon": 16.407385
+  },
+  {
+    "id": "TS-0266",
+    "name": "Trafostanica 266",
+    "lat": 46.342508,
+    "lon": 16.40928
+  },
+  {
+    "id": "TS-0267",
+    "name": "Trafostanica 267",
+    "lat": 46.334553,
+    "lon": 16.398754
+  },
+  {
+    "id": "TS-0268",
+    "name": "Trafostanica 268",
+    "lat": 46.346852,
+    "lon": 16.427492
+  },
+  {
+    "id": "TS-0269",
+    "name": "Trafostanica 269",
+    "lat": 46.368268,
+    "lon": 16.476545
+  },
+  {
+    "id": "TS-0270",
+    "name": "Trafostanica 270",
+    "lat": 46.358358,
+    "lon": 16.399205
+  },
+  {
+    "id": "TS-0271",
+    "name": "Trafostanica 271",
+    "lat": 46.422789,
+    "lon": 16.462758
+  },
+  {
+    "id": "TS-0272",
+    "name": "Trafostanica 272",
+    "lat": 46.406261,
+    "lon": 16.454128
+  },
+  {
+    "id": "TS-0273",
+    "name": "Trafostanica 273",
+    "lat": 46.365654,
+    "lon": 16.441279
+  },
+  {
+    "id": "TS-0274",
+    "name": "Trafostanica 274",
+    "lat": 46.383595,
+    "lon": 16.429962
+  },
+  {
+    "id": "TS-0275",
+    "name": "Trafostanica 275",
+    "lat": 46.393134,
+    "lon": 16.473018
+  },
+  {
+    "id": "TS-0276",
+    "name": "Trafostanica 276",
+    "lat": 46.386777,
+    "lon": 16.446917
+  },
+  {
+    "id": "TS-0277",
+    "name": "Trafostanica 277",
+    "lat": 46.384266,
+    "lon": 16.408938
+  },
+  {
+    "id": "TS-0278",
+    "name": "Trafostanica 278",
+    "lat": 46.389784,
+    "lon": 16.481007
+  },
+  {
+    "id": "TS-0279",
+    "name": "Trafostanica 279",
+    "lat": 46.428211,
+    "lon": 16.468915
+  },
+  {
+    "id": "TS-0280",
+    "name": "Trafostanica 280",
+    "lat": 46.433008,
+    "lon": 16.476674
+  },
+  {
+    "id": "TS-0281",
+    "name": "Trafostanica 281",
+    "lat": 46.384515,
+    "lon": 16.427079
+  },
+  {
+    "id": "TS-0282",
+    "name": "Trafostanica 282",
+    "lat": 46.347627,
+    "lon": 16.446598
+  },
+  {
+    "id": "TS-0283",
+    "name": "Trafostanica 283",
+    "lat": 46.379584,
+    "lon": 16.407634
+  },
+  {
+    "id": "TS-0284",
+    "name": "Trafostanica 284",
+    "lat": 46.402729,
+    "lon": 16.413025
+  },
+  {
+    "id": "TS-0285",
+    "name": "Trafostanica 285",
+    "lat": 46.43434,
+    "lon": 16.467082
+  },
+  {
+    "id": "TS-0286",
+    "name": "Trafostanica 286",
+    "lat": 46.351092,
+    "lon": 16.405414
+  },
+  {
+    "id": "TS-0287",
+    "name": "Trafostanica 287",
+    "lat": 46.424173,
+    "lon": 16.444521
+  },
+  {
+    "id": "TS-0288",
+    "name": "Trafostanica 288",
+    "lat": 46.404858,
+    "lon": 16.480845
+  },
+  {
+    "id": "TS-0289",
+    "name": "Trafostanica 289",
+    "lat": 46.429745,
+    "lon": 16.455751
+  },
+  {
+    "id": "TS-0290",
+    "name": "Trafostanica 290",
+    "lat": 46.38092,
+    "lon": 16.461437
+  },
+  {
+    "id": "TS-0291",
+    "name": "Trafostanica 291",
+    "lat": 46.412333,
+    "lon": 16.445293
+  },
+  {
+    "id": "TS-0292",
+    "name": "Trafostanica 292",
+    "lat": 46.338002,
+    "lon": 16.427496
+  },
+  {
+    "id": "TS-0293",
+    "name": "Trafostanica 293",
+    "lat": 46.346323,
+    "lon": 16.442096
+  },
+  {
+    "id": "TS-0294",
+    "name": "Trafostanica 294",
+    "lat": 46.376213,
+    "lon": 16.400081
+  },
+  {
+    "id": "TS-0295",
+    "name": "Trafostanica 295",
+    "lat": 46.400846,
+    "lon": 16.450484
+  },
+  {
+    "id": "TS-0296",
+    "name": "Trafostanica 296",
+    "lat": 46.367162,
+    "lon": 16.439664
+  },
+  {
+    "id": "TS-0297",
+    "name": "Trafostanica 297",
+    "lat": 46.391692,
+    "lon": 16.478302
+  },
+  {
+    "id": "TS-0298",
+    "name": "Trafostanica 298",
+    "lat": 46.367634,
+    "lon": 16.444485
+  },
+  {
+    "id": "TS-0299",
+    "name": "Trafostanica 299",
+    "lat": 46.340524,
+    "lon": 16.423025
+  },
+  {
+    "id": "TS-0300",
+    "name": "Trafostanica 300",
+    "lat": 46.422237,
+    "lon": 16.43352
+  },
+  {
+    "id": "TS-0301",
+    "name": "Trafostanica 301",
+    "lat": 46.33596,
+    "lon": 16.42846
+  },
+  {
+    "id": "TS-0302",
+    "name": "Trafostanica 302",
+    "lat": 46.365786,
+    "lon": 16.396333
+  },
+  {
+    "id": "TS-0303",
+    "name": "Trafostanica 303",
+    "lat": 46.411511,
+    "lon": 16.479373
+  },
+  {
+    "id": "TS-0304",
+    "name": "Trafostanica 304",
+    "lat": 46.352415,
+    "lon": 16.458956
+  },
+  {
+    "id": "TS-0305",
+    "name": "Trafostanica 305",
+    "lat": 46.342564,
+    "lon": 16.391646
+  },
+  {
+    "id": "TS-0306",
+    "name": "Trafostanica 306",
+    "lat": 46.357958,
+    "lon": 16.441815
+  },
+  {
+    "id": "TS-0307",
+    "name": "Trafostanica 307",
+    "lat": 46.419753,
+    "lon": 16.387601
+  },
+  {
+    "id": "TS-0308",
+    "name": "Trafostanica 308",
+    "lat": 46.373817,
+    "lon": 16.413401
+  },
+  {
+    "id": "TS-0309",
+    "name": "Trafostanica 309",
+    "lat": 46.432773,
+    "lon": 16.410674
+  },
+  {
+    "id": "TS-0310",
+    "name": "Trafostanica 310",
+    "lat": 46.410161,
+    "lon": 16.422245
+  },
+  {
+    "id": "TS-0311",
+    "name": "Trafostanica 311",
+    "lat": 46.393264,
+    "lon": 16.470196
+  },
+  {
+    "id": "TS-0312",
+    "name": "Trafostanica 312",
+    "lat": 46.344008,
+    "lon": 16.453218
+  },
+  {
+    "id": "TS-0313",
+    "name": "Trafostanica 313",
+    "lat": 46.411236,
+    "lon": 16.411053
+  },
+  {
+    "id": "TS-0314",
+    "name": "Trafostanica 314",
+    "lat": 46.419193,
+    "lon": 16.418489
+  },
+  {
+    "id": "TS-0315",
+    "name": "Trafostanica 315",
+    "lat": 46.378584,
+    "lon": 16.453456
+  },
+  {
+    "id": "TS-0316",
+    "name": "Trafostanica 316",
+    "lat": 46.398806,
+    "lon": 16.389358
+  },
+  {
+    "id": "TS-0317",
+    "name": "Trafostanica 317",
+    "lat": 46.369125,
+    "lon": 16.444753
+  },
+  {
+    "id": "TS-0318",
+    "name": "Trafostanica 318",
+    "lat": 46.348859,
+    "lon": 16.456699
+  },
+  {
+    "id": "TS-0319",
+    "name": "Trafostanica 319",
+    "lat": 46.352195,
+    "lon": 16.467259
+  },
+  {
+    "id": "TS-0320",
+    "name": "Trafostanica 320",
+    "lat": 46.367542,
+    "lon": 16.405833
+  },
+  {
+    "id": "TS-0321",
+    "name": "Trafostanica 321",
+    "lat": 46.364866,
+    "lon": 16.408096
+  },
+  {
+    "id": "TS-0322",
+    "name": "Trafostanica 322",
+    "lat": 46.431661,
+    "lon": 16.407922
+  },
+  {
+    "id": "TS-0323",
+    "name": "Trafostanica 323",
+    "lat": 46.430617,
+    "lon": 16.419147
+  },
+  {
+    "id": "TS-0324",
+    "name": "Trafostanica 324",
+    "lat": 46.390348,
+    "lon": 16.409416
+  },
+  {
+    "id": "TS-0325",
+    "name": "Trafostanica 325",
+    "lat": 46.345134,
+    "lon": 16.424384
+  },
+  {
+    "id": "TS-0326",
+    "name": "Trafostanica 326",
+    "lat": 46.379171,
+    "lon": 16.395114
+  },
+  {
+    "id": "TS-0327",
+    "name": "Trafostanica 327",
+    "lat": 46.418545,
+    "lon": 16.387444
+  },
+  {
+    "id": "TS-0328",
+    "name": "Trafostanica 328",
+    "lat": 46.373101,
+    "lon": 16.391169
+  },
+  {
+    "id": "TS-0329",
+    "name": "Trafostanica 329",
+    "lat": 46.360483,
+    "lon": 16.442615
+  },
+  {
+    "id": "TS-0330",
+    "name": "Trafostanica 330",
+    "lat": 46.402389,
+    "lon": 16.440986
+  },
+  {
+    "id": "TS-0331",
+    "name": "Trafostanica 331",
+    "lat": 46.389606,
+    "lon": 16.448655
+  },
+  {
+    "id": "TS-0332",
+    "name": "Trafostanica 332",
+    "lat": 46.415262,
+    "lon": 16.419959
+  },
+  {
+    "id": "TS-0333",
+    "name": "Trafostanica 333",
+    "lat": 46.348554,
+    "lon": 16.470993
+  },
+  {
+    "id": "TS-0334",
+    "name": "Trafostanica 334",
+    "lat": 46.337971,
+    "lon": 16.391767
+  },
+  {
+    "id": "TS-0335",
+    "name": "Trafostanica 335",
+    "lat": 46.353616,
+    "lon": 16.476069
+  },
+  {
+    "id": "TS-0336",
+    "name": "Trafostanica 336",
+    "lat": 46.384649,
+    "lon": 16.452776
+  },
+  {
+    "id": "TS-0337",
+    "name": "Trafostanica 337",
+    "lat": 46.344021,
+    "lon": 16.453202
+  },
+  {
+    "id": "TS-0338",
+    "name": "Trafostanica 338",
+    "lat": 46.417553,
+    "lon": 16.394798
+  },
+  {
+    "id": "TS-0339",
+    "name": "Trafostanica 339",
+    "lat": 46.342149,
+    "lon": 16.424793
+  },
+  {
+    "id": "TS-0340",
+    "name": "Trafostanica 340",
+    "lat": 46.362558,
+    "lon": 16.437942
+  },
+  {
+    "id": "TS-0341",
+    "name": "Trafostanica 341",
+    "lat": 46.3634,
+    "lon": 16.392813
+  },
+  {
+    "id": "TS-0342",
+    "name": "Trafostanica 342",
+    "lat": 46.418706,
+    "lon": 16.403301
+  },
+  {
+    "id": "TS-0343",
+    "name": "Trafostanica 343",
+    "lat": 46.376082,
+    "lon": 16.43985
+  },
+  {
+    "id": "TS-0344",
+    "name": "Trafostanica 344",
+    "lat": 46.415298,
+    "lon": 16.415544
+  },
+  {
+    "id": "TS-0345",
+    "name": "Trafostanica 345",
+    "lat": 46.337427,
+    "lon": 16.477012
+  },
+  {
+    "id": "TS-0346",
+    "name": "Trafostanica 346",
+    "lat": 46.419808,
+    "lon": 16.390084
+  },
+  {
+    "id": "TS-0347",
+    "name": "Trafostanica 347",
+    "lat": 46.393634,
+    "lon": 16.391941
+  },
+  {
+    "id": "TS-0348",
+    "name": "Trafostanica 348",
+    "lat": 46.379932,
+    "lon": 16.473451
+  },
+  {
+    "id": "TS-0349",
+    "name": "Trafostanica 349",
+    "lat": 46.347046,
+    "lon": 16.450607
+  },
+  {
+    "id": "TS-0350",
+    "name": "Trafostanica 350",
+    "lat": 46.419115,
+    "lon": 16.411223
+  },
+  {
+    "id": "TS-0351",
+    "name": "Trafostanica 351",
+    "lat": 46.378805,
+    "lon": 16.408585
+  },
+  {
+    "id": "TS-0352",
+    "name": "Trafostanica 352",
+    "lat": 46.41145,
+    "lon": 16.432295
+  },
+  {
+    "id": "TS-0353",
+    "name": "Trafostanica 353",
+    "lat": 46.384211,
+    "lon": 16.397671
+  },
+  {
+    "id": "TS-0354",
+    "name": "Trafostanica 354",
+    "lat": 46.431978,
+    "lon": 16.46477
+  },
+  {
+    "id": "TS-0355",
+    "name": "Trafostanica 355",
+    "lat": 46.34324,
+    "lon": 16.392148
+  },
+  {
+    "id": "TS-0356",
+    "name": "Trafostanica 356",
+    "lat": 46.422077,
+    "lon": 16.385825
+  },
+  {
+    "id": "TS-0357",
+    "name": "Trafostanica 357",
+    "lat": 46.410474,
+    "lon": 16.46739
+  },
+  {
+    "id": "TS-0358",
+    "name": "Trafostanica 358",
+    "lat": 46.404794,
+    "lon": 16.46356
+  },
+  {
+    "id": "TS-0359",
+    "name": "Trafostanica 359",
+    "lat": 46.350894,
+    "lon": 16.397466
+  },
+  {
+    "id": "TS-0360",
+    "name": "Trafostanica 360",
+    "lat": 46.384982,
+    "lon": 16.43095
+  },
+  {
+    "id": "TS-0361",
+    "name": "Trafostanica 361",
+    "lat": 46.43319,
+    "lon": 16.430169
+  },
+  {
+    "id": "TS-0362",
+    "name": "Trafostanica 362",
+    "lat": 46.340696,
+    "lon": 16.458262
+  },
+  {
+    "id": "TS-0363",
+    "name": "Trafostanica 363",
+    "lat": 46.410881,
+    "lon": 16.472977
+  },
+  {
+    "id": "TS-0364",
+    "name": "Trafostanica 364",
+    "lat": 46.380621,
+    "lon": 16.438801
+  },
+  {
+    "id": "TS-0365",
+    "name": "Trafostanica 365",
+    "lat": 46.356078,
+    "lon": 16.391446
+  },
+  {
+    "id": "TS-0366",
+    "name": "Trafostanica 366",
+    "lat": 46.401144,
+    "lon": 16.421288
+  },
+  {
+    "id": "TS-0367",
+    "name": "Trafostanica 367",
+    "lat": 46.402364,
+    "lon": 16.471282
+  },
+  {
+    "id": "TS-0368",
+    "name": "Trafostanica 368",
+    "lat": 46.432185,
+    "lon": 16.446123
+  },
+  {
+    "id": "TS-0369",
+    "name": "Trafostanica 369",
+    "lat": 46.370703,
+    "lon": 16.414761
+  },
+  {
+    "id": "TS-0370",
+    "name": "Trafostanica 370",
+    "lat": 46.428192,
+    "lon": 16.470722
+  },
+  {
+    "id": "TS-0371",
+    "name": "Trafostanica 371",
+    "lat": 46.427121,
+    "lon": 16.455187
+  },
+  {
+    "id": "TS-0372",
+    "name": "Trafostanica 372",
+    "lat": 46.353168,
+    "lon": 16.435901
+  },
+  {
+    "id": "TS-0373",
+    "name": "Trafostanica 373",
+    "lat": 46.341314,
+    "lon": 16.440083
+  },
+  {
+    "id": "TS-0374",
+    "name": "Trafostanica 374",
+    "lat": 46.409516,
+    "lon": 16.431427
+  },
+  {
+    "id": "TS-0375",
+    "name": "Trafostanica 375",
+    "lat": 46.36806,
+    "lon": 16.460746
+  },
+  {
+    "id": "TS-0376",
+    "name": "Trafostanica 376",
+    "lat": 46.352827,
+    "lon": 16.471311
+  },
+  {
+    "id": "TS-0377",
+    "name": "Trafostanica 377",
+    "lat": 46.389076,
+    "lon": 16.451138
+  },
+  {
+    "id": "TS-0378",
+    "name": "Trafostanica 378",
+    "lat": 46.34146,
+    "lon": 16.393066
+  },
+  {
+    "id": "TS-0379",
+    "name": "Trafostanica 379",
+    "lat": 46.344885,
+    "lon": 16.384337
+  },
+  {
+    "id": "TS-0380",
+    "name": "Trafostanica 380",
+    "lat": 46.43002,
+    "lon": 16.428179
+  },
+  {
+    "id": "TS-0381",
+    "name": "Trafostanica 381",
+    "lat": 46.417457,
+    "lon": 16.478579
+  },
+  {
+    "id": "TS-0382",
+    "name": "Trafostanica 382",
+    "lat": 46.425105,
+    "lon": 16.402982
+  },
+  {
+    "id": "TS-0383",
+    "name": "Trafostanica 383",
+    "lat": 46.355108,
+    "lon": 16.470917
+  },
+  {
+    "id": "TS-0384",
+    "name": "Trafostanica 384",
+    "lat": 46.429429,
+    "lon": 16.423396
+  },
+  {
+    "id": "TS-0385",
+    "name": "Trafostanica 385",
+    "lat": 46.360746,
+    "lon": 16.384423
+  },
+  {
+    "id": "TS-0386",
+    "name": "Trafostanica 386",
+    "lat": 46.340455,
+    "lon": 16.419891
+  },
+  {
+    "id": "TS-0387",
+    "name": "Trafostanica 387",
+    "lat": 46.348711,
+    "lon": 16.387583
+  },
+  {
+    "id": "TS-0388",
+    "name": "Trafostanica 388",
+    "lat": 46.405807,
+    "lon": 16.394721
+  },
+  {
+    "id": "TS-0389",
+    "name": "Trafostanica 389",
+    "lat": 46.33751,
+    "lon": 16.444093
+  },
+  {
+    "id": "TS-0390",
+    "name": "Trafostanica 390",
+    "lat": 46.379147,
+    "lon": 16.387845
+  },
+  {
+    "id": "TS-0391",
+    "name": "Trafostanica 391",
+    "lat": 46.377867,
+    "lon": 16.410621
+  },
+  {
+    "id": "TS-0392",
+    "name": "Trafostanica 392",
+    "lat": 46.335186,
+    "lon": 16.479119
+  },
+  {
+    "id": "TS-0393",
+    "name": "Trafostanica 393",
+    "lat": 46.397796,
+    "lon": 16.413232
+  },
+  {
+    "id": "TS-0394",
+    "name": "Trafostanica 394",
+    "lat": 46.363358,
+    "lon": 16.471491
+  },
+  {
+    "id": "TS-0395",
+    "name": "Trafostanica 395",
+    "lat": 46.419206,
+    "lon": 16.47671
+  },
+  {
+    "id": "TS-0396",
+    "name": "Trafostanica 396",
+    "lat": 46.393862,
+    "lon": 16.443131
+  },
+  {
+    "id": "TS-0397",
+    "name": "Trafostanica 397",
+    "lat": 46.358292,
+    "lon": 16.435361
+  },
+  {
+    "id": "TS-0398",
+    "name": "Trafostanica 398",
+    "lat": 46.413241,
+    "lon": 16.393498
+  },
+  {
+    "id": "TS-0399",
+    "name": "Trafostanica 399",
+    "lat": 46.360714,
+    "lon": 16.388102
+  },
+  {
+    "id": "TS-0400",
+    "name": "Trafostanica 400",
+    "lat": 46.345148,
+    "lon": 16.450679
+  },
+  {
+    "id": "TS-0401",
+    "name": "Trafostanica 401",
+    "lat": 46.396148,
+    "lon": 16.40332
+  },
+  {
+    "id": "TS-0402",
+    "name": "Trafostanica 402",
+    "lat": 46.405734,
+    "lon": 16.439546
+  },
+  {
+    "id": "TS-0403",
+    "name": "Trafostanica 403",
+    "lat": 46.379076,
+    "lon": 16.389784
+  },
+  {
+    "id": "TS-0404",
+    "name": "Trafostanica 404",
+    "lat": 46.335472,
+    "lon": 16.428933
+  },
+  {
+    "id": "TS-0405",
+    "name": "Trafostanica 405",
+    "lat": 46.428389,
+    "lon": 16.38417
+  },
+  {
+    "id": "TS-0406",
+    "name": "Trafostanica 406",
+    "lat": 46.430509,
+    "lon": 16.409337
+  },
+  {
+    "id": "TS-0407",
+    "name": "Trafostanica 407",
+    "lat": 46.336649,
+    "lon": 16.3899
+  },
+  {
+    "id": "TS-0408",
+    "name": "Trafostanica 408",
+    "lat": 46.3627,
+    "lon": 16.414178
+  },
+  {
+    "id": "TS-0409",
+    "name": "Trafostanica 409",
+    "lat": 46.396429,
+    "lon": 16.433052
+  },
+  {
+    "id": "TS-0410",
+    "name": "Trafostanica 410",
+    "lat": 46.357908,
+    "lon": 16.436009
+  },
+  {
+    "id": "TS-0411",
+    "name": "Trafostanica 411",
+    "lat": 46.428427,
+    "lon": 16.400172
+  },
+  {
+    "id": "TS-0412",
+    "name": "Trafostanica 412",
+    "lat": 46.415447,
+    "lon": 16.443191
+  },
+  {
+    "id": "TS-0413",
+    "name": "Trafostanica 413",
+    "lat": 46.387898,
+    "lon": 16.398728
+  },
+  {
+    "id": "TS-0414",
+    "name": "Trafostanica 414",
+    "lat": 46.369125,
+    "lon": 16.471765
+  },
+  {
+    "id": "TS-0415",
+    "name": "Trafostanica 415",
+    "lat": 46.380082,
+    "lon": 16.468109
+  },
+  {
+    "id": "TS-0416",
+    "name": "Trafostanica 416",
+    "lat": 46.426618,
+    "lon": 16.394487
+  },
+  {
+    "id": "TS-0417",
+    "name": "Trafostanica 417",
+    "lat": 46.367915,
+    "lon": 16.456257
+  },
+  {
+    "id": "TS-0418",
+    "name": "Trafostanica 418",
+    "lat": 46.336836,
+    "lon": 16.403332
+  },
+  {
+    "id": "TS-0419",
+    "name": "Trafostanica 419",
+    "lat": 46.370156,
+    "lon": 16.454246
+  },
+  {
+    "id": "TS-0420",
+    "name": "Trafostanica 420",
+    "lat": 46.356655,
+    "lon": 16.419603
+  },
+  {
+    "id": "TS-0421",
+    "name": "Trafostanica 421",
+    "lat": 46.417558,
+    "lon": 16.384923
+  },
+  {
+    "id": "TS-0422",
+    "name": "Trafostanica 422",
+    "lat": 46.420764,
+    "lon": 16.453939
+  },
+  {
+    "id": "TS-0423",
+    "name": "Trafostanica 423",
+    "lat": 46.350389,
+    "lon": 16.400142
+  },
+  {
+    "id": "TS-0424",
+    "name": "Trafostanica 424",
+    "lat": 46.384412,
+    "lon": 16.444629
+  },
+  {
+    "id": "TS-0425",
+    "name": "Trafostanica 425",
+    "lat": 46.373923,
+    "lon": 16.442241
+  },
+  {
+    "id": "TS-0426",
+    "name": "Trafostanica 426",
+    "lat": 46.403864,
+    "lon": 16.393917
+  },
+  {
+    "id": "TS-0427",
+    "name": "Trafostanica 427",
+    "lat": 46.433803,
+    "lon": 16.40114
+  },
+  {
+    "id": "TS-0428",
+    "name": "Trafostanica 428",
+    "lat": 46.383109,
+    "lon": 16.431456
+  },
+  {
+    "id": "TS-0429",
+    "name": "Trafostanica 429",
+    "lat": 46.382717,
+    "lon": 16.402024
+  },
+  {
+    "id": "TS-0430",
+    "name": "Trafostanica 430",
+    "lat": 46.400963,
+    "lon": 16.459275
+  },
+  {
+    "id": "TS-0431",
+    "name": "Trafostanica 431",
+    "lat": 46.405089,
+    "lon": 16.387838
+  },
+  {
+    "id": "TS-0432",
+    "name": "Trafostanica 432",
+    "lat": 46.384685,
+    "lon": 16.410236
+  },
+  {
+    "id": "TS-0433",
+    "name": "Trafostanica 433",
+    "lat": 46.345173,
+    "lon": 16.435403
+  },
+  {
+    "id": "TS-0434",
+    "name": "Trafostanica 434",
+    "lat": 46.411955,
+    "lon": 16.470057
+  },
+  {
+    "id": "TS-0435",
+    "name": "Trafostanica 435",
+    "lat": 46.355065,
+    "lon": 16.442661
+  },
+  {
+    "id": "TS-0436",
+    "name": "Trafostanica 436",
+    "lat": 46.362701,
+    "lon": 16.457983
+  },
+  {
+    "id": "TS-0437",
+    "name": "Trafostanica 437",
+    "lat": 46.376646,
+    "lon": 16.477686
+  },
+  {
+    "id": "TS-0438",
+    "name": "Trafostanica 438",
+    "lat": 46.415795,
+    "lon": 16.473031
+  },
+  {
+    "id": "TS-0439",
+    "name": "Trafostanica 439",
+    "lat": 46.380816,
+    "lon": 16.430148
+  },
+  {
+    "id": "TS-0440",
+    "name": "Trafostanica 440",
+    "lat": 46.361621,
+    "lon": 16.467265
+  },
+  {
+    "id": "TS-0441",
+    "name": "Trafostanica 441",
+    "lat": 46.433187,
+    "lon": 16.411433
+  },
+  {
+    "id": "TS-0442",
+    "name": "Trafostanica 442",
+    "lat": 46.34998,
+    "lon": 16.42786
+  },
+  {
+    "id": "TS-0443",
+    "name": "Trafostanica 443",
+    "lat": 46.422058,
+    "lon": 16.431186
+  },
+  {
+    "id": "TS-0444",
+    "name": "Trafostanica 444",
+    "lat": 46.362891,
+    "lon": 16.445685
+  },
+  {
+    "id": "TS-0445",
+    "name": "Trafostanica 445",
+    "lat": 46.36419,
+    "lon": 16.454256
+  },
+  {
+    "id": "TS-0446",
+    "name": "Trafostanica 446",
+    "lat": 46.336494,
+    "lon": 16.442104
+  },
+  {
+    "id": "TS-0447",
+    "name": "Trafostanica 447",
+    "lat": 46.395142,
+    "lon": 16.431379
+  },
+  {
+    "id": "TS-0448",
+    "name": "Trafostanica 448",
+    "lat": 46.370655,
+    "lon": 16.458487
+  },
+  {
+    "id": "TS-0449",
+    "name": "Trafostanica 449",
+    "lat": 46.349127,
+    "lon": 16.45771
+  },
+  {
+    "id": "TS-0450",
+    "name": "Trafostanica 450",
+    "lat": 46.359783,
+    "lon": 16.384134
+  },
+  {
+    "id": "TS-0451",
+    "name": "Trafostanica 451",
+    "lat": 46.356935,
+    "lon": 16.427128
+  },
+  {
+    "id": "TS-0452",
+    "name": "Trafostanica 452",
+    "lat": 46.384539,
+    "lon": 16.390439
+  },
+  {
+    "id": "TS-0453",
+    "name": "Trafostanica 453",
+    "lat": 46.357049,
+    "lon": 16.471691
+  },
+  {
+    "id": "TS-0454",
+    "name": "Trafostanica 454",
+    "lat": 46.37713,
+    "lon": 16.426514
+  },
+  {
+    "id": "TS-0455",
+    "name": "Trafostanica 455",
+    "lat": 46.360846,
+    "lon": 16.455753
+  },
+  {
+    "id": "TS-0456",
+    "name": "Trafostanica 456",
+    "lat": 46.381019,
+    "lon": 16.443334
+  },
+  {
+    "id": "TS-0457",
+    "name": "Trafostanica 457",
+    "lat": 46.350544,
+    "lon": 16.438345
+  },
+  {
+    "id": "TS-0458",
+    "name": "Trafostanica 458",
+    "lat": 46.384086,
+    "lon": 16.402677
+  },
+  {
+    "id": "TS-0459",
+    "name": "Trafostanica 459",
+    "lat": 46.359107,
+    "lon": 16.421967
+  },
+  {
+    "id": "TS-0460",
+    "name": "Trafostanica 460",
+    "lat": 46.395427,
+    "lon": 16.41854
+  },
+  {
+    "id": "TS-0461",
+    "name": "Trafostanica 461",
+    "lat": 46.426896,
+    "lon": 16.460257
+  },
+  {
+    "id": "TS-0462",
+    "name": "Trafostanica 462",
+    "lat": 46.345,
+    "lon": 16.413537
+  },
+  {
+    "id": "TS-0463",
+    "name": "Trafostanica 463",
+    "lat": 46.38904,
+    "lon": 16.442506
+  },
+  {
+    "id": "TS-0464",
+    "name": "Trafostanica 464",
+    "lat": 46.354735,
+    "lon": 16.4794
+  },
+  {
+    "id": "TS-0465",
+    "name": "Trafostanica 465",
+    "lat": 46.392816,
+    "lon": 16.429258
+  },
+  {
+    "id": "TS-0466",
+    "name": "Trafostanica 466",
+    "lat": 46.384754,
+    "lon": 16.395188
+  },
+  {
+    "id": "TS-0467",
+    "name": "Trafostanica 467",
+    "lat": 46.429885,
+    "lon": 16.4589
+  },
+  {
+    "id": "TS-0468",
+    "name": "Trafostanica 468",
+    "lat": 46.394444,
+    "lon": 16.412975
+  },
+  {
+    "id": "TS-0469",
+    "name": "Trafostanica 469",
+    "lat": 46.335198,
+    "lon": 16.439285
+  },
+  {
+    "id": "TS-0470",
+    "name": "Trafostanica 470",
+    "lat": 46.372277,
+    "lon": 16.4496
+  },
+  {
+    "id": "TS-0471",
+    "name": "Trafostanica 471",
+    "lat": 46.423721,
+    "lon": 16.467571
+  },
+  {
+    "id": "TS-0472",
+    "name": "Trafostanica 472",
+    "lat": 46.336926,
+    "lon": 16.471926
+  },
+  {
+    "id": "TS-0473",
+    "name": "Trafostanica 473",
+    "lat": 46.423155,
+    "lon": 16.433482
+  },
+  {
+    "id": "TS-0474",
+    "name": "Trafostanica 474",
+    "lat": 46.40897,
+    "lon": 16.399787
+  },
+  {
+    "id": "TS-0475",
+    "name": "Trafostanica 475",
+    "lat": 46.40526,
+    "lon": 16.448272
+  },
+  {
+    "id": "TS-0476",
+    "name": "Trafostanica 476",
+    "lat": 46.345744,
+    "lon": 16.415357
+  },
+  {
+    "id": "TS-0477",
+    "name": "Trafostanica 477",
+    "lat": 46.389904,
+    "lon": 16.476636
+  },
+  {
+    "id": "TS-0478",
+    "name": "Trafostanica 478",
+    "lat": 46.353071,
+    "lon": 16.444176
+  },
+  {
+    "id": "TS-0479",
+    "name": "Trafostanica 479",
+    "lat": 46.423004,
+    "lon": 16.477911
+  },
+  {
+    "id": "TS-0480",
+    "name": "Trafostanica 480",
+    "lat": 46.386507,
+    "lon": 16.426479
+  },
+  {
+    "id": "TS-0481",
+    "name": "Trafostanica 481",
+    "lat": 46.365395,
+    "lon": 16.466258
+  },
+  {
+    "id": "TS-0482",
+    "name": "Trafostanica 482",
+    "lat": 46.370212,
+    "lon": 16.41873
+  },
+  {
+    "id": "TS-0483",
+    "name": "Trafostanica 483",
+    "lat": 46.345743,
+    "lon": 16.41981
+  },
+  {
+    "id": "TS-0484",
+    "name": "Trafostanica 484",
+    "lat": 46.354195,
+    "lon": 16.419597
+  },
+  {
+    "id": "TS-0485",
+    "name": "Trafostanica 485",
+    "lat": 46.341616,
+    "lon": 16.459305
+  },
+  {
+    "id": "TS-0486",
+    "name": "Trafostanica 486",
+    "lat": 46.398459,
+    "lon": 16.478843
+  },
+  {
+    "id": "TS-0487",
+    "name": "Trafostanica 487",
+    "lat": 46.385084,
+    "lon": 16.452188
+  },
+  {
+    "id": "TS-0488",
+    "name": "Trafostanica 488",
+    "lat": 46.42953,
+    "lon": 16.406103
+  },
+  {
+    "id": "TS-0489",
+    "name": "Trafostanica 489",
+    "lat": 46.351414,
+    "lon": 16.413219
+  },
+  {
+    "id": "TS-0490",
+    "name": "Trafostanica 490",
+    "lat": 46.409703,
+    "lon": 16.478659
+  },
+  {
+    "id": "TS-0491",
+    "name": "Trafostanica 491",
+    "lat": 46.408849,
+    "lon": 16.473793
+  },
+  {
+    "id": "TS-0492",
+    "name": "Trafostanica 492",
+    "lat": 46.357446,
+    "lon": 16.474875
+  },
+  {
+    "id": "TS-0493",
+    "name": "Trafostanica 493",
+    "lat": 46.36992,
+    "lon": 16.446743
+  },
+  {
+    "id": "TS-0494",
+    "name": "Trafostanica 494",
+    "lat": 46.376774,
+    "lon": 16.452394
+  },
+  {
+    "id": "TS-0495",
+    "name": "Trafostanica 495",
+    "lat": 46.427987,
+    "lon": 16.468973
+  },
+  {
+    "id": "TS-0496",
+    "name": "Trafostanica 496",
+    "lat": 46.427305,
+    "lon": 16.424137
+  },
+  {
+    "id": "TS-0497",
+    "name": "Trafostanica 497",
+    "lat": 46.371275,
+    "lon": 16.420661
+  },
+  {
+    "id": "TS-0498",
+    "name": "Trafostanica 498",
+    "lat": 46.416562,
+    "lon": 16.429936
+  },
+  {
+    "id": "TS-0499",
+    "name": "Trafostanica 499",
+    "lat": 46.415958,
+    "lon": 16.401682
+  },
+  {
+    "id": "TS-0500",
+    "name": "Trafostanica 500",
+    "lat": 46.399115,
+    "lon": 16.420138
+  },
+  {
+    "id": "TS-0501",
+    "name": "Trafostanica 501",
+    "lat": 46.39984,
+    "lon": 16.441714
+  },
+  {
+    "id": "TS-0502",
+    "name": "Trafostanica 502",
+    "lat": 46.336157,
+    "lon": 16.433381
+  },
+  {
+    "id": "TS-0503",
+    "name": "Trafostanica 503",
+    "lat": 46.417447,
+    "lon": 16.417918
+  },
+  {
+    "id": "TS-0504",
+    "name": "Trafostanica 504",
+    "lat": 46.342033,
+    "lon": 16.472307
+  },
+  {
+    "id": "TS-0505",
+    "name": "Trafostanica 505",
+    "lat": 46.427637,
+    "lon": 16.440549
+  },
+  {
+    "id": "TS-0506",
+    "name": "Trafostanica 506",
+    "lat": 46.43298,
+    "lon": 16.454568
+  },
+  {
+    "id": "TS-0507",
+    "name": "Trafostanica 507",
+    "lat": 46.383422,
+    "lon": 16.419228
+  },
+  {
+    "id": "TS-0508",
+    "name": "Trafostanica 508",
+    "lat": 46.422032,
+    "lon": 16.421569
+  },
+  {
+    "id": "TS-0509",
+    "name": "Trafostanica 509",
+    "lat": 46.396694,
+    "lon": 16.413085
+  },
+  {
+    "id": "TS-0510",
+    "name": "Trafostanica 510",
+    "lat": 46.391363,
+    "lon": 16.41141
+  },
+  {
+    "id": "TS-0511",
+    "name": "Trafostanica 511",
+    "lat": 46.394283,
+    "lon": 16.469539
+  },
+  {
+    "id": "TS-0512",
+    "name": "Trafostanica 512",
+    "lat": 46.403384,
+    "lon": 16.45599
+  },
+  {
+    "id": "TS-0513",
+    "name": "Trafostanica 513",
+    "lat": 46.400005,
+    "lon": 16.4123
+  },
+  {
+    "id": "TS-0514",
+    "name": "Trafostanica 514",
+    "lat": 46.432501,
+    "lon": 16.407604
+  },
+  {
+    "id": "TS-0515",
+    "name": "Trafostanica 515",
+    "lat": 46.392367,
+    "lon": 16.445202
+  },
+  {
+    "id": "TS-0516",
+    "name": "Trafostanica 516",
+    "lat": 46.351474,
+    "lon": 16.412281
+  },
+  {
+    "id": "TS-0517",
+    "name": "Trafostanica 517",
+    "lat": 46.350392,
+    "lon": 16.462765
+  },
+  {
+    "id": "TS-0518",
+    "name": "Trafostanica 518",
+    "lat": 46.412836,
+    "lon": 16.426332
+  },
+  {
+    "id": "TS-0519",
+    "name": "Trafostanica 519",
+    "lat": 46.352613,
+    "lon": 16.469647
+  },
+  {
+    "id": "TS-0520",
+    "name": "Trafostanica 520",
+    "lat": 46.384642,
+    "lon": 16.447192
+  },
+  {
+    "id": "TS-0521",
+    "name": "Trafostanica 521",
+    "lat": 46.419743,
+    "lon": 16.400706
+  },
+  {
+    "id": "TS-0522",
+    "name": "Trafostanica 522",
+    "lat": 46.407319,
+    "lon": 16.392515
+  },
+  {
+    "id": "TS-0523",
+    "name": "Trafostanica 523",
+    "lat": 46.380114,
+    "lon": 16.45089
+  },
+  {
+    "id": "TS-0524",
+    "name": "Trafostanica 524",
+    "lat": 46.418798,
+    "lon": 16.454646
+  },
+  {
+    "id": "TS-0525",
+    "name": "Trafostanica 525",
+    "lat": 46.405922,
+    "lon": 16.415006
+  },
+  {
+    "id": "TS-0526",
+    "name": "Trafostanica 526",
+    "lat": 46.413597,
+    "lon": 16.473564
+  },
+  {
+    "id": "TS-0527",
+    "name": "Trafostanica 527",
+    "lat": 46.433552,
+    "lon": 16.448539
+  },
+  {
+    "id": "TS-0528",
+    "name": "Trafostanica 528",
+    "lat": 46.402775,
+    "lon": 16.469198
+  },
+  {
+    "id": "TS-0529",
+    "name": "Trafostanica 529",
+    "lat": 46.392086,
+    "lon": 16.427806
+  },
+  {
+    "id": "TS-0530",
+    "name": "Trafostanica 530",
+    "lat": 46.426653,
+    "lon": 16.474333
+  },
+  {
+    "id": "TS-0531",
+    "name": "Trafostanica 531",
+    "lat": 46.336032,
+    "lon": 16.394526
+  },
+  {
+    "id": "TS-0532",
+    "name": "Trafostanica 532",
+    "lat": 46.384822,
+    "lon": 16.415885
+  },
+  {
+    "id": "TS-0533",
+    "name": "Trafostanica 533",
+    "lat": 46.347051,
+    "lon": 16.442041
+  },
+  {
+    "id": "TS-0534",
+    "name": "Trafostanica 534",
+    "lat": 46.359298,
+    "lon": 16.424448
+  },
+  {
+    "id": "TS-0535",
+    "name": "Trafostanica 535",
+    "lat": 46.416938,
+    "lon": 16.483358
+  },
+  {
+    "id": "TS-0536",
+    "name": "Trafostanica 536",
+    "lat": 46.340195,
+    "lon": 16.48224
+  },
+  {
+    "id": "TS-0537",
+    "name": "Trafostanica 537",
+    "lat": 46.383089,
+    "lon": 16.403768
+  },
+  {
+    "id": "TS-0538",
+    "name": "Trafostanica 538",
+    "lat": 46.399783,
+    "lon": 16.42832
+  },
+  {
+    "id": "TS-0539",
+    "name": "Trafostanica 539",
+    "lat": 46.343803,
+    "lon": 16.398709
+  },
+  {
+    "id": "TS-0540",
+    "name": "Trafostanica 540",
+    "lat": 46.378681,
+    "lon": 16.471884
+  },
+  {
+    "id": "TS-0541",
+    "name": "Trafostanica 541",
+    "lat": 46.420329,
+    "lon": 16.38565
+  },
+  {
+    "id": "TS-0542",
+    "name": "Trafostanica 542",
+    "lat": 46.343499,
+    "lon": 16.393328
+  },
+  {
+    "id": "TS-0543",
+    "name": "Trafostanica 543",
+    "lat": 46.367446,
+    "lon": 16.42993
+  },
+  {
+    "id": "TS-0544",
+    "name": "Trafostanica 544",
+    "lat": 46.388507,
+    "lon": 16.399475
+  },
+  {
+    "id": "TS-0545",
+    "name": "Trafostanica 545",
+    "lat": 46.370649,
+    "lon": 16.430713
+  },
+  {
+    "id": "TS-0546",
+    "name": "Trafostanica 546",
+    "lat": 46.427517,
+    "lon": 16.431847
+  },
+  {
+    "id": "TS-0547",
+    "name": "Trafostanica 547",
+    "lat": 46.428456,
+    "lon": 16.455893
+  },
+  {
+    "id": "TS-0548",
+    "name": "Trafostanica 548",
+    "lat": 46.407243,
+    "lon": 16.384365
+  },
+  {
+    "id": "TS-0549",
+    "name": "Trafostanica 549",
+    "lat": 46.375693,
+    "lon": 16.423145
+  },
+  {
+    "id": "TS-0550",
+    "name": "Trafostanica 550",
+    "lat": 46.351912,
+    "lon": 16.384344
+  },
+  {
+    "id": "TS-0551",
+    "name": "Trafostanica 551",
+    "lat": 46.433482,
+    "lon": 16.409936
+  },
+  {
+    "id": "TS-0552",
+    "name": "Trafostanica 552",
+    "lat": 46.396975,
+    "lon": 16.394254
+  },
+  {
+    "id": "TS-0553",
+    "name": "Trafostanica 553",
+    "lat": 46.376663,
+    "lon": 16.434892
+  },
+  {
+    "id": "TS-0554",
+    "name": "Trafostanica 554",
+    "lat": 46.386341,
+    "lon": 16.445753
+  },
+  {
+    "id": "TS-0555",
+    "name": "Trafostanica 555",
+    "lat": 46.398107,
+    "lon": 16.469733
+  },
+  {
+    "id": "TS-0556",
+    "name": "Trafostanica 556",
+    "lat": 46.361271,
+    "lon": 16.384083
+  },
+  {
+    "id": "TS-0557",
+    "name": "Trafostanica 557",
+    "lat": 46.385402,
+    "lon": 16.397807
+  },
+  {
+    "id": "TS-0558",
+    "name": "Trafostanica 558",
+    "lat": 46.365348,
+    "lon": 16.445202
+  },
+  {
+    "id": "TS-0559",
+    "name": "Trafostanica 559",
+    "lat": 46.424574,
+    "lon": 16.395633
+  },
+  {
+    "id": "TS-0560",
+    "name": "Trafostanica 560",
+    "lat": 46.393338,
+    "lon": 16.479826
+  },
+  {
+    "id": "TS-0561",
+    "name": "Trafostanica 561",
+    "lat": 46.349184,
+    "lon": 16.410885
+  },
+  {
+    "id": "TS-0562",
+    "name": "Trafostanica 562",
+    "lat": 46.344828,
+    "lon": 16.477107
+  },
+  {
+    "id": "TS-0563",
+    "name": "Trafostanica 563",
+    "lat": 46.359688,
+    "lon": 16.458335
+  },
+  {
+    "id": "TS-0564",
+    "name": "Trafostanica 564",
+    "lat": 46.382199,
+    "lon": 16.471432
+  },
+  {
+    "id": "TS-0565",
+    "name": "Trafostanica 565",
+    "lat": 46.334747,
+    "lon": 16.443115
+  },
+  {
+    "id": "TS-0566",
+    "name": "Trafostanica 566",
+    "lat": 46.340313,
+    "lon": 16.465205
+  },
+  {
+    "id": "TS-0567",
+    "name": "Trafostanica 567",
+    "lat": 46.357383,
+    "lon": 16.477292
+  },
+  {
+    "id": "TS-0568",
+    "name": "Trafostanica 568",
+    "lat": 46.394491,
+    "lon": 16.424209
+  },
+  {
+    "id": "TS-0569",
+    "name": "Trafostanica 569",
+    "lat": 46.361701,
+    "lon": 16.405339
+  },
+  {
+    "id": "TS-0570",
+    "name": "Trafostanica 570",
+    "lat": 46.414119,
+    "lon": 16.448621
+  },
+  {
+    "id": "TS-0571",
+    "name": "Trafostanica 571",
+    "lat": 46.341905,
+    "lon": 16.413105
+  },
+  {
+    "id": "TS-0572",
+    "name": "Trafostanica 572",
+    "lat": 46.385794,
+    "lon": 16.479453
+  },
+  {
+    "id": "TS-0573",
+    "name": "Trafostanica 573",
+    "lat": 46.399302,
+    "lon": 16.409204
+  },
+  {
+    "id": "TS-0574",
+    "name": "Trafostanica 574",
+    "lat": 46.367614,
+    "lon": 16.425428
+  },
+  {
+    "id": "TS-0575",
+    "name": "Trafostanica 575",
+    "lat": 46.354545,
+    "lon": 16.41858
+  },
+  {
+    "id": "TS-0576",
+    "name": "Trafostanica 576",
+    "lat": 46.392493,
+    "lon": 16.435239
+  },
+  {
+    "id": "TS-0577",
+    "name": "Trafostanica 577",
+    "lat": 46.34693,
+    "lon": 16.455158
+  },
+  {
+    "id": "TS-0578",
+    "name": "Trafostanica 578",
+    "lat": 46.4172,
+    "lon": 16.425087
+  },
+  {
+    "id": "TS-0579",
+    "name": "Trafostanica 579",
+    "lat": 46.390381,
+    "lon": 16.452534
+  },
+  {
+    "id": "TS-0580",
+    "name": "Trafostanica 580",
+    "lat": 46.390436,
+    "lon": 16.44717
+  },
+  {
+    "id": "TS-0581",
+    "name": "Trafostanica 581",
+    "lat": 46.390361,
+    "lon": 16.437567
+  },
+  {
+    "id": "TS-0582",
+    "name": "Trafostanica 582",
+    "lat": 46.402605,
+    "lon": 16.407896
+  },
+  {
+    "id": "TS-0583",
+    "name": "Trafostanica 583",
+    "lat": 46.341811,
+    "lon": 16.435674
+  },
+  {
+    "id": "TS-0584",
+    "name": "Trafostanica 584",
+    "lat": 46.385958,
+    "lon": 16.442268
+  },
+  {
+    "id": "TS-0585",
+    "name": "Trafostanica 585",
+    "lat": 46.353198,
+    "lon": 16.430387
+  },
+  {
+    "id": "TS-0586",
+    "name": "Trafostanica 586",
+    "lat": 46.428747,
+    "lon": 16.42532
+  },
+  {
+    "id": "TS-0587",
+    "name": "Trafostanica 587",
+    "lat": 46.337185,
+    "lon": 16.393679
+  },
+  {
+    "id": "TS-0588",
+    "name": "Trafostanica 588",
+    "lat": 46.402951,
+    "lon": 16.416886
+  },
+  {
+    "id": "TS-0589",
+    "name": "Trafostanica 589",
+    "lat": 46.407246,
+    "lon": 16.455773
+  },
+  {
+    "id": "TS-0590",
+    "name": "Trafostanica 590",
+    "lat": 46.404761,
+    "lon": 16.460785
+  },
+  {
+    "id": "TS-0591",
+    "name": "Trafostanica 591",
+    "lat": 46.429504,
+    "lon": 16.449697
+  },
+  {
+    "id": "TS-0592",
+    "name": "Trafostanica 592",
+    "lat": 46.403982,
+    "lon": 16.480371
+  },
+  {
+    "id": "TS-0593",
+    "name": "Trafostanica 593",
+    "lat": 46.338666,
+    "lon": 16.413644
+  },
+  {
+    "id": "TS-0594",
+    "name": "Trafostanica 594",
+    "lat": 46.339658,
+    "lon": 16.451249
+  },
+  {
+    "id": "TS-0595",
+    "name": "Trafostanica 595",
+    "lat": 46.358711,
+    "lon": 16.399952
+  },
+  {
+    "id": "TS-0596",
+    "name": "Trafostanica 596",
+    "lat": 46.411574,
+    "lon": 16.482908
+  },
+  {
+    "id": "TS-0597",
+    "name": "Trafostanica 597",
+    "lat": 46.341321,
+    "lon": 16.393492
+  },
+  {
+    "id": "TS-0598",
+    "name": "Trafostanica 598",
+    "lat": 46.425983,
+    "lon": 16.415082
+  },
+  {
+    "id": "TS-0599",
+    "name": "Trafostanica 599",
+    "lat": 46.424889,
+    "lon": 16.383951
+  },
+  {
+    "id": "TS-0600",
+    "name": "Trafostanica 600",
+    "lat": 46.348411,
+    "lon": 16.407459
+  },
+  {
+    "id": "TS-0601",
+    "name": "Trafostanica 601",
+    "lat": 46.401162,
+    "lon": 16.388654
+  },
+  {
+    "id": "TS-0602",
+    "name": "Trafostanica 602",
+    "lat": 46.366501,
+    "lon": 16.435214
+  },
+  {
+    "id": "TS-0603",
+    "name": "Trafostanica 603",
+    "lat": 46.348648,
+    "lon": 16.451859
+  },
+  {
+    "id": "TS-0604",
+    "name": "Trafostanica 604",
+    "lat": 46.365237,
+    "lon": 16.404967
+  },
+  {
+    "id": "TS-0605",
+    "name": "Trafostanica 605",
+    "lat": 46.377101,
+    "lon": 16.428264
+  },
+  {
+    "id": "TS-0606",
+    "name": "Trafostanica 606",
+    "lat": 46.417967,
+    "lon": 16.4704
+  },
+  {
+    "id": "TS-0607",
+    "name": "Trafostanica 607",
+    "lat": 46.388991,
+    "lon": 16.424799
+  },
+  {
+    "id": "TS-0608",
+    "name": "Trafostanica 608",
+    "lat": 46.379822,
+    "lon": 16.402759
+  },
+  {
+    "id": "TS-0609",
+    "name": "Trafostanica 609",
+    "lat": 46.388198,
+    "lon": 16.401113
+  },
+  {
+    "id": "TS-0610",
+    "name": "Trafostanica 610",
+    "lat": 46.43269,
+    "lon": 16.412324
+  },
+  {
+    "id": "TS-0611",
+    "name": "Trafostanica 611",
+    "lat": 46.335615,
+    "lon": 16.40082
+  },
+  {
+    "id": "TS-0612",
+    "name": "Trafostanica 612",
+    "lat": 46.422063,
+    "lon": 16.436347
+  },
+  {
+    "id": "TS-0613",
+    "name": "Trafostanica 613",
+    "lat": 46.371401,
+    "lon": 16.483012
+  },
+  {
+    "id": "TS-0614",
+    "name": "Trafostanica 614",
+    "lat": 46.388752,
+    "lon": 16.463572
+  },
+  {
+    "id": "TS-0615",
+    "name": "Trafostanica 615",
+    "lat": 46.404015,
+    "lon": 16.425332
+  },
+  {
+    "id": "TS-0616",
+    "name": "Trafostanica 616",
+    "lat": 46.366896,
+    "lon": 16.466557
+  },
+  {
+    "id": "TS-0617",
+    "name": "Trafostanica 617",
+    "lat": 46.365123,
+    "lon": 16.439733
+  },
+  {
+    "id": "TS-0618",
+    "name": "Trafostanica 618",
+    "lat": 46.377665,
+    "lon": 16.439388
+  },
+  {
+    "id": "TS-0619",
+    "name": "Trafostanica 619",
+    "lat": 46.378363,
+    "lon": 16.434562
+  },
+  {
+    "id": "TS-0620",
+    "name": "Trafostanica 620",
+    "lat": 46.381703,
+    "lon": 16.403376
+  },
+  {
+    "id": "TS-0621",
+    "name": "Trafostanica 621",
+    "lat": 46.351821,
+    "lon": 16.448007
+  },
+  {
+    "id": "TS-0622",
+    "name": "Trafostanica 622",
+    "lat": 46.434019,
+    "lon": 16.408194
+  },
+  {
+    "id": "TS-0623",
+    "name": "Trafostanica 623",
+    "lat": 46.352201,
+    "lon": 16.39373
+  },
+  {
+    "id": "TS-0624",
+    "name": "Trafostanica 624",
+    "lat": 46.381281,
+    "lon": 16.437184
+  },
+  {
+    "id": "TS-0625",
+    "name": "Trafostanica 625",
+    "lat": 46.35385,
+    "lon": 16.444126
+  },
+  {
+    "id": "TS-0626",
+    "name": "Trafostanica 626",
+    "lat": 46.362824,
+    "lon": 16.475926
+  },
+  {
+    "id": "TS-0627",
+    "name": "Trafostanica 627",
+    "lat": 46.406913,
+    "lon": 16.437461
+  },
+  {
+    "id": "TS-0628",
+    "name": "Trafostanica 628",
+    "lat": 46.342301,
+    "lon": 16.413134
+  },
+  {
+    "id": "TS-0629",
+    "name": "Trafostanica 629",
+    "lat": 46.414007,
+    "lon": 16.396544
+  },
+  {
+    "id": "TS-0630",
+    "name": "Trafostanica 630",
+    "lat": 46.393697,
+    "lon": 16.445437
+  },
+  {
+    "id": "TS-0631",
+    "name": "Trafostanica 631",
+    "lat": 46.402636,
+    "lon": 16.437526
+  },
+  {
+    "id": "TS-0632",
+    "name": "Trafostanica 632",
+    "lat": 46.411659,
+    "lon": 16.453398
+  },
+  {
+    "id": "TS-0633",
+    "name": "Trafostanica 633",
+    "lat": 46.373533,
+    "lon": 16.424135
+  },
+  {
+    "id": "TS-0634",
+    "name": "Trafostanica 634",
+    "lat": 46.424283,
+    "lon": 16.419841
+  },
+  {
+    "id": "TS-0635",
+    "name": "Trafostanica 635",
+    "lat": 46.33599,
+    "lon": 16.428618
+  },
+  {
+    "id": "TS-0636",
+    "name": "Trafostanica 636",
+    "lat": 46.420851,
+    "lon": 16.447773
+  },
+  {
+    "id": "TS-0637",
+    "name": "Trafostanica 637",
+    "lat": 46.341766,
+    "lon": 16.41412
+  },
+  {
+    "id": "TS-0638",
+    "name": "Trafostanica 638",
+    "lat": 46.374278,
+    "lon": 16.468073
+  },
+  {
+    "id": "TS-0639",
+    "name": "Trafostanica 639",
+    "lat": 46.395744,
+    "lon": 16.400809
+  },
+  {
+    "id": "TS-0640",
+    "name": "Trafostanica 640",
+    "lat": 46.428395,
+    "lon": 16.402245
+  },
+  {
+    "id": "TS-0641",
+    "name": "Trafostanica 641",
+    "lat": 46.421025,
+    "lon": 16.436203
+  },
+  {
+    "id": "TS-0642",
+    "name": "Trafostanica 642",
+    "lat": 46.417958,
+    "lon": 16.434164
+  },
+  {
+    "id": "TS-0643",
+    "name": "Trafostanica 643",
+    "lat": 46.344275,
+    "lon": 16.467629
+  },
+  {
+    "id": "TS-0644",
+    "name": "Trafostanica 644",
+    "lat": 46.430905,
+    "lon": 16.421631
+  },
+  {
+    "id": "TS-0645",
+    "name": "Trafostanica 645",
+    "lat": 46.424746,
+    "lon": 16.389958
+  },
+  {
+    "id": "TS-0646",
+    "name": "Trafostanica 646",
+    "lat": 46.377658,
+    "lon": 16.425421
+  },
+  {
+    "id": "TS-0647",
+    "name": "Trafostanica 647",
+    "lat": 46.350548,
+    "lon": 16.405817
+  },
+  {
+    "id": "TS-0648",
+    "name": "Trafostanica 648",
+    "lat": 46.34057,
+    "lon": 16.454614
+  },
+  {
+    "id": "TS-0649",
+    "name": "Trafostanica 649",
+    "lat": 46.383771,
+    "lon": 16.428244
+  },
+  {
+    "id": "TS-0650",
+    "name": "Trafostanica 650",
+    "lat": 46.33671,
+    "lon": 16.397597
+  },
+  {
+    "id": "TS-0651",
+    "name": "Trafostanica 651",
+    "lat": 46.420919,
+    "lon": 16.446105
+  },
+  {
+    "id": "TS-0652",
+    "name": "Trafostanica 652",
+    "lat": 46.334524,
+    "lon": 16.397009
+  },
+  {
+    "id": "TS-0653",
+    "name": "Trafostanica 653",
+    "lat": 46.362087,
+    "lon": 16.398401
+  },
+  {
+    "id": "TS-0654",
+    "name": "Trafostanica 654",
+    "lat": 46.396111,
+    "lon": 16.449931
+  },
+  {
+    "id": "TS-0655",
+    "name": "Trafostanica 655",
+    "lat": 46.347484,
+    "lon": 16.417064
+  },
+  {
+    "id": "TS-0656",
+    "name": "Trafostanica 656",
+    "lat": 46.376789,
+    "lon": 16.483381
+  },
+  {
+    "id": "TS-0657",
+    "name": "Trafostanica 657",
+    "lat": 46.37338,
+    "lon": 16.429405
+  },
+  {
+    "id": "TS-0658",
+    "name": "Trafostanica 658",
+    "lat": 46.413899,
+    "lon": 16.454785
+  },
+  {
+    "id": "TS-0659",
+    "name": "Trafostanica 659",
+    "lat": 46.361587,
+    "lon": 16.3849
+  },
+  {
+    "id": "TS-0660",
+    "name": "Trafostanica 660",
+    "lat": 46.392353,
+    "lon": 16.395004
+  },
+  {
+    "id": "TS-0661",
+    "name": "Trafostanica 661",
+    "lat": 46.38762,
+    "lon": 16.47735
+  },
+  {
+    "id": "TS-0662",
+    "name": "Trafostanica 662",
+    "lat": 46.372485,
+    "lon": 16.451241
+  },
+  {
+    "id": "TS-0663",
+    "name": "Trafostanica 663",
+    "lat": 46.346437,
+    "lon": 16.432772
+  },
+  {
+    "id": "TS-0664",
+    "name": "Trafostanica 664",
+    "lat": 46.374565,
+    "lon": 16.426425
+  },
+  {
+    "id": "TS-0665",
+    "name": "Trafostanica 665",
+    "lat": 46.373111,
+    "lon": 16.387496
+  },
+  {
+    "id": "TS-0666",
+    "name": "Trafostanica 666",
+    "lat": 46.371533,
+    "lon": 16.434653
+  },
+  {
+    "id": "TS-0667",
+    "name": "Trafostanica 667",
+    "lat": 46.344844,
+    "lon": 16.4812
+  },
+  {
+    "id": "TS-0668",
+    "name": "Trafostanica 668",
+    "lat": 46.385137,
+    "lon": 16.478557
+  },
+  {
+    "id": "TS-0669",
+    "name": "Trafostanica 669",
+    "lat": 46.383653,
+    "lon": 16.418973
+  },
+  {
+    "id": "TS-0670",
+    "name": "Trafostanica 670",
+    "lat": 46.431111,
+    "lon": 16.400933
+  },
+  {
+    "id": "TS-0671",
+    "name": "Trafostanica 671",
+    "lat": 46.362572,
+    "lon": 16.428833
+  },
+  {
+    "id": "TS-0672",
+    "name": "Trafostanica 672",
+    "lat": 46.335088,
+    "lon": 16.440086
+  },
+  {
+    "id": "TS-0673",
+    "name": "Trafostanica 673",
+    "lat": 46.388248,
+    "lon": 16.399255
+  },
+  {
+    "id": "TS-0674",
+    "name": "Trafostanica 674",
+    "lat": 46.432922,
+    "lon": 16.408513
+  },
+  {
+    "id": "TS-0675",
+    "name": "Trafostanica 675",
+    "lat": 46.365542,
+    "lon": 16.473483
+  },
+  {
+    "id": "TS-0676",
+    "name": "Trafostanica 676",
+    "lat": 46.3943,
+    "lon": 16.479265
+  },
+  {
+    "id": "TS-0677",
+    "name": "Trafostanica 677",
+    "lat": 46.413476,
+    "lon": 16.442584
+  },
+  {
+    "id": "TS-0678",
+    "name": "Trafostanica 678",
+    "lat": 46.371088,
+    "lon": 16.399677
+  },
+  {
+    "id": "TS-0679",
+    "name": "Trafostanica 679",
+    "lat": 46.359826,
+    "lon": 16.40137
+  },
+  {
+    "id": "TS-0680",
+    "name": "Trafostanica 680",
+    "lat": 46.419353,
+    "lon": 16.412343
+  },
+  {
+    "id": "TS-0681",
+    "name": "Trafostanica 681",
+    "lat": 46.405837,
+    "lon": 16.410258
+  },
+  {
+    "id": "TS-0682",
+    "name": "Trafostanica 682",
+    "lat": 46.424529,
+    "lon": 16.449522
+  },
+  {
+    "id": "TS-0683",
+    "name": "Trafostanica 683",
+    "lat": 46.361592,
+    "lon": 16.445787
+  },
+  {
+    "id": "TS-0684",
+    "name": "Trafostanica 684",
+    "lat": 46.377205,
+    "lon": 16.442177
+  },
+  {
+    "id": "TS-0685",
+    "name": "Trafostanica 685",
+    "lat": 46.361826,
+    "lon": 16.431419
+  },
+  {
+    "id": "TS-0686",
+    "name": "Trafostanica 686",
+    "lat": 46.376864,
+    "lon": 16.438325
+  },
+  {
+    "id": "TS-0687",
+    "name": "Trafostanica 687",
+    "lat": 46.39493,
+    "lon": 16.428284
+  },
+  {
+    "id": "TS-0688",
+    "name": "Trafostanica 688",
+    "lat": 46.415695,
+    "lon": 16.387181
+  },
+  {
+    "id": "TS-0689",
+    "name": "Trafostanica 689",
+    "lat": 46.402172,
+    "lon": 16.459082
+  },
+  {
+    "id": "TS-0690",
+    "name": "Trafostanica 690",
+    "lat": 46.430371,
+    "lon": 16.401639
+  },
+  {
+    "id": "TS-0691",
+    "name": "Trafostanica 691",
+    "lat": 46.360329,
+    "lon": 16.482365
+  },
+  {
+    "id": "TS-0692",
+    "name": "Trafostanica 692",
+    "lat": 46.367212,
+    "lon": 16.454275
+  },
+  {
+    "id": "TS-0693",
+    "name": "Trafostanica 693",
+    "lat": 46.415507,
+    "lon": 16.44563
+  },
+  {
+    "id": "TS-0694",
+    "name": "Trafostanica 694",
+    "lat": 46.432915,
+    "lon": 16.416968
+  },
+  {
+    "id": "TS-0695",
+    "name": "Trafostanica 695",
+    "lat": 46.402579,
+    "lon": 16.384418
+  },
+  {
+    "id": "TS-0696",
+    "name": "Trafostanica 696",
+    "lat": 46.372501,
+    "lon": 16.464424
+  },
+  {
+    "id": "TS-0697",
+    "name": "Trafostanica 697",
+    "lat": 46.366493,
+    "lon": 16.453899
+  },
+  {
+    "id": "TS-0698",
+    "name": "Trafostanica 698",
+    "lat": 46.334644,
+    "lon": 16.401906
+  },
+  {
+    "id": "TS-0699",
+    "name": "Trafostanica 699",
+    "lat": 46.394344,
+    "lon": 16.384186
+  },
+  {
+    "id": "TS-0700",
+    "name": "Trafostanica 700",
+    "lat": 46.339922,
+    "lon": 16.414269
+  },
+  {
+    "id": "TS-0701",
+    "name": "Trafostanica 701",
+    "lat": 46.349464,
+    "lon": 16.385451
+  },
+  {
+    "id": "TS-0702",
+    "name": "Trafostanica 702",
+    "lat": 46.338229,
+    "lon": 16.418982
+  },
+  {
+    "id": "TS-0703",
+    "name": "Trafostanica 703",
+    "lat": 46.416577,
+    "lon": 16.417239
+  },
+  {
+    "id": "TS-0704",
+    "name": "Trafostanica 704",
+    "lat": 46.397882,
+    "lon": 16.432414
+  },
+  {
+    "id": "TS-0705",
+    "name": "Trafostanica 705",
+    "lat": 46.373527,
+    "lon": 16.469292
+  },
+  {
+    "id": "TS-0706",
+    "name": "Trafostanica 706",
+    "lat": 46.362998,
+    "lon": 16.444838
+  },
+  {
+    "id": "TS-0707",
+    "name": "Trafostanica 707",
+    "lat": 46.362336,
+    "lon": 16.434011
+  },
+  {
+    "id": "TS-0708",
+    "name": "Trafostanica 708",
+    "lat": 46.338602,
+    "lon": 16.404541
+  },
+  {
+    "id": "TS-0709",
+    "name": "Trafostanica 709",
+    "lat": 46.403511,
+    "lon": 16.420524
+  },
+  {
+    "id": "TS-0710",
+    "name": "Trafostanica 710",
+    "lat": 46.375315,
+    "lon": 16.482067
+  },
+  {
+    "id": "TS-0711",
+    "name": "Trafostanica 711",
+    "lat": 46.34402,
+    "lon": 16.390307
+  },
+  {
+    "id": "TS-0712",
+    "name": "Trafostanica 712",
+    "lat": 46.40127,
+    "lon": 16.413532
+  },
+  {
+    "id": "TS-0713",
+    "name": "Trafostanica 713",
+    "lat": 46.35968,
+    "lon": 16.429509
+  },
+  {
+    "id": "TS-0714",
+    "name": "Trafostanica 714",
+    "lat": 46.426643,
+    "lon": 16.482858
+  },
+  {
+    "id": "TS-0715",
+    "name": "Trafostanica 715",
+    "lat": 46.383775,
+    "lon": 16.437158
+  },
+  {
+    "id": "TS-0716",
+    "name": "Trafostanica 716",
+    "lat": 46.389116,
+    "lon": 16.438719
+  },
+  {
+    "id": "TS-0717",
+    "name": "Trafostanica 717",
+    "lat": 46.379129,
+    "lon": 16.416498
+  },
+  {
+    "id": "TS-0718",
+    "name": "Trafostanica 718",
+    "lat": 46.369587,
+    "lon": 16.459155
+  },
+  {
+    "id": "TS-0719",
+    "name": "Trafostanica 719",
+    "lat": 46.362362,
+    "lon": 16.389796
+  },
+  {
+    "id": "TS-0720",
+    "name": "Trafostanica 720",
+    "lat": 46.388939,
+    "lon": 16.404645
+  },
+  {
+    "id": "TS-0721",
+    "name": "Trafostanica 721",
+    "lat": 46.339649,
+    "lon": 16.452357
+  },
+  {
+    "id": "TS-0722",
+    "name": "Trafostanica 722",
+    "lat": 46.391308,
+    "lon": 16.478719
+  },
+  {
+    "id": "TS-0723",
+    "name": "Trafostanica 723",
+    "lat": 46.379987,
+    "lon": 16.422036
+  },
+  {
+    "id": "TS-0724",
+    "name": "Trafostanica 724",
+    "lat": 46.385161,
+    "lon": 16.474118
+  },
+  {
+    "id": "TS-0725",
+    "name": "Trafostanica 725",
+    "lat": 46.351886,
+    "lon": 16.398567
+  },
+  {
+    "id": "TS-0726",
+    "name": "Trafostanica 726",
+    "lat": 46.410425,
+    "lon": 16.424367
+  },
+  {
+    "id": "TS-0727",
+    "name": "Trafostanica 727",
+    "lat": 46.387558,
+    "lon": 16.410714
+  },
+  {
+    "id": "TS-0728",
+    "name": "Trafostanica 728",
+    "lat": 46.410937,
+    "lon": 16.441418
+  },
+  {
+    "id": "TS-0729",
+    "name": "Trafostanica 729",
+    "lat": 46.356912,
+    "lon": 16.45424
+  },
+  {
+    "id": "TS-0730",
+    "name": "Trafostanica 730",
+    "lat": 46.402545,
+    "lon": 16.424084
+  },
+  {
+    "id": "TS-0731",
+    "name": "Trafostanica 731",
+    "lat": 46.419403,
+    "lon": 16.430951
+  },
+  {
+    "id": "TS-0732",
+    "name": "Trafostanica 732",
+    "lat": 46.409827,
+    "lon": 16.423852
+  },
+  {
+    "id": "TS-0733",
+    "name": "Trafostanica 733",
+    "lat": 46.381254,
+    "lon": 16.440604
+  },
+  {
+    "id": "TS-0734",
+    "name": "Trafostanica 734",
+    "lat": 46.406323,
+    "lon": 16.428121
+  },
+  {
+    "id": "TS-0735",
+    "name": "Trafostanica 735",
+    "lat": 46.356349,
+    "lon": 16.460256
+  },
+  {
+    "id": "TS-0736",
+    "name": "Trafostanica 736",
+    "lat": 46.375247,
+    "lon": 16.429845
+  },
+  {
+    "id": "TS-0737",
+    "name": "Trafostanica 737",
+    "lat": 46.347384,
+    "lon": 16.459405
+  },
+  {
+    "id": "TS-0738",
+    "name": "Trafostanica 738",
+    "lat": 46.373361,
+    "lon": 16.467492
+  },
+  {
+    "id": "TS-0739",
+    "name": "Trafostanica 739",
+    "lat": 46.411116,
+    "lon": 16.401331
+  },
+  {
+    "id": "TS-0740",
+    "name": "Trafostanica 740",
+    "lat": 46.423457,
+    "lon": 16.457867
+  },
+  {
+    "id": "TS-0741",
+    "name": "Trafostanica 741",
+    "lat": 46.418368,
+    "lon": 16.476817
+  },
+  {
+    "id": "TS-0742",
+    "name": "Trafostanica 742",
+    "lat": 46.350399,
+    "lon": 16.460731
+  },
+  {
+    "id": "TS-0743",
+    "name": "Trafostanica 743",
+    "lat": 46.402285,
+    "lon": 16.432802
+  },
+  {
+    "id": "TS-0744",
+    "name": "Trafostanica 744",
+    "lat": 46.387984,
+    "lon": 16.465764
+  },
+  {
+    "id": "TS-0745",
+    "name": "Trafostanica 745",
+    "lat": 46.413622,
+    "lon": 16.415551
+  },
+  {
+    "id": "TS-0746",
+    "name": "Trafostanica 746",
+    "lat": 46.345286,
+    "lon": 16.447169
+  },
+  {
+    "id": "TS-0747",
+    "name": "Trafostanica 747",
+    "lat": 46.408754,
+    "lon": 16.41689
+  },
+  {
+    "id": "TS-0748",
+    "name": "Trafostanica 748",
+    "lat": 46.367506,
+    "lon": 16.401958
+  },
+  {
+    "id": "TS-0749",
+    "name": "Trafostanica 749",
+    "lat": 46.355941,
+    "lon": 16.459254
+  },
+  {
+    "id": "TS-0750",
+    "name": "Trafostanica 750",
+    "lat": 46.366571,
+    "lon": 16.4496
+  },
+  {
+    "id": "TS-0751",
+    "name": "Trafostanica 751",
+    "lat": 46.335225,
+    "lon": 16.430841
+  },
+  {
+    "id": "TS-0752",
+    "name": "Trafostanica 752",
+    "lat": 46.344622,
+    "lon": 16.450776
+  },
+  {
+    "id": "TS-0753",
+    "name": "Trafostanica 753",
+    "lat": 46.342542,
+    "lon": 16.427129
+  },
+  {
+    "id": "TS-0754",
+    "name": "Trafostanica 754",
+    "lat": 46.398164,
+    "lon": 16.426709
+  },
+  {
+    "id": "TS-0755",
+    "name": "Trafostanica 755",
+    "lat": 46.400969,
+    "lon": 16.449098
+  },
+  {
+    "id": "TS-0756",
+    "name": "Trafostanica 756",
+    "lat": 46.398619,
+    "lon": 16.405366
+  },
+  {
+    "id": "TS-0757",
+    "name": "Trafostanica 757",
+    "lat": 46.377316,
+    "lon": 16.407773
+  },
+  {
+    "id": "TS-0758",
+    "name": "Trafostanica 758",
+    "lat": 46.340163,
+    "lon": 16.397394
+  },
+  {
+    "id": "TS-0759",
+    "name": "Trafostanica 759",
+    "lat": 46.394972,
+    "lon": 16.44565
+  },
+  {
+    "id": "TS-0760",
+    "name": "Trafostanica 760",
+    "lat": 46.426174,
+    "lon": 16.411517
+  },
+  {
+    "id": "TS-0761",
+    "name": "Trafostanica 761",
+    "lat": 46.388913,
+    "lon": 16.396526
+  },
+  {
+    "id": "TS-0762",
+    "name": "Trafostanica 762",
+    "lat": 46.380027,
+    "lon": 16.417067
+  },
+  {
+    "id": "TS-0763",
+    "name": "Trafostanica 763",
+    "lat": 46.398453,
+    "lon": 16.416882
+  },
+  {
+    "id": "TS-0764",
+    "name": "Trafostanica 764",
+    "lat": 46.350179,
+    "lon": 16.449978
+  },
+  {
+    "id": "TS-0765",
+    "name": "Trafostanica 765",
+    "lat": 46.382696,
+    "lon": 16.473908
+  },
+  {
+    "id": "TS-0766",
+    "name": "Trafostanica 766",
+    "lat": 46.366281,
+    "lon": 16.472577
+  },
+  {
+    "id": "TS-0767",
+    "name": "Trafostanica 767",
+    "lat": 46.361224,
+    "lon": 16.420785
+  },
+  {
+    "id": "TS-0768",
+    "name": "Trafostanica 768",
+    "lat": 46.376708,
+    "lon": 16.390168
+  },
+  {
+    "id": "TS-0769",
+    "name": "Trafostanica 769",
+    "lat": 46.41645,
+    "lon": 16.417645
+  },
+  {
+    "id": "TS-0770",
+    "name": "Trafostanica 770",
+    "lat": 46.421584,
+    "lon": 16.390682
+  },
+  {
+    "id": "TS-0771",
+    "name": "Trafostanica 771",
+    "lat": 46.385154,
+    "lon": 16.407004
+  },
+  {
+    "id": "TS-0772",
+    "name": "Trafostanica 772",
+    "lat": 46.359675,
+    "lon": 16.478842
+  },
+  {
+    "id": "TS-0773",
+    "name": "Trafostanica 773",
+    "lat": 46.387143,
+    "lon": 16.387925
+  },
+  {
+    "id": "TS-0774",
+    "name": "Trafostanica 774",
+    "lat": 46.367874,
+    "lon": 16.402305
+  },
+  {
+    "id": "TS-0775",
+    "name": "Trafostanica 775",
+    "lat": 46.418066,
+    "lon": 16.434441
+  },
+  {
+    "id": "TS-0776",
+    "name": "Trafostanica 776",
+    "lat": 46.37188,
+    "lon": 16.429329
+  },
+  {
+    "id": "TS-0777",
+    "name": "Trafostanica 777",
+    "lat": 46.364968,
+    "lon": 16.440231
+  },
+  {
+    "id": "TS-0778",
+    "name": "Trafostanica 778",
+    "lat": 46.412551,
+    "lon": 16.433636
+  },
+  {
+    "id": "TS-0779",
+    "name": "Trafostanica 779",
+    "lat": 46.416022,
+    "lon": 16.448137
+  },
+  {
+    "id": "TS-0780",
+    "name": "Trafostanica 780",
+    "lat": 46.418309,
+    "lon": 16.441385
+  },
+  {
+    "id": "TS-0781",
+    "name": "Trafostanica 781",
+    "lat": 46.348482,
+    "lon": 16.39845
+  },
+  {
+    "id": "TS-0782",
+    "name": "Trafostanica 782",
+    "lat": 46.362652,
+    "lon": 16.391349
+  },
+  {
+    "id": "TS-0783",
+    "name": "Trafostanica 783",
+    "lat": 46.404808,
+    "lon": 16.391261
+  },
+  {
+    "id": "TS-0784",
+    "name": "Trafostanica 784",
+    "lat": 46.412674,
+    "lon": 16.433271
+  },
+  {
+    "id": "TS-0785",
+    "name": "Trafostanica 785",
+    "lat": 46.395056,
+    "lon": 16.46267
+  },
+  {
+    "id": "TS-0786",
+    "name": "Trafostanica 786",
+    "lat": 46.373549,
+    "lon": 16.436723
+  },
+  {
+    "id": "TS-0787",
+    "name": "Trafostanica 787",
+    "lat": 46.413995,
+    "lon": 16.38746
+  },
+  {
+    "id": "TS-0788",
+    "name": "Trafostanica 788",
+    "lat": 46.417358,
+    "lon": 16.455441
+  },
+  {
+    "id": "TS-0789",
+    "name": "Trafostanica 789",
+    "lat": 46.376771,
+    "lon": 16.430791
+  },
+  {
+    "id": "TS-0790",
+    "name": "Trafostanica 790",
+    "lat": 46.429781,
+    "lon": 16.39163
+  },
+  {
+    "id": "TS-0791",
+    "name": "Trafostanica 791",
+    "lat": 46.3472,
+    "lon": 16.415878
+  },
+  {
+    "id": "TS-0792",
+    "name": "Trafostanica 792",
+    "lat": 46.396779,
+    "lon": 16.394025
+  },
+  {
+    "id": "TS-0793",
+    "name": "Trafostanica 793",
+    "lat": 46.363692,
+    "lon": 16.387209
+  },
+  {
+    "id": "TS-0794",
+    "name": "Trafostanica 794",
+    "lat": 46.381307,
+    "lon": 16.391469
+  },
+  {
+    "id": "TS-0795",
+    "name": "Trafostanica 795",
+    "lat": 46.368323,
+    "lon": 16.389201
+  },
+  {
+    "id": "TS-0796",
+    "name": "Trafostanica 796",
+    "lat": 46.410841,
+    "lon": 16.429923
+  },
+  {
+    "id": "TS-0797",
+    "name": "Trafostanica 797",
+    "lat": 46.424769,
+    "lon": 16.474871
+  },
+  {
+    "id": "TS-0798",
+    "name": "Trafostanica 798",
+    "lat": 46.355126,
+    "lon": 16.385744
+  },
+  {
+    "id": "TS-0799",
+    "name": "Trafostanica 799",
+    "lat": 46.347881,
+    "lon": 16.389031
+  },
+  {
+    "id": "TS-0800",
+    "name": "Trafostanica 800",
+    "lat": 46.395394,
+    "lon": 16.48363
+  },
+  {
+    "id": "TS-0801",
+    "name": "Trafostanica 801",
+    "lat": 46.387309,
+    "lon": 16.420523
+  },
+  {
+    "id": "TS-0802",
+    "name": "Trafostanica 802",
+    "lat": 46.358111,
+    "lon": 16.428572
+  },
+  {
+    "id": "TS-0803",
+    "name": "Trafostanica 803",
+    "lat": 46.376731,
+    "lon": 16.419794
+  },
+  {
+    "id": "TS-0804",
+    "name": "Trafostanica 804",
+    "lat": 46.393295,
+    "lon": 16.465394
+  },
+  {
+    "id": "TS-0805",
+    "name": "Trafostanica 805",
+    "lat": 46.344129,
+    "lon": 16.444396
+  },
+  {
+    "id": "TS-0806",
+    "name": "Trafostanica 806",
+    "lat": 46.422824,
+    "lon": 16.415042
+  },
+  {
+    "id": "TS-0807",
+    "name": "Trafostanica 807",
+    "lat": 46.428724,
+    "lon": 16.45488
+  },
+  {
+    "id": "TS-0808",
+    "name": "Trafostanica 808",
+    "lat": 46.378115,
+    "lon": 16.422265
+  },
+  {
+    "id": "TS-0809",
+    "name": "Trafostanica 809",
+    "lat": 46.369822,
+    "lon": 16.384931
+  },
+  {
+    "id": "TS-0810",
+    "name": "Trafostanica 810",
+    "lat": 46.403138,
+    "lon": 16.473852
+  },
+  {
+    "id": "TS-0811",
+    "name": "Trafostanica 811",
+    "lat": 46.395091,
+    "lon": 16.481608
+  },
+  {
+    "id": "TS-0812",
+    "name": "Trafostanica 812",
+    "lat": 46.355063,
+    "lon": 16.433077
+  },
+  {
+    "id": "TS-0813",
+    "name": "Trafostanica 813",
+    "lat": 46.393329,
+    "lon": 16.432739
+  },
+  {
+    "id": "TS-0814",
+    "name": "Trafostanica 814",
+    "lat": 46.403058,
+    "lon": 16.39169
+  },
+  {
+    "id": "TS-0815",
+    "name": "Trafostanica 815",
+    "lat": 46.415215,
+    "lon": 16.411952
+  },
+  {
+    "id": "TS-0816",
+    "name": "Trafostanica 816",
+    "lat": 46.360883,
+    "lon": 16.390088
+  },
+  {
+    "id": "TS-0817",
+    "name": "Trafostanica 817",
+    "lat": 46.419378,
+    "lon": 16.464664
+  },
+  {
+    "id": "TS-0818",
+    "name": "Trafostanica 818",
+    "lat": 46.348205,
+    "lon": 16.475562
+  },
+  {
+    "id": "TS-0819",
+    "name": "Trafostanica 819",
+    "lat": 46.345919,
+    "lon": 16.466711
+  },
+  {
+    "id": "TS-0820",
+    "name": "Trafostanica 820",
+    "lat": 46.414164,
+    "lon": 16.422542
+  },
+  {
+    "id": "TS-0821",
+    "name": "Trafostanica 821",
+    "lat": 46.409802,
+    "lon": 16.473006
+  },
+  {
+    "id": "TS-0822",
+    "name": "Trafostanica 822",
+    "lat": 46.406437,
+    "lon": 16.424391
+  },
+  {
+    "id": "TS-0823",
+    "name": "Trafostanica 823",
+    "lat": 46.355101,
+    "lon": 16.461377
+  },
+  {
+    "id": "TS-0824",
+    "name": "Trafostanica 824",
+    "lat": 46.370183,
+    "lon": 16.415203
+  },
+  {
+    "id": "TS-0825",
+    "name": "Trafostanica 825",
+    "lat": 46.405843,
+    "lon": 16.4773
+  },
+  {
+    "id": "TS-0826",
+    "name": "Trafostanica 826",
+    "lat": 46.433327,
+    "lon": 16.409377
+  },
+  {
+    "id": "TS-0827",
+    "name": "Trafostanica 827",
+    "lat": 46.350638,
+    "lon": 16.47878
+  },
+  {
+    "id": "TS-0828",
+    "name": "Trafostanica 828",
+    "lat": 46.341732,
+    "lon": 16.429626
+  },
+  {
+    "id": "TS-0829",
+    "name": "Trafostanica 829",
+    "lat": 46.350637,
+    "lon": 16.424012
+  },
+  {
+    "id": "TS-0830",
+    "name": "Trafostanica 830",
+    "lat": 46.386536,
+    "lon": 16.43255
+  },
+  {
+    "id": "TS-0831",
+    "name": "Trafostanica 831",
+    "lat": 46.349137,
+    "lon": 16.457021
+  },
+  {
+    "id": "TS-0832",
+    "name": "Trafostanica 832",
+    "lat": 46.392204,
+    "lon": 16.443928
+  },
+  {
+    "id": "TS-0833",
+    "name": "Trafostanica 833",
+    "lat": 46.374428,
+    "lon": 16.454544
+  },
+  {
+    "id": "TS-0834",
+    "name": "Trafostanica 834",
+    "lat": 46.367065,
+    "lon": 16.436839
+  },
+  {
+    "id": "TS-0835",
+    "name": "Trafostanica 835",
+    "lat": 46.427076,
+    "lon": 16.454224
+  },
+  {
+    "id": "TS-0836",
+    "name": "Trafostanica 836",
+    "lat": 46.36999,
+    "lon": 16.475792
+  },
+  {
+    "id": "TS-0837",
+    "name": "Trafostanica 837",
+    "lat": 46.406303,
+    "lon": 16.426386
+  },
+  {
+    "id": "TS-0838",
+    "name": "Trafostanica 838",
+    "lat": 46.412135,
+    "lon": 16.396841
+  },
+  {
+    "id": "TS-0839",
+    "name": "Trafostanica 839",
+    "lat": 46.359496,
+    "lon": 16.442173
+  },
+  {
+    "id": "TS-0840",
+    "name": "Trafostanica 840",
+    "lat": 46.414648,
+    "lon": 16.463717
+  },
+  {
+    "id": "TS-0841",
+    "name": "Trafostanica 841",
+    "lat": 46.427575,
+    "lon": 16.481517
+  },
+  {
+    "id": "TS-0842",
+    "name": "Trafostanica 842",
+    "lat": 46.392947,
+    "lon": 16.433379
+  },
+  {
+    "id": "TS-0843",
+    "name": "Trafostanica 843",
+    "lat": 46.337456,
+    "lon": 16.432469
+  },
+  {
+    "id": "TS-0844",
+    "name": "Trafostanica 844",
+    "lat": 46.347673,
+    "lon": 16.400746
+  },
+  {
+    "id": "TS-0845",
+    "name": "Trafostanica 845",
+    "lat": 46.403806,
+    "lon": 16.455953
+  },
+  {
+    "id": "TS-0846",
+    "name": "Trafostanica 846",
+    "lat": 46.364107,
+    "lon": 16.469417
+  },
+  {
+    "id": "TS-0847",
+    "name": "Trafostanica 847",
+    "lat": 46.421386,
+    "lon": 16.434109
+  },
+  {
+    "id": "TS-0848",
+    "name": "Trafostanica 848",
+    "lat": 46.344343,
+    "lon": 16.408467
+  },
+  {
+    "id": "TS-0849",
+    "name": "Trafostanica 849",
+    "lat": 46.337762,
+    "lon": 16.426453
+  },
+  {
+    "id": "TS-0850",
+    "name": "Trafostanica 850",
+    "lat": 46.378077,
+    "lon": 16.423047
+  },
+  {
+    "id": "TS-0851",
+    "name": "Trafostanica 851",
+    "lat": 46.35446,
+    "lon": 16.448566
+  },
+  {
+    "id": "TS-0852",
+    "name": "Trafostanica 852",
+    "lat": 46.431759,
+    "lon": 16.474814
+  },
+  {
+    "id": "TS-0853",
+    "name": "Trafostanica 853",
+    "lat": 46.426093,
+    "lon": 16.430665
+  },
+  {
+    "id": "TS-0854",
+    "name": "Trafostanica 854",
+    "lat": 46.384791,
+    "lon": 16.471366
+  },
+  {
+    "id": "TS-0855",
+    "name": "Trafostanica 855",
+    "lat": 46.408781,
+    "lon": 16.414016
+  },
+  {
+    "id": "TS-0856",
+    "name": "Trafostanica 856",
+    "lat": 46.404856,
+    "lon": 16.427683
+  },
+  {
+    "id": "TS-0857",
+    "name": "Trafostanica 857",
+    "lat": 46.37834,
+    "lon": 16.449336
+  },
+  {
+    "id": "TS-0858",
+    "name": "Trafostanica 858",
+    "lat": 46.375952,
+    "lon": 16.460529
+  },
+  {
+    "id": "TS-0859",
+    "name": "Trafostanica 859",
+    "lat": 46.398682,
+    "lon": 16.435495
+  },
+  {
+    "id": "TS-0860",
+    "name": "Trafostanica 860",
+    "lat": 46.36992,
+    "lon": 16.433581
+  },
+  {
+    "id": "TS-0861",
+    "name": "Trafostanica 861",
+    "lat": 46.363198,
+    "lon": 16.404349
+  },
+  {
+    "id": "TS-0862",
+    "name": "Trafostanica 862",
+    "lat": 46.413774,
+    "lon": 16.464275
+  },
+  {
+    "id": "TS-0863",
+    "name": "Trafostanica 863",
+    "lat": 46.396489,
+    "lon": 16.442794
+  },
+  {
+    "id": "TS-0864",
+    "name": "Trafostanica 864",
+    "lat": 46.420568,
+    "lon": 16.44478
+  },
+  {
+    "id": "TS-0865",
+    "name": "Trafostanica 865",
+    "lat": 46.346091,
+    "lon": 16.406901
+  },
+  {
+    "id": "TS-0866",
+    "name": "Trafostanica 866",
+    "lat": 46.434245,
+    "lon": 16.39433
+  },
+  {
+    "id": "TS-0867",
+    "name": "Trafostanica 867",
+    "lat": 46.342693,
+    "lon": 16.461029
+  },
+  {
+    "id": "TS-0868",
+    "name": "Trafostanica 868",
+    "lat": 46.420725,
+    "lon": 16.473779
+  },
+  {
+    "id": "TS-0869",
+    "name": "Trafostanica 869",
+    "lat": 46.406775,
+    "lon": 16.412053
+  },
+  {
+    "id": "TS-0870",
+    "name": "Trafostanica 870",
+    "lat": 46.347725,
+    "lon": 16.418683
+  },
+  {
+    "id": "TS-0871",
+    "name": "Trafostanica 871",
+    "lat": 46.408021,
+    "lon": 16.427135
+  },
+  {
+    "id": "TS-0872",
+    "name": "Trafostanica 872",
+    "lat": 46.36085,
+    "lon": 16.440962
+  },
+  {
+    "id": "TS-0873",
+    "name": "Trafostanica 873",
+    "lat": 46.387189,
+    "lon": 16.437294
+  },
+  {
+    "id": "TS-0874",
+    "name": "Trafostanica 874",
+    "lat": 46.427015,
+    "lon": 16.428709
+  },
+  {
+    "id": "TS-0875",
+    "name": "Trafostanica 875",
+    "lat": 46.403319,
+    "lon": 16.443736
+  },
+  {
+    "id": "TS-0876",
+    "name": "Trafostanica 876",
+    "lat": 46.418188,
+    "lon": 16.397665
+  },
+  {
+    "id": "TS-0877",
+    "name": "Trafostanica 877",
+    "lat": 46.387892,
+    "lon": 16.437782
+  },
+  {
+    "id": "TS-0878",
+    "name": "Trafostanica 878",
+    "lat": 46.337262,
+    "lon": 16.40727
+  },
+  {
+    "id": "TS-0879",
+    "name": "Trafostanica 879",
+    "lat": 46.357609,
+    "lon": 16.391845
+  },
+  {
+    "id": "TS-0880",
+    "name": "Trafostanica 880",
+    "lat": 46.400681,
+    "lon": 16.420073
+  },
+  {
+    "id": "TS-0881",
+    "name": "Trafostanica 881",
+    "lat": 46.390342,
+    "lon": 16.445532
+  },
+  {
+    "id": "TS-0882",
+    "name": "Trafostanica 882",
+    "lat": 46.342047,
+    "lon": 16.456501
+  },
+  {
+    "id": "TS-0883",
+    "name": "Trafostanica 883",
+    "lat": 46.342806,
+    "lon": 16.410867
+  },
+  {
+    "id": "TS-0884",
+    "name": "Trafostanica 884",
+    "lat": 46.382771,
+    "lon": 16.480834
+  },
+  {
+    "id": "TS-0885",
+    "name": "Trafostanica 885",
+    "lat": 46.426594,
+    "lon": 16.447503
+  },
+  {
+    "id": "TS-0886",
+    "name": "Trafostanica 886",
+    "lat": 46.382226,
+    "lon": 16.428716
+  },
+  {
+    "id": "TS-0887",
+    "name": "Trafostanica 887",
+    "lat": 46.354746,
+    "lon": 16.434573
+  },
+  {
+    "id": "TS-0888",
+    "name": "Trafostanica 888",
+    "lat": 46.368495,
+    "lon": 16.416267
+  },
+  {
+    "id": "TS-0889",
+    "name": "Trafostanica 889",
+    "lat": 46.349957,
+    "lon": 16.460926
+  },
+  {
+    "id": "TS-0890",
+    "name": "Trafostanica 890",
+    "lat": 46.369176,
+    "lon": 16.391444
+  },
+  {
+    "id": "TS-0891",
+    "name": "Trafostanica 891",
+    "lat": 46.3711,
+    "lon": 16.448179
+  },
+  {
+    "id": "TS-0892",
+    "name": "Trafostanica 892",
+    "lat": 46.415035,
+    "lon": 16.42102
+  },
+  {
+    "id": "TS-0893",
+    "name": "Trafostanica 893",
+    "lat": 46.361776,
+    "lon": 16.415522
+  },
+  {
+    "id": "TS-0894",
+    "name": "Trafostanica 894",
+    "lat": 46.394374,
+    "lon": 16.42785
+  },
+  {
+    "id": "TS-0895",
+    "name": "Trafostanica 895",
+    "lat": 46.350088,
+    "lon": 16.44061
+  },
+  {
+    "id": "TS-0896",
+    "name": "Trafostanica 896",
+    "lat": 46.348458,
+    "lon": 16.425882
+  },
+  {
+    "id": "TS-0897",
+    "name": "Trafostanica 897",
+    "lat": 46.355886,
+    "lon": 16.412687
+  },
+  {
+    "id": "TS-0898",
+    "name": "Trafostanica 898",
+    "lat": 46.420571,
+    "lon": 16.404835
+  },
+  {
+    "id": "TS-0899",
+    "name": "Trafostanica 899",
+    "lat": 46.353663,
+    "lon": 16.480199
+  },
+  {
+    "id": "TS-0900",
+    "name": "Trafostanica 900",
+    "lat": 46.381813,
+    "lon": 16.422934
+  },
+  {
+    "id": "TS-0901",
+    "name": "Trafostanica 901",
+    "lat": 46.347922,
+    "lon": 16.384647
+  },
+  {
+    "id": "TS-0902",
+    "name": "Trafostanica 902",
+    "lat": 46.384233,
+    "lon": 16.467683
+  },
+  {
+    "id": "TS-0903",
+    "name": "Trafostanica 903",
+    "lat": 46.403248,
+    "lon": 16.397404
+  },
+  {
+    "id": "TS-0904",
+    "name": "Trafostanica 904",
+    "lat": 46.377032,
+    "lon": 16.420947
+  },
+  {
+    "id": "TS-0905",
+    "name": "Trafostanica 905",
+    "lat": 46.420935,
+    "lon": 16.414202
+  },
+  {
+    "id": "TS-0906",
+    "name": "Trafostanica 906",
+    "lat": 46.425832,
+    "lon": 16.480704
+  },
+  {
+    "id": "TS-0907",
+    "name": "Trafostanica 907",
+    "lat": 46.40312,
+    "lon": 16.414311
+  },
+  {
+    "id": "TS-0908",
+    "name": "Trafostanica 908",
+    "lat": 46.379598,
+    "lon": 16.481382
+  },
+  {
+    "id": "TS-0909",
+    "name": "Trafostanica 909",
+    "lat": 46.395434,
+    "lon": 16.414361
+  },
+  {
+    "id": "TS-0910",
+    "name": "Trafostanica 910",
+    "lat": 46.409016,
+    "lon": 16.448557
+  },
+  {
+    "id": "TS-0911",
+    "name": "Trafostanica 911",
+    "lat": 46.431213,
+    "lon": 16.409322
+  },
+  {
+    "id": "TS-0912",
+    "name": "Trafostanica 912",
+    "lat": 46.367428,
+    "lon": 16.46434
+  },
+  {
+    "id": "TS-0913",
+    "name": "Trafostanica 913",
+    "lat": 46.42568,
+    "lon": 16.472019
+  },
+  {
+    "id": "TS-0914",
+    "name": "Trafostanica 914",
+    "lat": 46.379007,
+    "lon": 16.42395
+  },
+  {
+    "id": "TS-0915",
+    "name": "Trafostanica 915",
+    "lat": 46.377302,
+    "lon": 16.445123
+  },
+  {
+    "id": "TS-0916",
+    "name": "Trafostanica 916",
+    "lat": 46.390963,
+    "lon": 16.468572
+  },
+  {
+    "id": "TS-0917",
+    "name": "Trafostanica 917",
+    "lat": 46.39025,
+    "lon": 16.481699
+  },
+  {
+    "id": "TS-0918",
+    "name": "Trafostanica 918",
+    "lat": 46.405654,
+    "lon": 16.477743
+  },
+  {
+    "id": "TS-0919",
+    "name": "Trafostanica 919",
+    "lat": 46.388082,
+    "lon": 16.478334
+  },
+  {
+    "id": "TS-0920",
+    "name": "Trafostanica 920",
+    "lat": 46.393375,
+    "lon": 16.474452
+  },
+  {
+    "id": "TS-0921",
+    "name": "Trafostanica 921",
+    "lat": 46.376473,
+    "lon": 16.431927
+  },
+  {
+    "id": "TS-0922",
+    "name": "Trafostanica 922",
+    "lat": 46.425904,
+    "lon": 16.447515
+  },
+  {
+    "id": "TS-0923",
+    "name": "Trafostanica 923",
+    "lat": 46.340084,
+    "lon": 16.398246
+  },
+  {
+    "id": "TS-0924",
+    "name": "Trafostanica 924",
+    "lat": 46.399693,
+    "lon": 16.431588
+  },
+  {
+    "id": "TS-0925",
+    "name": "Trafostanica 925",
+    "lat": 46.398464,
+    "lon": 16.405399
+  },
+  {
+    "id": "TS-0926",
+    "name": "Trafostanica 926",
+    "lat": 46.363312,
+    "lon": 16.429327
+  },
+  {
+    "id": "TS-0927",
+    "name": "Trafostanica 927",
+    "lat": 46.426241,
+    "lon": 16.405723
+  },
+  {
+    "id": "TS-0928",
+    "name": "Trafostanica 928",
+    "lat": 46.423098,
+    "lon": 16.413545
+  },
+  {
+    "id": "TS-0929",
+    "name": "Trafostanica 929",
+    "lat": 46.390746,
+    "lon": 16.46478
+  },
+  {
+    "id": "TS-0930",
+    "name": "Trafostanica 930",
+    "lat": 46.380074,
+    "lon": 16.385905
+  },
+  {
+    "id": "TS-0931",
+    "name": "Trafostanica 931",
+    "lat": 46.337504,
+    "lon": 16.429327
+  },
+  {
+    "id": "TS-0932",
+    "name": "Trafostanica 932",
+    "lat": 46.397013,
+    "lon": 16.415627
+  },
+  {
+    "id": "TS-0933",
+    "name": "Trafostanica 933",
+    "lat": 46.348923,
+    "lon": 16.455608
+  },
+  {
+    "id": "TS-0934",
+    "name": "Trafostanica 934",
+    "lat": 46.427668,
+    "lon": 16.474125
+  },
+  {
+    "id": "TS-0935",
+    "name": "Trafostanica 935",
+    "lat": 46.432275,
+    "lon": 16.434843
+  },
+  {
+    "id": "TS-0936",
+    "name": "Trafostanica 936",
+    "lat": 46.421964,
+    "lon": 16.470365
+  },
+  {
+    "id": "TS-0937",
+    "name": "Trafostanica 937",
+    "lat": 46.360609,
+    "lon": 16.461944
+  },
+  {
+    "id": "TS-0938",
+    "name": "Trafostanica 938",
+    "lat": 46.377763,
+    "lon": 16.400215
+  },
+  {
+    "id": "TS-0939",
+    "name": "Trafostanica 939",
+    "lat": 46.419833,
+    "lon": 16.409329
+  },
+  {
+    "id": "TS-0940",
+    "name": "Trafostanica 940",
+    "lat": 46.408542,
+    "lon": 16.428939
+  },
+  {
+    "id": "TS-0941",
+    "name": "Trafostanica 941",
+    "lat": 46.345459,
+    "lon": 16.406291
+  },
+  {
+    "id": "TS-0942",
+    "name": "Trafostanica 942",
+    "lat": 46.407382,
+    "lon": 16.449264
+  },
+  {
+    "id": "TS-0943",
+    "name": "Trafostanica 943",
+    "lat": 46.365503,
+    "lon": 16.446983
+  },
+  {
+    "id": "TS-0944",
+    "name": "Trafostanica 944",
+    "lat": 46.389227,
+    "lon": 16.425042
+  },
+  {
+    "id": "TS-0945",
+    "name": "Trafostanica 945",
+    "lat": 46.39666,
+    "lon": 16.39418
+  },
+  {
+    "id": "TS-0946",
+    "name": "Trafostanica 946",
+    "lat": 46.422957,
+    "lon": 16.422989
+  },
+  {
+    "id": "TS-0947",
+    "name": "Trafostanica 947",
+    "lat": 46.419487,
+    "lon": 16.395043
+  },
+  {
+    "id": "TS-0948",
+    "name": "Trafostanica 948",
+    "lat": 46.406872,
+    "lon": 16.409063
+  },
+  {
+    "id": "TS-0949",
+    "name": "Trafostanica 949",
+    "lat": 46.404521,
+    "lon": 16.457544
+  },
+  {
+    "id": "TS-0950",
+    "name": "Trafostanica 950",
+    "lat": 46.370825,
+    "lon": 16.427337
+  },
+  {
+    "id": "TS-0951",
+    "name": "Trafostanica 951",
+    "lat": 46.3878,
+    "lon": 16.415726
+  },
+  {
+    "id": "TS-0952",
+    "name": "Trafostanica 952",
+    "lat": 46.343848,
+    "lon": 16.424872
+  },
+  {
+    "id": "TS-0953",
+    "name": "Trafostanica 953",
+    "lat": 46.335136,
+    "lon": 16.453467
+  },
+  {
+    "id": "TS-0954",
+    "name": "Trafostanica 954",
+    "lat": 46.428548,
+    "lon": 16.418573
+  },
+  {
+    "id": "TS-0955",
+    "name": "Trafostanica 955",
+    "lat": 46.391905,
+    "lon": 16.404147
+  },
+  {
+    "id": "TS-0956",
+    "name": "Trafostanica 956",
+    "lat": 46.405788,
+    "lon": 16.388721
+  },
+  {
+    "id": "TS-0957",
+    "name": "Trafostanica 957",
+    "lat": 46.395076,
+    "lon": 16.472333
+  },
+  {
+    "id": "TS-0958",
+    "name": "Trafostanica 958",
+    "lat": 46.395717,
+    "lon": 16.459133
+  },
+  {
+    "id": "TS-0959",
+    "name": "Trafostanica 959",
+    "lat": 46.339239,
+    "lon": 16.474547
+  },
+  {
+    "id": "TS-0960",
+    "name": "Trafostanica 960",
+    "lat": 46.392671,
+    "lon": 16.432674
+  },
+  {
+    "id": "TS-0961",
+    "name": "Trafostanica 961",
+    "lat": 46.419238,
+    "lon": 16.478781
+  },
+  {
+    "id": "TS-0962",
+    "name": "Trafostanica 962",
+    "lat": 46.352688,
+    "lon": 16.456701
+  },
+  {
+    "id": "TS-0963",
+    "name": "Trafostanica 963",
+    "lat": 46.426348,
+    "lon": 16.444187
+  },
+  {
+    "id": "TS-0964",
+    "name": "Trafostanica 964",
+    "lat": 46.40181,
+    "lon": 16.427223
+  },
+  {
+    "id": "TS-0965",
+    "name": "Trafostanica 965",
+    "lat": 46.35717,
+    "lon": 16.447484
+  },
+  {
+    "id": "TS-0966",
+    "name": "Trafostanica 966",
+    "lat": 46.362541,
+    "lon": 16.44484
+  },
+  {
+    "id": "TS-0967",
+    "name": "Trafostanica 967",
+    "lat": 46.338797,
+    "lon": 16.408757
+  },
+  {
+    "id": "TS-0968",
+    "name": "Trafostanica 968",
+    "lat": 46.377787,
+    "lon": 16.452763
+  },
+  {
+    "id": "TS-0969",
+    "name": "Trafostanica 969",
+    "lat": 46.426003,
+    "lon": 16.399422
+  },
+  {
+    "id": "TS-0970",
+    "name": "Trafostanica 970",
+    "lat": 46.368393,
+    "lon": 16.465533
+  },
+  {
+    "id": "TS-0971",
+    "name": "Trafostanica 971",
+    "lat": 46.335239,
+    "lon": 16.402756
+  },
+  {
+    "id": "TS-0972",
+    "name": "Trafostanica 972",
+    "lat": 46.351812,
+    "lon": 16.445141
+  },
+  {
+    "id": "TS-0973",
+    "name": "Trafostanica 973",
+    "lat": 46.431088,
+    "lon": 16.434048
+  },
+  {
+    "id": "TS-0974",
+    "name": "Trafostanica 974",
+    "lat": 46.393392,
+    "lon": 16.439458
+  },
+  {
+    "id": "TS-0975",
+    "name": "Trafostanica 975",
+    "lat": 46.365772,
+    "lon": 16.404978
+  },
+  {
+    "id": "TS-0976",
+    "name": "Trafostanica 976",
+    "lat": 46.364656,
+    "lon": 16.399308
+  },
+  {
+    "id": "TS-0977",
+    "name": "Trafostanica 977",
+    "lat": 46.415715,
+    "lon": 16.425434
+  },
+  {
+    "id": "TS-0978",
+    "name": "Trafostanica 978",
+    "lat": 46.363301,
+    "lon": 16.40237
+  },
+  {
+    "id": "TS-0979",
+    "name": "Trafostanica 979",
+    "lat": 46.406947,
+    "lon": 16.395314
+  },
+  {
+    "id": "TS-0980",
+    "name": "Trafostanica 980",
+    "lat": 46.358586,
+    "lon": 16.399452
+  },
+  {
+    "id": "TS-0981",
+    "name": "Trafostanica 981",
+    "lat": 46.368994,
+    "lon": 16.384616
+  },
+  {
+    "id": "TS-0982",
+    "name": "Trafostanica 982",
+    "lat": 46.409452,
+    "lon": 16.445441
+  },
+  {
+    "id": "TS-0983",
+    "name": "Trafostanica 983",
+    "lat": 46.409685,
+    "lon": 16.420007
+  },
+  {
+    "id": "TS-0984",
+    "name": "Trafostanica 984",
+    "lat": 46.385322,
+    "lon": 16.416084
+  },
+  {
+    "id": "TS-0985",
+    "name": "Trafostanica 985",
+    "lat": 46.378028,
+    "lon": 16.388954
+  },
+  {
+    "id": "TS-0986",
+    "name": "Trafostanica 986",
+    "lat": 46.370318,
+    "lon": 16.469424
+  },
+  {
+    "id": "TS-0987",
+    "name": "Trafostanica 987",
+    "lat": 46.385754,
+    "lon": 16.419052
+  },
+  {
+    "id": "TS-0988",
+    "name": "Trafostanica 988",
+    "lat": 46.358546,
+    "lon": 16.479999
+  },
+  {
+    "id": "TS-0989",
+    "name": "Trafostanica 989",
+    "lat": 46.368705,
+    "lon": 16.446371
+  },
+  {
+    "id": "TS-0990",
+    "name": "Trafostanica 990",
+    "lat": 46.393204,
+    "lon": 16.418307
+  },
+  {
+    "id": "TS-0991",
+    "name": "Trafostanica 991",
+    "lat": 46.417722,
+    "lon": 16.469253
+  },
+  {
+    "id": "TS-0992",
+    "name": "Trafostanica 992",
+    "lat": 46.375788,
+    "lon": 16.406055
+  },
+  {
+    "id": "TS-0993",
+    "name": "Trafostanica 993",
+    "lat": 46.387511,
+    "lon": 16.467798
+  },
+  {
+    "id": "TS-0994",
+    "name": "Trafostanica 994",
+    "lat": 46.427386,
+    "lon": 16.386407
+  },
+  {
+    "id": "TS-0995",
+    "name": "Trafostanica 995",
+    "lat": 46.357947,
+    "lon": 16.465696
+  },
+  {
+    "id": "TS-0996",
+    "name": "Trafostanica 996",
+    "lat": 46.422943,
+    "lon": 16.46856
+  },
+  {
+    "id": "TS-0997",
+    "name": "Trafostanica 997",
+    "lat": 46.434277,
+    "lon": 16.429384
+  },
+  {
+    "id": "TS-0998",
+    "name": "Trafostanica 998",
+    "lat": 46.370877,
+    "lon": 16.459072
+  },
+  {
+    "id": "TS-0999",
+    "name": "Trafostanica 999",
+    "lat": 46.40011,
+    "lon": 16.405608
+  },
+  {
+    "id": "TS-1000",
+    "name": "Trafostanica 1000",
+    "lat": 46.373849,
+    "lon": 16.483889
+  }
+]

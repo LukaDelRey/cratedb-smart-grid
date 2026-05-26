@@ -2,13 +2,9 @@ Startup
 
 docker compose down
 
-docker compose up -d --build
+docker compose build --no-cache
 
-cd locust
-
-venv\Scripts\activate 
-
-locust -f locustfile.py
+docker compose up -d
 
 SELECT *
 FROM trafostanice_sensors

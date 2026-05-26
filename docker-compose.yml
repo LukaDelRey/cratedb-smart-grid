@@ -23,7 +23,10 @@ services:
       - "18083:18083"
 
   backend:
-    build: ./backend
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+
     container_name: backend
 
     ports:
@@ -44,11 +47,14 @@ services:
       - backend
 
   locust:
-    build: ./locust
-    container_name: locust
+    build:
+      context: .
+      dockerfile: locust-simulator/Dockerfile
 
-    ports:
-      - "8089:8089"
+    container_name: locust
 
     depends_on:
       - emqx
+
+    ports:
+      - "8089:8089"

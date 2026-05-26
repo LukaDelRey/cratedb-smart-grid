@@ -10,6 +10,7 @@ from app.db.init_db import init_db
 from app.services.event_bus import event_queue
 from app.services.websocket_manager import manager
 from app.services.cleanup import cleanup_old_data
+from shared.generate_stations import stations
 
 
 @asynccontextmanager
@@ -48,43 +49,9 @@ connection = client.connect(
 )
 
 
-stations = [
-    {
-        "id": "TS-001",
-        "name": "TS Centar",
-        "lat": 46.3851,
-        "lon": 16.4358
-    },
-    {
-        "id": "TS-002",
-        "name": "TS Jug",
-        "lat": 46.3812,
-        "lon": 16.4321
-    },
-    {
-        "id": "TS-003",
-        "name": "TS Sjever",
-        "lat": 46.3925,
-        "lon": 16.4290
-    },
-    {
-        "id": "TS-004",
-        "name": "TS Istok",
-        "lat": 46.3878,
-        "lon": 16.4450
-    },
-    {
-        "id": "TS-005",
-        "name": "TS Zapad",
-        "lat": 46.3840,
-        "lon": 16.4200
-    }
-]
-
 
 @app.get("/")
 def root():
-
     return {
         "status": "Smart Grid backend running"
     }
@@ -92,7 +59,6 @@ def root():
 
 @app.get("/health")
 def health():
-
     return {
         "status": "healthy"
     }
@@ -102,6 +68,7 @@ def health():
 def get_stations():
 
     return stations
+
 
 
 @app.get("/sensors")
@@ -174,11 +141,8 @@ def nearby(lat: float, lon: float):
 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
-
     await manager.connect(websocket)
-
     try:
-
         while True:
             await asyncio.sleep(60)
 
@@ -188,9 +152,7 @@ async def websocket_endpoint(websocket: WebSocket):
 
 
 async def event_loop():
-
     while True:
-
         payload = await event_queue.get()
 
         await manager.broadcast(payload)
