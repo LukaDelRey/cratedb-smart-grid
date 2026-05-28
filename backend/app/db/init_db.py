@@ -34,9 +34,7 @@ def init_db():
         station_id TEXT,
         station_name TEXT,
 
-        location GEO_POINT INDEX USING GEOHASH WITH (
-            precision = '1m'
-        ),
+        location TEXT,
 
         electrical OBJECT(DYNAMIC) AS (
             voltage_kv DOUBLE,
@@ -65,9 +63,11 @@ def init_db():
 
         alarms OBJECT(DYNAMIC) AS (
             overload BOOLEAN,
-            overheating BOOLEAN
+            overheating BOOLEAN,
+            sensor_failure BOOLEAN,
+            offline BOOLEAN,
+            voltage_drop BOOLEAN
         )
-
     )
     CLUSTERED INTO 4 SHARDS
     """

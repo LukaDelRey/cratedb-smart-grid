@@ -22,6 +22,10 @@ services:
       - "1883:1883"
       - "18083:18083"
 
+    volumes:
+      - emqx_data:/opt/emqx/data
+      - emqx_log:/opt/emqx/log
+
   backend:
     build:
       context: .
@@ -58,3 +62,7 @@ services:
 
     ports:
       - "8089:8089"
+
+volumes:
+  emqx_data:
+  emqx_log:

@@ -44,7 +44,7 @@ class TrafostanicaUser(User):
         payload = {
 
             "timestamp": time.strftime(
-                "%Y-%m-%dT%H:%M:%SZ",
+                "%Y-%m-%d %H:%M:%S",
                 time.gmtime()
             ),
 
@@ -52,10 +52,7 @@ class TrafostanicaUser(User):
 
             "station_name": station["name"],
 
-            "location": [
-                station["lon"],
-                station["lat"]
-            ],
+            "location": f"({station['lon']},{station['lat']})",
 
             "electrical": {
 
