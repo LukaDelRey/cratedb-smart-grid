@@ -44,9 +44,8 @@ app.add_middleware(
 )
 
 
-connection = client.connect(
-    "http://cratedb:4200"
-)
+def get_connection():
+    return client.connect("http://cratedb:4200")
 
 
 
@@ -74,6 +73,7 @@ def get_stations():
 @app.get("/sensors")
 def get_sensors():
 
+    connection = get_connection()
     cursor = connection.cursor()
 
     cursor.execute("""
@@ -85,35 +85,53 @@ def get_sensors():
 
     rows = cursor.fetchall()
 
+    columns = [col[0] for col in cursor.description]
+
+    result = [
+        dict(zip(columns, row))
+        for row in rows
+    ]
+
     return {
-        "data": rows
+        "data": result
     }
 
 
 @app.get("/alarms")
 def get_alarms():
 
+    connection = get_connection()
     cursor = connection.cursor()
 
     cursor.execute("""
         SELECT *
         FROM trafostanice_sensors
         WHERE alarms['overload'] = true
-           OR alarms['overheating'] = true
+            OR alarms['overheating'] = true
+            OR alarms['sensor_failure'] = true
+            OR alarms['voltage_drop'] = true
         ORDER BY timestamp DESC
         LIMIT 100
     """)
 
     rows = cursor.fetchall()
 
+    columns = [col[0] for col in cursor.description]
+
+    result = [
+        dict(zip(columns, row))
+        for row in rows
+    ]
+
     return {
-        "data": rows
+        "data": result
     }
 
 
 @app.get("/nearby")
 def nearby(lat: float, lon: float):
 
+    connection = get_connection()
     cursor = connection.cursor()
 
     cursor.execute(
@@ -134,8 +152,15 @@ def nearby(lat: float, lon: float):
 
     rows = cursor.fetchall()
 
+    columns = [col[0] for col in cursor.description]
+
+    result = [
+        dict(zip(columns, row))
+        for row in rows
+    ]
+
     return {
-        "data": rows
+        "data": result
     }
 
 

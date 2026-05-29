@@ -19,7 +19,6 @@ docker compose build --no-cache
 docker compose up -d       
 
 
-
 Rule select:
 SELECT
   payload.timestamp AS timestamp,
