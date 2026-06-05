@@ -1,0 +1,65 @@
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+
+body{
+  font-family:Inter,sans-serif;
+  background:#050b16;
+  color:white;
+  overflow:hidden;
+}
+
+#app{
+  width:100vw;
+  height:100vh;
+}
+
+.panel{
+  background:
+    linear-gradient(
+      180deg,
+      rgba(10,20,40,.92),
+      rgba(5,10,20,.96)
+    );
+
+  border:1px solid rgba(100,180,255,.15);
+
+  box-shadow:
+    0 0 20px rgba(0,150,255,.08);
+
+  border-radius:16px;
+
+  backdrop-filter: blur(12px);
+}
+
+.panel-title{
+  font-size:14px;
+  font-weight:700;
+  color:#8ec5ff;
+  margin-bottom:14px;
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+
+.metric-value{
+  font-size:36px;
+  font-weight:700;
+}
+
+.green{
+  color:#00e676;
+}
+
+.orange{
+  color:#ff9800;
+}
+
+.red{
+  color:#ff5252;
+}
+
+.blue{
+  color:#42a5f5;
+}

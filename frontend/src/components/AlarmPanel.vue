@@ -1,33 +1,43 @@
 <template>
-    <div>
-        <h2>ALARMS</h2>
-        <div
-            v-for="sensor in sensors.filter(isAlarm)"
-            :key="sensor.timestamp"
-            style="background:red; color:white; margin:10px; padding:10px"
-        >
+  <div class="alarm-panel">
 
-            <strong>{{ sensor.station_name }}</strong>
+    <h2>SCADA ALARMS</h2>
 
-            <p>ALARM DETECTED</p>
-
-        </div>
+    <div class="counter">
+      Active alarms: {{ alarms.length }}
     </div>
+
+    <div v-for="a in alarms" :key="a.station_id" class="alarm-item">
+      🔴 {{ a.station_name }}
+    </div>
+  </div>
 </template>
 
 <script setup>
-
 defineProps({
-  sensors: Array
+  alarms: {
+    type: Array,
+    default: () => []
+  }
 })
+</script>
 
-const isAlarm = (sensor) => {
-
-  return (
-    sensor.electrical.voltage_kv > 10.4 ||
-    sensor.thermal.oil_temp_c > 80 ||
-    sensor.oil_gas.hydrogen_ppm > 20
-  )
+<style scoped>
+.alarm-panel {
+  height: 100%;
+  padding: 15px;
+  background: #15171c;
+  color: white;
 }
 
-</script>
+.counter {
+  margin-bottom: 15px;
+}
+
+.alarm-item {
+  padding: 8px;
+  margin-bottom: 5px;
+  background: #2b0f12;
+  border-left: 4px solid red;
+}
+</style>
