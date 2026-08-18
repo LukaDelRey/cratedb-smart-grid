@@ -50,11 +50,9 @@ const chartOption = computed(() => ({
 
 </script>
 
-<style scoped>
-
-.chart {
-  width: 100%;
-  height: 300px;
+<style>
+.chart{
+  width:100%;
+  height:300px;
 }
-
 </style>

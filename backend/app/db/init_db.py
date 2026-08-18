@@ -74,4 +74,63 @@ def init_db():
 
     cursor.execute(sql)
 
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS transformers (
+
+        timestamp TIMESTAMP,
+
+        transformer_id TEXT,
+        transformer_name TEXT,
+
+        station_id TEXT,
+
+        location TEXT,
+
+        load_pct DOUBLE,
+
+        health_score DOUBLE,
+
+        oil_temp_c DOUBLE,
+
+        status TEXT
+    )
+    CLUSTERED INTO 2 SHARDS
+    """)
+
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS power_lines (
+
+        line_id TEXT,
+
+        from_station TEXT,
+
+        to_station TEXT,
+
+        voltage_kv DOUBLE,
+
+        load_pct DOUBLE,
+
+        status TEXT
+    )
+    CLUSTERED INTO 2 SHARDS
+    """)
+
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS region_analytics (
+
+        timestamp TIMESTAMP,
+
+        region_id TEXT,
+
+        health_score DOUBLE,
+
+        blackout_risk DOUBLE,
+
+        active_alarms INTEGER,
+
+        total_stations INTEGER
+    )
+    CLUSTERED INTO 2 SHARDS
+    """)
+
     print("Database initialized!")

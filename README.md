@@ -5,6 +5,21 @@ docker compose build --no-cache
 docker compose up -d       
 
 
+
+
+docker compose down            
+
+docker compose build --no-cache
+
+docker compose up -d cratedb emqx backend locust
+
+cd frontend                                                                                                                                        
+npm install
+npm run dev
+
+
+
+
 Rule select:
 SELECT
   payload.timestamp AS timestamp,
@@ -41,6 +56,7 @@ VALUES (
   ${oil_gas},
   ${alarms}
 )
+
 
 
 SELECT *

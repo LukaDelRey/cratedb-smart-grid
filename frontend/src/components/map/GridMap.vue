@@ -1,35 +1,41 @@
-<template>
+<!-- <template>
 
-<div class="map-wrapper panel">
-
+<div class="grid-map-panel panel">
   <div class="map-overlay">
 
-    <div class="legend panel">
+    <q-card
+      flat
+      class="grid-map-legend panel"
+    >
 
-      <div class="panel-title">
-        MAP LAYERS
-      </div>
+      <q-card-section>
 
-      <div class="legend-item">
-        🟢 Normal
-      </div>
+        <div class="text-subtitle1 text-weight-bold">
+          MAP LAYERS
+        </div>
 
-      <div class="legend-item">
-        🟠 Warning
-      </div>
+        <div class="q-mt-md">
+          🟢 Normal
+        </div>
 
-      <div class="legend-item">
-        🔴 Critical
-      </div>
+        <div class="q-mt-sm">
+          🟠 Warning
+        </div>
 
-    </div>
+        <div class="q-mt-sm">
+          🔴 Critical
+        </div>
+
+      </q-card-section>
+
+    </q-card>
 
   </div>
 
   <l-map
     :zoom="9"
     :center="[46.3844,16.4339]"
-    style="height:100%;width:100%"
+    class="fit"
     :zoomControl="false"
   >
 
@@ -37,7 +43,6 @@
       url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
     />
 
-    <!-- POWER LINES -->
 
     <l-polyline
       v-for="line in powerLines"
@@ -47,8 +52,6 @@
       :weight="2"
       :opacity="0.8"
     />
-
-    <!-- STATIONS -->
 
     <l-circle-marker
       v-for="station in stations"
@@ -61,55 +64,64 @@
 
       <l-popup>
 
-        <div class="popup">
+        <q-card flat class="grid-popup-card">
 
-          <h2>
-            {{ station.station_id }}
-          </h2>
+          <q-card-section>
 
-          <div class="station-name">
-            {{ station.station_name }}
-          </div>
+            <div class="text-h6">
+              {{ station.station_id }}
+            </div>
 
-          <hr>
+            <div class="text-grey-6">
+              {{ station.station_name }}
+            </div>
 
-          <div class="metric">
-            Voltage
-            <span>
-              {{ station.electrical?.voltage_kv }} kV
-            </span>
-          </div>
+          </q-card-section>
 
-          <div class="metric">
-            Current
-            <span>
-              {{ station.electrical?.current_a }} A
-            </span>
-          </div>
+          <q-separator />
 
-          <div class="metric">
-            Oil Temp
-            <span>
-              {{ station.thermal?.oil_temp_c }} °C
-            </span>
-          </div>
+          <q-card-section>
 
-          <div class="metric">
-            Health Score
-            <span class="green">
-              {{ getHealth(station) }}%
-            </span>
-          </div>
+            <div class="row justify-between q-mb-sm">
+              <span>Voltage</span>
+              <span>
+                {{ station.electrical?.voltage_kv }} kV
+              </span>
+            </div>
 
-          <div
-            v-if="isCritical(station)"
-            class="critical"
-          >
-            AI PREDICTION:
-            High overload probability
-          </div>
+            <div class="row justify-between q-mb-sm">
+              <span>Current</span>
+              <span>
+                {{ station.electrical?.current_a }} A
+              </span>
+            </div>
 
-        </div>
+            <div class="row justify-between q-mb-sm">
+              <span>Oil Temp</span>
+              <span>
+                {{ station.thermal?.oil_temp_c }} °C
+              </span>
+            </div>
+
+            <div class="row justify-between">
+              <span>Health Score</span>
+
+              <span class="text-positive text-weight-bold">
+                {{ getHealth(station) }}%
+              </span>
+            </div>
+
+            <div
+              v-if="isCritical(station)"
+              class="text-negative text-weight-bold q-mt-md"
+            >
+              AI PREDICTION:
+              High overload probability
+            </div>
+
+          </q-card-section>
+
+        </q-card>
 
       </l-popup>
 
@@ -226,14 +238,21 @@ const powerLines = [
   }
 ]
 
-</script>
+</script> -->
 
-<style scoped>
-
-.map-wrapper{
+<style>
+.grid-map-panel{
   height:100%;
   position:relative;
   overflow:hidden;
+}
+
+.grid-map-legend{
+  width:220px;
+}
+
+.grid-popup-card{
+  min-width:260px;
 }
 
 .map-overlay{
@@ -242,35 +261,4 @@ const powerLines = [
   top:20px;
   left:20px;
 }
-
-.legend{
-  width:220px;
-  padding:20px;
-}
-
-.legend-item{
-  margin-top:12px;
-}
-
-.popup{
-  min-width:260px;
-}
-
-.station-name{
-  color:#90a4ae;
-  margin-bottom:10px;
-}
-
-.metric{
-  display:flex;
-  justify-content:space-between;
-  margin:10px 0;
-}
-
-.critical{
-  margin-top:14px;
-  color:#ff5252;
-  font-weight:700;
-}
-
 </style>

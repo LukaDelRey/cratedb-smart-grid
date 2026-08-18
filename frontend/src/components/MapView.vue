@@ -2,9 +2,8 @@
   <l-map
     :zoom="13"
     :center="[46.3851, 16.4358]"
-    style="height: 100%; width:100%;"
+    class="fit "
   >
-
     <l-tile-layer
       url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
     />
@@ -15,21 +14,54 @@
       :lat-lng="getLatLng(station)"
     >
       <l-popup>
-        <div>
-          <b>{{ station.station_name }}</b>
+        <q-card flat class="station-popup-card">
 
-          <hr />
-            {{ station.electrical?.voltage_kv }} kV <br />
-            {{ station.electrical?.current_a }} A <br />
-            {{ station.thermal?.oil_temp_c }} °C <br />
-            THD: {{ station.electrical?.harmonics_thd }} % <br />
+          <q-card-section>
+            <div class="text-subtitle1 text-weight-bold">
+              {{ station.station_name }}
+            </div>
+          </q-card-section>
 
-          <div v-if="station.alarms?.overload || station.alarms?.overheating" style="color: red; font-weight: bold">
-            🔴 ALARM ACTIVE
-          </div>
-        </div>
+          <q-separator />
+
+          <q-card-section>
+
+            <div class="row justify-between">
+              <span>Voltage</span>
+              <span>{{ station.electrical?.voltage_kv }} kV</span>
+            </div>
+
+            <div class="row justify-between">
+              <span>Current</span>
+              <span>{{ station.electrical?.current_a }} A</span>
+            </div>
+
+            <div class="row justify-between">
+              <span>Oil Temp</span>
+              <span>{{ station.thermal?.oil_temp_c }} °C</span>
+            </div>
+
+            <div class="row justify-between">
+              <span>THD</span>
+              <span>{{ station.electrical?.harmonics_thd }} %</span>
+            </div>
+
+            <div
+              v-if="
+                station.alarms?.overload ||
+                station.alarms?.overheating
+              "
+              class="text-negative text-weight-bold q-mt-md"
+            >
+              🔴 ALARM ACTIVE
+            </div>
+
+          </q-card-section>
+
+        </q-card>
       </l-popup>
     </l-marker>
+
   </l-map>
 </template>
 
@@ -71,3 +103,9 @@ function getLatLng(station) {
   return [0, 0]
 }
 </script>
+
+<style>
+.station-popup-card{
+  width:120px;
+}
+</style>
