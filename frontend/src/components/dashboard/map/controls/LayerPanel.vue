@@ -209,7 +209,7 @@ function toggleMarker(key){
   z-index:10;
   top:18px;
   left:18px;
-  width:285px;
+  width:250px;
   background:rgba(5,12,24,.92);
   border-color:rgba(0,229,255,.25);
   border-radius:18px;
@@ -217,14 +217,14 @@ function toggleMarker(key){
 }
 
 .map-layer-panel{
-  width:236px;
+  width:250px;
   border-radius:8px;
 }
 
 .map-layer-panel{
   top:14px;
   left:14px;
-  width:218px;
+  width:250px;
   max-height:calc(100% - 28px);
   overflow:auto;
   border-radius:8px;

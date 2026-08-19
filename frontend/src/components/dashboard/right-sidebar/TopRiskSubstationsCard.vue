@@ -22,7 +22,10 @@
       />
     </q-card-section>
 
-    <q-card-section class="top-risk-body">
+    <q-card-section
+      class="top-risk-body"
+      :class="{ 'top-risk-body--expanded': expanded }"
+    >
       <div
         v-for="station in displayStations"
         :key="station.id"
@@ -144,6 +147,10 @@ function selectStation(stationId){
   grid-auto-rows:min-content;
   gap:6px;
   padding:0 12px 11px;
+  overflow:hidden;
+}
+
+.top-risk-body--expanded{
   overflow:auto;
 }
 
