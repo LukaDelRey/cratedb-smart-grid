@@ -149,212 +149,25 @@
   </div>
 </template>
 
-<script setup>
-import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
-import { useSensorStore } from '../../../stores/sensorStore'
-import { useI18n } from '../../../i18n'
+<script setup lang="ts">
+import { useDashboardTopbar } from '../../../composables/useDashboardTopbar'
 
 const emit = defineEmits(['openTopology', 'openNotifications'])
-const store = useSensorStore()
 const {
+  clock,
+  currentLanguageOption,
+  dateLabel,
   language,
   languageOptions,
-  currentLanguageOption,
+  linePoints,
+  notificationItems,
   setLanguage,
+  store,
   t,
-  translateText,
-  translateStatus
-} = useI18n()
-const now = ref(new Date())
-let clockTimer = null
-
-const dateLocale = computed(() =>
-  language.value === 'hr' ? 'hr-HR' : undefined
-)
-
-const clock = computed(() =>
-  now.value.toLocaleTimeString([], {
-    hour:'2-digit',
-    minute:'2-digit',
-    second:'2-digit'
-  })
-)
-
-const dateLabel = computed(() =>
-  now.value.toLocaleDateString(dateLocale.value, {
-    day:'2-digit',
-    month:'short',
-    year:'numeric'
-  })
-)
-
-const systemLoadPct = computed(() => {
-  const stationCount = Math.max(store.summary.stations || 0, 1)
-  const nominalMW = stationCount * 3
-
-  return Math.min(100, Math.round((store.totalLoadMW / nominalMW) * 100))
-})
-
-const gridStatus = computed(() => {
-  if(store.blackout.probability >= 70) return 'CRITICAL'
-  if(store.blackout.probability >= 35 || store.summary.activeAlarms > 0) return 'WATCH'
-  return 'STABLE'
-})
-
-const topStatus = computed(() => [
-  {
-    label:t('dashboard.gridStatus'),
-    value:t(gridStatus.value),
-    class:gridStatus.value === 'STABLE' ? 'text-positive' : gridStatus.value === 'WATCH' ? 'text-warning' : 'text-negative'
-  },
-  {
-    label:t('dashboard.systemLoad'),
-    value:`${systemLoadPct.value}%`,
-    detail:`${store.totalLoadMW} MW`,
-    class:systemLoadPct.value > 88 ? 'text-warning' : 'text-white',
-    spark:historyValues('systemLoadPct', 6),
-    chartClass:systemLoadPct.value > 88 ? 'warning' : 'normal'
-  },
-  {
-    label:t('dashboard.blackoutRisk'),
-    value:store.blackout.probability >= 35 ? t('dashboard.medium') : t('dashboard.lowUpper'),
-    detail:`${store.blackout.probability}%`,
-    class:store.blackout.probability >= 35 ? 'text-warning' : 'text-positive'
-  },
-  {
-    label:t('dashboard.activeAlarms'),
-    value:store.summary.activeAlarms || store.alarms.length,
-    class:(store.summary.activeAlarms || store.alarms.length) ? 'text-negative' : 'text-positive'
-  }
-])
-
-const notificationItems = computed(() =>
-  store.eventStream
-    .slice(0, 5)
-    .map(event => ({
-      id:event.id,
-      title:event.title || 'Realtime event',
-      detail:[
-        formatNotificationTime(event.timestamp),
-        event.assetId || event.source || 'SYSTEM'
-      ].filter(Boolean).join(' - '),
-      severity:event.severity || 'INFO',
-      icon:notificationIcon(event.severity),
-      color:notificationColor(event.severity)
-    }))
-)
-
-const sparkSeeds = [28, 32, 42, 35, 48, 38, 52, 45, 58, 54, 66, 72]
-
-function spark(offset = 0){
-  return sparkSeeds.map((value, index) =>
-    Math.max(12, Math.min(92, value + ((index + offset) % 4) * 4 - offset))
-  )
-}
-
-function historyValues(key, offset = 0){
-  const values = store.metricHistory?.[key] || []
-
-  return values.length > 1
-    ? values
-    : spark(offset)
-}
-
-function pointValue(point){
-  return typeof point === 'number'
-    ? point
-    : Number(point?.value) || 0
-}
-
-function pointTimestamp(point){
-  if(!point || typeof point !== 'object' || !point.timestamp){
-    return null
-  }
-
-  const parsed = typeof point.timestamp === 'number'
-    ? point.timestamp
-    : Date.parse(point.timestamp)
-
-  return Number.isFinite(parsed) ? parsed : null
-}
-
-function linePoints(values, width, height){
-  if(!values.length) return ''
-
-  const plottedValues = values.map(pointValue)
-  const timestamps = values.map(pointTimestamp)
-  const validTimestamps = timestamps.filter(Number.isFinite)
-  const min = Math.min(...plottedValues)
-  const max = Math.max(...plottedValues)
-  const range = Math.max(1, max - min)
-  const latestTimestamp = validTimestamps.at(-1)
-  const firstTimestamp = validTimestamps[0]
-  const historyWindowMs = 60 * 60 * 1000
-  const elapsedMs = Number.isFinite(firstTimestamp) && Number.isFinite(latestTimestamp)
-    ? latestTimestamp - firstTimestamp
-    : 0
-  const timelineStart = Number.isFinite(firstTimestamp) && Number.isFinite(latestTimestamp)
-    ? elapsedMs >= historyWindowMs
-      ? latestTimestamp - historyWindowMs
-      : firstTimestamp
-    : null
-  const timelineEnd = timelineStart === null
-    ? null
-    : elapsedMs >= historyWindowMs
-      ? latestTimestamp
-      : Math.max(firstTimestamp + 1, latestTimestamp)
-
-  return values
-    .map((point, index) => {
-      const value = pointValue(point)
-      const timestamp = timestamps[index]
-      const x = timelineStart !== null && Number.isFinite(timestamp)
-        ? Math.max(0, Math.min(width, ((timestamp - timelineStart) / (timelineEnd - timelineStart)) * width))
-        : values.length === 1
-          ? width / 2
-          : (index / (values.length - 1)) * width
-      const y = height - ((value - min) / range) * (height - 6) - 3
-
-      return `${x.toFixed(1)},${y.toFixed(1)}`
-    })
-    .join(' ')
-}
-
-function notificationColor(severity){
-  if(severity === 'CRITICAL') return 'negative'
-  if(severity === 'WARNING') return 'warning'
-  return 'info'
-}
-
-function notificationIcon(severity){
-  if(severity === 'CRITICAL') return 'priority_high'
-  if(severity === 'WARNING') return 'warning'
-  return 'notifications'
-}
-
-function formatNotificationTime(timestamp){
-  const parsed = timestamp ? new Date(timestamp) : new Date()
-
-  if(Number.isNaN(parsed.getTime())){
-    return '--:--:--'
-  }
-
-  return parsed.toLocaleTimeString([], {
-    hour:'2-digit',
-    minute:'2-digit',
-    second:'2-digit'
-  })
-}
-
-onMounted(() => {
-  clockTimer = setInterval(() => {
-    now.value = new Date()
-  }, 1000)
-})
-
-onBeforeUnmount(() => {
-  clearInterval(clockTimer)
-})
+  topStatus,
+  translateStatus,
+  translateText
+} = useDashboardTopbar()
 </script>
 
 <style scoped>

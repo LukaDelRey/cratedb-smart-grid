@@ -67,15 +67,16 @@
   </q-card>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue'
+import type { PropType } from 'vue'
 import { useI18n } from '../../i18n'
 
 const { t, translateText, translateStatus } = useI18n()
 
 const props = defineProps({
   weather:{
-    type:Object,
+    type:Object as PropType<Record<string, any>>,
     required:true
   }
 })

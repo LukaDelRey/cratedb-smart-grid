@@ -2,20 +2,21 @@
   <div />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { onMounted, onBeforeUnmount, watch } from 'vue'
+import type { PropType } from 'vue'
 
 const props = defineProps({
   map:{
-    type:Object,
+    type:Object as PropType<Record<string, any>>,
     required:true
   },
   regions:{
-    type:Array,
+    type:Array as PropType<any[]>,
     default:() => []
   },
   weather:{
-    type:Object,
+    type:Object as PropType<Record<string, any>>,
     required:true
   }
 })

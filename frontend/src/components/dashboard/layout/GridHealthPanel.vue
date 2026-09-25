@@ -47,23 +47,24 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue'
+import type { PropType } from 'vue'
 import { useI18n } from '../../../i18n'
 
 const { t } = useI18n()
 
 const props = defineProps({
   summary:{
-    type:Object,
+    type:Object as PropType<Record<string, any>>,
     required:true
   },
   stations:{
-    type:Array,
+    type:Array as PropType<any[]>,
     default:() => []
   },
   connection:{
-    type:Object,
+    type:Object as PropType<Record<string, any>>,
     required:true
   }
 })

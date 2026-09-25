@@ -259,19 +259,22 @@
   </q-card>
 </template>
 
-<script setup>
-import { computed, ref, watch } from 'vue'
+<script setup lang="ts">
+import { watch } from 'vue'
+import type { PropType } from 'vue'
+import { useAlarmRegister } from '../../../../composables/useAlarmRegister'
 import { useI18n } from '../../../../i18n'
+import type { AlarmEvent, TopRiskSubstation } from '../../../../types/dashboard'
 
 const { t, translateText, translateStatus } = useI18n()
 
 const props = defineProps({
   events:{
-    type:Array,
+    type:Array as PropType<AlarmEvent[]>,
     default:() => []
   },
   topRiskSubstations:{
-    type:Array,
+    type:Array as PropType<TopRiskSubstation[]>,
     default:() => []
   },
   maxVisible:{
@@ -284,11 +287,32 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['focus-station'])
+const emit = defineEmits<{
+  'focus-station': [stationId:string]
+}>()
 
-const viewAllOpen = ref(false)
-const acknowledgedIds = ref(new Set())
-const workOrderIds = ref(new Set())
+const {
+  acknowledge,
+  acknowledgedIds,
+  activeCount,
+  assetRoute,
+  createWorkOrder,
+  displayStatus,
+  mapStationId,
+  openAsset,
+  openRegister,
+  pinStation,
+  rows,
+  statusColor,
+  viewAllOpen,
+  visibleRows,
+  workOrderIds
+} = useAlarmRegister({
+  getEvents:() => props.events,
+  getTopRiskSubstations:() => props.topRiskSubstations,
+  getMaxVisible:() => props.maxVisible,
+  onFocusStation:stationId => emit('focus-station', stationId)
+})
 
 defineExpose({
   openRegister
@@ -304,175 +328,6 @@ watch(
   { immediate:true }
 )
 
-const rows = computed(() => {
-  const liveRows = props.events.map(event => ({
-    id:event.id,
-    time:formatTime(event.timestamp),
-    severity:event.severity || 'INFO',
-    asset:event.assetId || event.source || 'SYSTEM',
-    title:event.title || 'Realtime event',
-    value:event.severity === 'CRITICAL'
-      ? '104 C'
-      : event.severity === 'WARNING'
-        ? '6.2%'
-        : '-',
-    status:event.severity === 'INFO' ? 'INFO' : 'ACTIVE'
-  }))
-
-  if(liveRows.length){
-    return liveRows
-  }
-
-  return props.topRiskSubstations.slice(0, 24).map((station,index) => ({
-    id:station.id,
-    time:`14:${String(31 - index).padStart(2, '0')}:${String(Math.max(0, 52 - index)).padStart(2, '0')}`,
-    severity:station.risk > 70 ? 'CRITICAL' : station.risk > 40 ? 'WARNING' : 'INFO',
-    asset:station.id,
-    title:station.risk > 70 ? 'Oil Temperature High' : 'Load High',
-    value:`${station.risk}%`,
-    status:'ACTIVE'
-  }))
-})
-
-const visibleRows = computed(() =>
-  rows.value.slice(0, props.maxVisible)
-)
-
-const activeCount = computed(() =>
-  rows.value.filter(row => displayStatus(row) === 'ACTIVE').length
-)
-
-function openRegister(){
-  viewAllOpen.value = true
-}
-
-function formatTime(timestamp){
-  const parsed = timestamp ? new Date(timestamp) : new Date()
-
-  if(Number.isNaN(parsed.getTime())){
-    return '--:--:--'
-  }
-
-  return parsed.toLocaleTimeString([], {
-    hour:'2-digit',
-    minute:'2-digit',
-    second:'2-digit'
-  })
-}
-
-function displayStatus(row){
-  if(workOrderIds.value.has(row.id)){
-    return 'WORK ORDER'
-  }
-
-  if(acknowledgedIds.value.has(row.id)){
-    return 'ACK'
-  }
-
-  return row.status
-}
-
-function statusColor(row){
-  const status = displayStatus(row)
-
-  if(status === 'ACTIVE') return 'negative'
-  if(status === 'WORK ORDER') return 'warning'
-  if(status === 'ACK') return 'positive'
-  return 'info'
-}
-
-function acknowledge(row){
-  const nextAcknowledged = new Set(acknowledgedIds.value)
-  const nextWorkOrders = new Set(workOrderIds.value)
-
-  nextWorkOrders.delete(row.id)
-
-  if(nextAcknowledged.has(row.id)){
-    nextAcknowledged.delete(row.id)
-  }else{
-    nextAcknowledged.add(row.id)
-  }
-
-  acknowledgedIds.value = nextAcknowledged
-  workOrderIds.value = nextWorkOrders
-}
-
-function createWorkOrder(row){
-  const nextAcknowledged = new Set(acknowledgedIds.value)
-  const nextWorkOrders = new Set(workOrderIds.value)
-
-  if(nextWorkOrders.has(row.id)){
-    nextWorkOrders.delete(row.id)
-    nextAcknowledged.delete(row.id)
-  }else{
-    nextWorkOrders.add(row.id)
-    nextAcknowledged.add(row.id)
-  }
-
-  acknowledgedIds.value = nextAcknowledged
-  workOrderIds.value = nextWorkOrders
-}
-
-function assetRoute(row){
-  return routeForAsset(row.asset)
-}
-
-function openAsset(row){
-  const route = assetRoute(row)
-
-  if(route){
-    window.location.assign(route)
-    return
-  }
-
-  emit('focus-station', row.asset)
-  viewAllOpen.value = false
-}
-
-function pinStation(row){
-  const stationId = mapStationId(row)
-
-  if(!stationId){
-    return
-  }
-
-  emit('focus-station', stationId)
-  viewAllOpen.value = false
-}
-
-function mapStationId(row){
-  const asset = row.asset || ''
-
-  if(asset.startsWith('TS-')){
-    return asset
-  }
-
-  if(asset.startsWith('TR-')){
-    return `TS-${asset.slice(3)}`
-  }
-
-  return null
-}
-
-function routeForAsset(asset){
-  if(!asset || asset === 'SYSTEM'){
-    return null
-  }
-
-  if(asset.startsWith('TR-')){
-    return `/transformers/${asset}`
-  }
-
-  if(asset.startsWith('TS-')){
-    return `/substations/${asset}`
-  }
-
-  if(asset.startsWith('REGION-') || asset.startsWith('REG-')){
-    return `/regions/${asset}`
-  }
-
-  return null
-}
 </script>
 
 <style scoped>

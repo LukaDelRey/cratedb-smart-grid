@@ -63,19 +63,20 @@
   </l-map>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import {
   LMap,
   LTileLayer,
   LMarker,
   LPopup
 } from '@vue-leaflet/vue-leaflet'
+import type { Station } from '../types/dashboard'
 
-defineProps({
-  stations: Array
-})
+defineProps<{
+  stations: Station[]
+}>()
 
-function getLatLng(station) {
+function getLatLng(station:Station) {
   const loc = station.location
 
   if (!loc) return [0, 0]

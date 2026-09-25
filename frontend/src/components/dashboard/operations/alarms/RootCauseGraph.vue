@@ -22,8 +22,9 @@
   </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue'
+import type { PropType } from 'vue'
 import { VueFlow, MarkerType } from '@vue-flow/core'
 import { Background } from '@vue-flow/background'
 import { Controls } from '@vue-flow/controls'
@@ -35,7 +36,7 @@ import '@vue-flow/controls/dist/style.css'
 
 const props = defineProps({
   chain:{
-    type:Array,
+    type:Array as PropType<any[]>,
     default:() => []
   }
 })

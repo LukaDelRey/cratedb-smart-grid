@@ -18,29 +18,38 @@ import {
   getWebSocketUrl
 } from '../services/gridApi'
 import { t } from '../i18n'
+import { average, clamp } from '../utils/numbers'
+import type {
+  AlarmCorrelation,
+  AlarmEvent,
+  AssetStatus,
+  BlackoutPrediction,
+  ConnectionState,
+  ContingencyResult,
+  Coordinates,
+  CustomerCluster,
+  ForecastPoint,
+  GridSummary,
+  Insight,
+  MetricHistory,
+  MetricHistoryKey,
+  MetricHistoryValue,
+  PowerLine,
+  Region,
+  RootCause,
+  Station,
+  Topology,
+  TopRiskSubstation,
+  TransformerAsset,
+  WeatherImpact
+} from '../types/dashboard'
 
-const DEFAULT_CENTER = {
+const DEFAULT_CENTER: Coordinates = {
   lng:16.4339,
   lat:46.3844
 }
 
-function clamp(value,min = 0,max = 100){
-  return Math.min(max, Math.max(min, value))
-}
-
-function average(values, fallback = 0){
-  const clean = values.filter(value => Number.isFinite(value))
-
-  if(!clean.length){
-    return fallback
-  }
-
-  return Math.round(
-    clean.reduce((sum,value) => sum + value, 0) / clean.length
-  )
-}
-
-function alarmList(station){
+function alarmList(station?:Station | null){
   const alarms = station?.alarms || {}
 
   return Object.entries(alarms)
@@ -48,7 +57,7 @@ function alarmList(station){
     .map(([key]) => key)
 }
 
-function assetNumber(id){
+function assetNumber(id:unknown){
   const match = String(id || '').match(/(\d+)/)
 
   return match
@@ -56,7 +65,7 @@ function assetNumber(id){
     : Number.MAX_SAFE_INTEGER
 }
 
-function normalizeTransformerId(id){
+function normalizeTransformerId(id:unknown){
   const match = String(id || '').toUpperCase().match(/TR-?0*(\d+)/)
 
   return match
@@ -66,12 +75,12 @@ function normalizeTransformerId(id){
 
 export const useSensorStore = defineStore('sensorStore', () => {
 
-  const stationsMap = ref({})
-  const regions = ref([])
-  const powerLines = ref([])
-  const forecast = ref([])
-  const insights = ref([])
-  const weather = ref({
+  const stationsMap = ref<Record<string, Station>>({})
+  const regions = ref<Region[]>([])
+  const powerLines = ref<PowerLine[]>([])
+  const forecast = ref<ForecastPoint[]>([])
+  const insights = ref<Insight[]>([])
+  const weather = ref<WeatherImpact>({
     temperatureC:24,
     windRisk:0,
     lightningRisk:0,
@@ -79,29 +88,29 @@ export const useSensorStore = defineStore('sensorStore', () => {
     gridImpact:0,
     alerts:[]
   })
-  const correlations = ref([])
-  const selectedRootCause = ref(null)
-  const contingency = ref(null)
-  const topology = ref({
+  const correlations = ref<AlarmCorrelation[]>([])
+  const selectedRootCause = ref<RootCause | null>(null)
+  const contingency = ref<ContingencyResult | null>(null)
+  const topology = ref<Topology>({
     platformHealth:0,
     nodes:[],
     edges:[]
   })
 
-  const summary = ref({
+  const summary = ref<GridSummary>({
     gridHealth:100,
     blackoutRisk:0,
     activeAlarms:0,
     stations:0
   })
 
-  const blackout = ref({
+  const blackout = ref<BlackoutPrediction>({
     probability:0,
     affectedStations:0,
     estimatedMinutes:0
   })
 
-  const connection = ref({
+  const connection = ref<ConnectionState>({
     websocketConnected:false,
     crateConnected:false,
     mqttConnected:true,
@@ -111,10 +120,10 @@ export const useSensorStore = defineStore('sensorStore', () => {
     quality:'offline'
   })
 
-  const eventStream = ref([])
+  const eventStream = ref<AlarmEvent[]>([])
   const loading = ref(false)
-  const error = ref(null)
-  const metricHistory = ref({
+  const error = ref<string | null>(null)
+  const metricHistory = ref<MetricHistory>({
     totalLoadMW:[],
     systemLoadPct:[],
     gridHealth:[],
@@ -126,13 +135,13 @@ export const useSensorStore = defineStore('sensorStore', () => {
     frequency:[]
   })
 
-  let ws = null
-  let refreshTimer = null
+  let ws:WebSocket | null = null
+  let refreshTimer:ReturnType<typeof setInterval> | null = null
   let eventSequence = 0
-  const stationAlarmSignatures = new Map()
+  const stationAlarmSignatures = new Map<string, string>()
   const HISTORY_WINDOW_MS = 60 * 60 * 1000
 
-  function pushHistoryPoint(key,value,windowMs = HISTORY_WINDOW_MS){
+  function pushHistoryPoint(key:MetricHistoryKey,value:number,windowMs = HISTORY_WINDOW_MS){
     if(!Number.isFinite(value)){
       return
     }
@@ -147,10 +156,10 @@ export const useSensorStore = defineStore('sensorStore', () => {
     metricHistory.value[key] = [
       ...(metricHistory.value[key] || []),
       point
-    ].filter(item => {
+    ].filter((item:MetricHistoryValue) => {
       const itemTimestamp = typeof item === 'number'
         ? timestamp
-        : item.timestamp || timestamp
+        : Number(item.timestamp) || timestamp
 
       return itemTimestamp >= cutoff
     })
@@ -197,10 +206,10 @@ export const useSensorStore = defineStore('sensorStore', () => {
     pushHistoryPoint('frequency', frequency)
   }
 
-  function parseLocation(station){
+  function parseLocation(station?:Station | null):Coordinates{
     const loc = station?.location
 
-    if(!loc){
+    if(!loc || typeof loc !== 'string'){
       return DEFAULT_CENTER
     }
 
@@ -216,7 +225,7 @@ export const useSensorStore = defineStore('sensorStore', () => {
     }
   }
 
-  function getStationHealth(station){
+  function getStationHealth(station:Station){
     let score = 100
 
     score -= (station.thermal?.oil_temp_c || 0) * 0.28
@@ -232,7 +241,7 @@ export const useSensorStore = defineStore('sensorStore', () => {
     return Math.round(clamp(score))
   }
 
-  function getStationRisk(station){
+  function getStationRisk(station:Station){
     let risk = 4
 
     risk += (station.thermal?.oil_temp_c || 0) * 0.32
@@ -249,7 +258,7 @@ export const useSensorStore = defineStore('sensorStore', () => {
     return Math.round(clamp(risk))
   }
 
-  function getStationStatus(station){
+  function getStationStatus(station:Station):AssetStatus{
     if(
       station.alarms?.offline ||
       station.alarms?.sensor_failure
@@ -268,7 +277,7 @@ export const useSensorStore = defineStore('sensorStore', () => {
     return 'normal'
   }
 
-  function pushEvent(event){
+  function pushEvent(event:Partial<AlarmEvent>){
     eventSequence += 1
 
     eventStream.value.unshift({
@@ -276,7 +285,7 @@ export const useSensorStore = defineStore('sensorStore', () => {
       timestamp:event.timestamp || new Date().toISOString(),
       severity:event.severity || 'INFO',
       source:event.source || 'SCADA',
-      title:event.title,
+      title:event.title || 'Realtime event',
       description:event.description,
       assetId:event.assetId
     })
@@ -289,7 +298,7 @@ export const useSensorStore = defineStore('sensorStore', () => {
     )
   }
 
-  function updateStation(station){
+  function updateStation(station:Station){
     if(!station?.station_id){
       return
     }
@@ -349,8 +358,8 @@ export const useSensorStore = defineStore('sensorStore', () => {
         entries.map(async ([key,promise]) => [key, await promise])
       )
 
-      const data = {}
-      const failed = []
+      const data:Record<string, any> = {}
+      const failed:string[] = []
 
       settled.forEach((result,index) => {
         const key = entries[index]?.[0] || 'endpoint'
@@ -435,7 +444,7 @@ export const useSensorStore = defineStore('sensorStore', () => {
       })
     }
 
-    ws.onmessage = event => {
+    ws.onmessage = (event:MessageEvent<string>) => {
       const payload = JSON.parse(event.data)
 
       if(payload.station_id){
@@ -472,20 +481,20 @@ export const useSensorStore = defineStore('sensorStore', () => {
     }
   }
 
-  async function openRootCause(correlationId){
+  async function openRootCause(correlationId:string){
     selectedRootCause.value = await fetchRootCause(correlationId)
   }
 
-  async function runContingency(assetId){
+  async function runContingency(assetId:string){
     contingency.value = await fetchContingency(assetId)
   }
 
-  const stations = computed(() =>
+  const stations = computed<Station[]>(() =>
     Object.values(stationsMap.value)
       .sort((a,b) => assetNumber(a.station_id) - assetNumber(b.station_id))
   )
 
-  const alarms = computed(() =>
+  const alarms = computed<Station[]>(() =>
     stations.value.filter(station => alarmList(station).length)
   )
 
@@ -498,7 +507,7 @@ export const useSensorStore = defineStore('sensorStore', () => {
     return Math.round(totalKW / 1000)
   })
 
-  const transformers = computed(() =>
+  const transformers = computed<TransformerAsset[]>(() =>
     stations.value.map((station,index) => {
       const location = parseLocation(station)
       const health = getStationHealth(station)
@@ -523,7 +532,7 @@ export const useSensorStore = defineStore('sensorStore', () => {
     })
   )
 
-  const customers = computed(() =>
+  const customers = computed<CustomerCluster[]>(() =>
     stations.value
       .filter((_,index) => index % 10 === 0)
       .map((station,index) => {
@@ -546,7 +555,7 @@ export const useSensorStore = defineStore('sensorStore', () => {
       })
   )
 
-  const topRiskSubstations = computed(() =>
+  const topRiskSubstations = computed<TopRiskSubstation[]>(() =>
     stations.value
       .map(station => ({
         id:station.station_id,
@@ -558,7 +567,7 @@ export const useSensorStore = defineStore('sensorStore', () => {
       .sort((a,b) => b.risk - a.risk)
   )
 
-  const activeRootCause = computed(() =>
+  const activeRootCause = computed<RootCause | null>(() =>
     selectedRootCause.value ||
     (
       correlations.value[0]
@@ -578,7 +587,7 @@ export const useSensorStore = defineStore('sensorStore', () => {
     )
   )
 
-  function getSubstationById(id){
+  function getSubstationById(id:unknown){
     const requestedNumber = assetNumber(id)
 
     return stations.value.find(station =>
@@ -587,7 +596,7 @@ export const useSensorStore = defineStore('sensorStore', () => {
     ) || stations.value[0]
   }
 
-  function getTransformerById(id){
+  function getTransformerById(id:unknown){
     const normalizedId = normalizeTransformerId(id)
 
     const match = transformers.value.find(transformer =>
@@ -598,7 +607,7 @@ export const useSensorStore = defineStore('sensorStore', () => {
     return match || (id ? null : transformers.value[0])
   }
 
-  function getRegionById(id){
+  function getRegionById(id:unknown){
     return regions.value.find(region => region.id === id) || regions.value[0]
   }
 

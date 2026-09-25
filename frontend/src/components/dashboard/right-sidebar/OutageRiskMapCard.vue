@@ -73,15 +73,16 @@
   </q-card>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue'
+import type { PropType } from 'vue'
 import { useI18n } from '../../../i18n'
 
 const { t } = useI18n()
 
 const props = defineProps({
   stations:{
-    type:Array,
+    type:Array as PropType<any[]>,
     default:() => []
   }
 })

@@ -22,16 +22,17 @@
   </header>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue'
+import type { PropType } from 'vue'
 
 const props = defineProps({
   transformer:{
-    type:Object,
+    type:Object as PropType<Record<string, any>>,
     default:null
   },
   station:{
-    type:Object,
+    type:Object as PropType<Record<string, any>>,
     default:null
   },
   activeSection:{

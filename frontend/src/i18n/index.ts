@@ -4,10 +4,16 @@ import hr from './hr'
 
 const STORAGE_KEY = 'crate-dashboard-language'
 
+type LanguageCode = 'en' | 'hr'
+interface TranslationTree {
+  [key:string]: string | TranslationTree
+}
+type TranslationParams = Record<string, string | number>
+
 export const languageOptions = [
   { code:'en', label:'English', shortLabel:'EN' },
   { code:'hr', label:'Hrvatski', shortLabel:'HR' }
-]
+] as const
 
 const supportedLanguages = new Set(languageOptions.map(option => option.code))
 
@@ -16,17 +22,17 @@ const savedLanguage = typeof window !== 'undefined'
   : null
 
 export const currentLanguage = ref(
-  supportedLanguages.has(savedLanguage) ? savedLanguage : 'en'
+  supportedLanguages.has(savedLanguage as LanguageCode) ? savedLanguage as LanguageCode : 'en'
 )
 
-export const translations = {
+export const translations:Record<LanguageCode, TranslationTree> = {
   en: en,
   hr: hr
 }
 
 export default translations
 
-function createValuePathMap(messages, prefix = ''){
+function createValuePathMap(messages:TranslationTree, prefix = ''):Record<string, string>{
   return Object.entries(messages).reduce((paths, [key, value]) => {
     const path = prefix ? `${prefix}.${key}` : key
 
@@ -42,12 +48,12 @@ function createValuePathMap(messages, prefix = ''){
     }
 
     return paths
-  }, {})
+  }, {} as Record<string, string>)
 }
 
 const englishValuePaths = createValuePathMap(translations.en)
 
-function resolveMessage(messages, key){
+function resolveMessage(messages:TranslationTree, key:string):string | TranslationTree | undefined{
   if(Object.prototype.hasOwnProperty.call(messages, key)){
     return messages[key]
   }
@@ -58,11 +64,11 @@ function resolveMessage(messages, key){
   )
 }
 
-export function setLanguage(code){
-  currentLanguage.value = supportedLanguages.has(code) ? code : 'en'
+export function setLanguage(code:string){
+  currentLanguage.value = supportedLanguages.has(code as LanguageCode) ? code as LanguageCode : 'en'
 }
 
-export function t(key, params = {}){
+export function t(key:string, params:TranslationParams = {}){
   const activeMessages = translations[currentLanguage.value] || translations.en
   const fallbackMessages = translations.en
   const normalizedKey = englishValuePaths[key] || key
@@ -73,12 +79,12 @@ export function t(key, params = {}){
   const text = typeof message === 'string' ? message : key
 
   return Object.entries(params).reduce(
-    (result,[name,value]) => result.replaceAll('{' + name + '}', value),
+    (result,[name,value]) => result.replaceAll('{' + name + '}', String(value)),
     text
   )
 }
 
-export function translateText(value){
+export function translateText<T>(value:T){
   if(value === null || value === undefined){
     return value
   }
@@ -86,7 +92,7 @@ export function translateText(value){
   return t(String(value))
 }
 
-export function translateStatus(value){
+export function translateStatus<T>(value:T){
   return translateText(value)
 }
 

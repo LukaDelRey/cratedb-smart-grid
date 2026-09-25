@@ -2,14 +2,15 @@
   <div />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { onMounted, onBeforeUnmount, watch } from 'vue'
+import type { PropType } from 'vue'
 import mapboxgl from 'mapbox-gl'
 import { useI18n } from '../../../../i18n'
 
 const props = defineProps({
-  map:{ type:Object, required:true },
-  regions:{ type:Array, default:() => [] }
+  map:{ type:Object as PropType<any>, required:true },
+  regions:{ type:Array as PropType<any[]>, default:() => [] }
 })
 
 const { t } = useI18n()

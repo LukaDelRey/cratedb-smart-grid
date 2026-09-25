@@ -24,10 +24,11 @@
   </q-card>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import type { PropType } from 'vue'
 defineProps({
   alarms:{
-    type:Array,
+    type:Array as PropType<any[]>,
     default:() => []
   }
 })

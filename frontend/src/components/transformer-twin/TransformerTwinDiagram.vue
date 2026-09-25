@@ -47,12 +47,13 @@
   </section>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue'
+import type { PropType } from 'vue'
 
 defineProps({
   callouts:{
-    type:Array,
+    type:Array as PropType<any[]>,
     default:() => []
   },
   compact:{

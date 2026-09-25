@@ -310,10 +310,13 @@
   </q-layout>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed, defineComponent, h, onMounted, ref } from 'vue'
+import type { PropType } from 'vue'
 import { useRoute } from 'vue-router'
 import { useSensorStore } from '../stores/sensorStore'
+import { humanizeAssetKey as alarmLabel } from '../utils/assets'
+import { clamp, round1, round2 } from '../utils/numbers'
 import Sidebar from '../components/dashboard/layout/Sidebar.vue'
 import TransformerTwinMiniChart from '../components/transformer-twin/TransformerTwinMiniChart.vue'
 
@@ -336,15 +339,21 @@ const tabs = [
   { key:'events', label:'Events' }
 ]
 
+const routeStationId = computed(() => {
+  const id = route.params.id
+
+  return Array.isArray(id) ? id[0] : id
+})
+
 const station = computed(() =>
-  store.getSubstationById(route.params.id)
+  store.getSubstationById(routeStationId.value)
 )
 
 const transformers = computed(() =>
   store.transformers.filter(transformer => transformer.substation === station.value?.station_id)
 )
 
-const stationId = computed(() => station.value?.station_id || route.params.id || 'TS-001')
+const stationId = computed(() => station.value?.station_id || routeStationId.value || 'TS-001')
 const stationName = computed(() => station.value?.station_name || `Substation ${stationId.value}`)
 const activeTabLabel = computed(() =>
   tabs.find(tab => tab.key === activeTab.value)?.label || 'Overview'
@@ -664,24 +673,6 @@ function runStationContingency(){
   store.runContingency(stationId.value)
 }
 
-function alarmLabel(key){
-  return key
-    .replace(/_/g, ' ')
-    .replace(/\b\w/g, char => char.toUpperCase())
-}
-
-function clamp(value,min = 0,max = 100){
-  return Math.min(max, Math.max(min, Number(value) || 0))
-}
-
-function round1(value){
-  return Math.round((Number(value) || 0) * 10) / 10
-}
-
-function round2(value){
-  return Math.round((Number(value) || 0) * 100) / 100
-}
-
 const SparkLine = defineComponent({
   name:'SparkLine',
   props:{
@@ -718,7 +709,7 @@ const SparkLine = defineComponent({
 const KpiCard = defineComponent({
   name:'KpiCard',
   props:{
-    metric:{ type:Object, required:true }
+    metric:{ type:Object as PropType<Record<string, any>>, required:true }
   },
   setup(props){
     return () => h('div', { class:'sst-card kpi-card' }, [
@@ -738,8 +729,8 @@ const TrendPanel = defineComponent({
     seed:{ type:Number, default:72 },
     legendA:{ type:String, default:'Actual' },
     legendB:{ type:String, default:'Forecast' },
-    footer:{ type:Array, default:() => [] },
-    sideStats:{ type:Array, default:() => [] }
+    footer:{ type:Array as PropType<any[]>, default:() => [] },
+    sideStats:{ type:Array as PropType<any[]>, default:() => [] }
   },
   setup(props){
     return () => h('div', { class:'sst-card trend-panel' }, [
@@ -771,7 +762,7 @@ const MetricCard = defineComponent({
   name:'MetricCard',
   props:{
     title:{ type:String, required:true },
-    metrics:{ type:Array, default:() => [] },
+    metrics:{ type:Array as PropType<any[]>, default:() => [] },
     compact:{ type:Boolean, default:false }
   },
   setup(props){
@@ -791,7 +782,7 @@ const MetricCard = defineComponent({
 const SubstationDiagram = defineComponent({
   name:'SubstationDiagram',
   props:{
-    feeders:{ type:Array, default:() => [] },
+    feeders:{ type:Array as PropType<any[]>, default:() => [] },
     risk:{ type:Number, default:0 },
     load:{ type:Number, default:0 },
     voltage:{ type:Number, default:20.4 },
@@ -871,14 +862,14 @@ function simplePanel(name, className, renderContent){
   return defineComponent({
     name,
     props:{
-      rows:{ type:Array, default:() => [] },
-      items:{ type:Array, default:() => [] },
-      steps:{ type:Array, default:() => [] },
-      maintenance:{ type:Object, default:null },
+      rows:{ type:Array as PropType<any[]>, default:() => [] },
+      items:{ type:Array as PropType<any[]>, default:() => [] },
+      steps:{ type:Array as PropType<any[]>, default:() => [] },
+      maintenance:{ type:Object as PropType<Record<string, any>>, default:null },
       health:{ type:Number, default:0 },
       risk:{ type:Number, default:0 },
-      contingency:{ type:Object, default:null },
-      fallback:{ type:Object, default:null },
+      contingency:{ type:Object as PropType<Record<string, any>>, default:null },
+      fallback:{ type:Object as PropType<Record<string, any>>, default:null },
       busbarTemp:{ type:Number, default:44 },
       ambientTemp:{ type:Number, default:24 }
     },

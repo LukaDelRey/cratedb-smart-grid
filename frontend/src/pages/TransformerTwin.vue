@@ -407,10 +407,13 @@
   </TransformerTwinShell>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed, defineComponent, h, onMounted, ref } from 'vue'
+import type { PropType } from 'vue'
 import { useRoute } from 'vue-router'
 import { useSensorStore } from '../stores/sensorStore'
+import { humanizeAssetKey as alarmLabel } from '../utils/assets'
+import { round1 } from '../utils/numbers'
 import TransformerTwinShell from '../components/transformer-twin/TransformerTwinShell.vue'
 import TransformerTwinDiagram from '../components/transformer-twin/TransformerTwinDiagram.vue'
 import TransformerTwinMiniChart from '../components/transformer-twin/TransformerTwinMiniChart.vue'
@@ -634,16 +637,6 @@ const insights = [
   { title:'Routine oil sampling recommended in next 15 days.', body:'Based on ageing factor and oil condition analysis.', icon:'build', tone:'white', time:'May 20, 14:25' }
 ]
 
-function round1(value){
-  return Math.round(Number(value || 0) * 10) / 10
-}
-
-function alarmLabel(key){
-  return key
-    .replace(/_/g, ' ')
-    .replace(/\b\w/g, char => char.toUpperCase())
-}
-
 function scatterStyle(index){
   const progress = (index - 1) / 47
   const jitterX = Math.sin(index * 2.13) * 2.6
@@ -697,8 +690,8 @@ const TrendPanel = defineComponent({
     seed:{ type:Number, default:72 },
     legendA:{ type:String, default:'Actual' },
     legendB:{ type:String, default:'Forecast' },
-    footer:{ type:Array, default:() => [] },
-    sideStats:{ type:Array, default:() => [] }
+    footer:{ type:Array as PropType<any[]>, default:() => [] },
+    sideStats:{ type:Array as PropType<any[]>, default:() => [] }
   },
   setup(props){
     return () => h('div', { class:'tt-card trend-panel' }, [
@@ -730,7 +723,7 @@ const MetricCard = defineComponent({
   name:'MetricCard',
   props:{
     title:{ type:String, required:true },
-    metrics:{ type:Array, default:() => [] }
+    metrics:{ type:Array as PropType<any[]>, default:() => [] }
   },
   setup(props){
     return () => h('div', { class:'tt-card metric-card' }, [
@@ -769,7 +762,7 @@ const AgeingCard = defineComponent({
 const EnvironmentCard = defineComponent({
   name:'EnvironmentCard',
   props:{
-    items:{ type:Array, default:() => [] }
+    items:{ type:Array as PropType<any[]>, default:() => [] }
   },
   setup(props){
     return () => h('div', { class:'tt-card environment-card' }, [

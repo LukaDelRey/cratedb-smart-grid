@@ -84,13 +84,16 @@
   </q-card>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed, ref } from 'vue'
+import type { PropType } from 'vue'
 import { useI18n } from '../../../i18n'
+import type { AlarmEvent } from '../../../types/dashboard'
+import { formatClockTime as formatTime } from '../../../utils/dateTime'
 
 const props = defineProps({
   events:{
-    type:Array,
+    type:Array as PropType<AlarmEvent[]>,
     default:() => []
   }
 })
@@ -148,19 +151,6 @@ function eventIcon(severity){
   return 'sensors'
 }
 
-function formatTime(timestamp){
-  const parsed = timestamp ? new Date(timestamp) : new Date()
-
-  if(Number.isNaN(parsed.getTime())){
-    return '--:--:--'
-  }
-
-  return parsed.toLocaleTimeString([], {
-    hour:'2-digit',
-    minute:'2-digit',
-    second:'2-digit'
-  })
-}
 </script>
 
 <style scoped>

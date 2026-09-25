@@ -8,14 +8,15 @@
 
 </template>
 
-<script setup>
+<script setup lang="ts">
 
 import { computed } from 'vue'
+import type { PropType } from 'vue'
 import VChart from 'vue-echarts'
 
 const props = defineProps({
   data: {
-    type: Array,
+    type:Array as PropType<any[]>,
     default: () => []
   }
 })

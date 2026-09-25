@@ -55,8 +55,9 @@
   </q-card>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed, ref } from 'vue'
+import type { PropType } from 'vue'
 import { useI18n } from '../../../i18n'
 
 const emit = defineEmits(['select-station'])
@@ -64,7 +65,7 @@ const { t } = useI18n()
 
 const props = defineProps({
   stations:{
-    type:Array,
+    type:Array as PropType<any[]>,
     default:() => []
   }
 })
@@ -105,11 +106,6 @@ const displayStations = computed(() =>
 const actionLabel = computed(() =>
   expanded.value ? t('dashboard.showLess') : t('dashboard.viewAll')
 )
-
-const cardStyle = computed(() => ({
-  maxHeight:'317px',
-  height:`317px`
-}))
 
 function selectStation(stationId){
   emit('select-station', stationId)

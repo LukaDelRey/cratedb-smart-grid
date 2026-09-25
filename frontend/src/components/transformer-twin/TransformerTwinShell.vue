@@ -16,17 +16,18 @@
   </q-layout>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import type { PropType } from 'vue'
 import Sidebar from '../dashboard/layout/Sidebar.vue'
 import TransformerTwinTopbar from './TransformerTwinTopbar.vue'
 
 defineProps({
   transformer:{
-    type:Object,
+    type:Object as PropType<Record<string, any>>,
     default:null
   },
   station:{
-    type:Object,
+    type:Object as PropType<Record<string, any>>,
     default:null
   },
   activeAlarms:{

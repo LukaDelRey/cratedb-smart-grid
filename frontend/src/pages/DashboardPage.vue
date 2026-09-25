@@ -148,7 +148,7 @@
   </q-layout>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed, onMounted, ref } from 'vue'
 import { useSensorStore } from '../stores/sensorStore'
 import Sidebar from '../components/dashboard/layout/Sidebar.vue'
@@ -164,14 +164,18 @@ import AlarmCorrelationPanel from '../components/dashboard/operations/alarms/Ala
 import AlarmRootCausePanel from '../components/dashboard/operations/alarms/AlarmRootCausePanel.vue'
 import RealtimeEventStream from '../components/dashboard/operations/RealtimeEventStream.vue'
 import SystemTopologyDialog from '../components/dashboard/system/SystemTopologyDialog.vue'
+import { useOperatorMetrics } from '../composables/useOperatorMetrics'
 import { useI18n } from '../i18n'
+import type { FocusStationRequest } from '../types/dashboard'
 
 const store = useSensorStore()
 const { t } = useI18n()
 const topologyOpen = ref(false)
 const activeOpsPanel = ref('alarms')
-const stationFocusRequest = ref(null)
+const stationFocusRequest = ref<FocusStationRequest | null>(null)
 const notificationOpenSignal = ref(0)
+
+const { linePoints, operatorMetrics } = useOperatorMetrics(store, t)
 
 const opsPanels = computed(() => [
   { key:'alarms', label:t('dashboard.activeAlarmsEvents'), icon:'table_rows' },
@@ -180,132 +184,7 @@ const opsPanels = computed(() => [
   { key:'events', label:t('dashboard.realtimeEventStream'), icon:'stream' }
 ])
 
-const voltageStability = computed(() => {
-  const latest = pointValue(store.metricHistory?.voltageStability?.at(-1))
-  const fallback = Math.max(91, Math.min(99, store.summary.gridHealth + 4))
-
-  return Math.round((latest || fallback) * 10) / 10
-})
-
-const energyEfficiency = computed(() => {
-  const latest = pointValue(store.metricHistory?.energyEfficiency?.at(-1))
-  const fallback = Math.max(70, Math.min(96, store.summary.gridHealth - 3))
-
-  return Math.round((latest || fallback) * 10) / 10
-})
-
-const avgThd = computed(() => {
-  const values = store.stations
-    .map(station => station.electrical?.harmonics_thd)
-    .filter(Number.isFinite)
-
-  if(!values.length) return 3.2
-
-  return Math.round((values.reduce((sum, value) => sum + value, 0) / values.length) * 10) / 10
-})
-
-const sparkSeeds = [28, 32, 42, 35, 48, 38, 52, 45, 58, 54, 66, 72]
-
-function spark(offset = 0){
-  return sparkSeeds.map((value, index) =>
-    Math.max(12, Math.min(92, value + ((index + offset) % 4) * 4 - offset))
-  )
-}
-
-function historyValues(key, offset = 0){
-  const values = store.metricHistory?.[key] || []
-
-  return values.length > 1
-    ? values
-    : spark(offset)
-}
-
-function pointValue(point){
-  return typeof point === 'number'
-    ? point
-    : Number(point?.value) || 0
-}
-
-function pointTimestamp(point){
-  if(!point || typeof point !== 'object' || !point.timestamp){
-    return null
-  }
-
-  const parsed = typeof point.timestamp === 'number'
-    ? point.timestamp
-    : Date.parse(point.timestamp)
-
-  return Number.isFinite(parsed) ? parsed : null
-}
-
-function metricDelta(key){
-  const values = store.metricHistory?.[key] || []
-
-  if(values.length < 2){
-    return 0
-  }
-
-  return pointValue(values.at(-1)) - pointValue(values.at(-2))
-}
-
-function trendText(key, unit = '', fallback = t('dashboard.live')){
-  const delta = metricDelta(key)
-
-  if(!delta){
-    return fallback
-  }
-
-  const sign = delta > 0 ? '+' : ''
-  const rounded = Math.abs(delta) >= 10
-    ? Math.round(delta)
-    : Math.round(delta * 10) / 10
-
-  return `${sign}${rounded}${unit} ${t('dashboard.vsLastUpdate')}`
-}
-
-function linePoints(values, width, height){
-  if(!values.length) return ''
-
-  const plottedValues = values.map(pointValue)
-  const timestamps = values.map(pointTimestamp)
-  const validTimestamps = timestamps.filter(Number.isFinite)
-  const min = Math.min(...plottedValues)
-  const max = Math.max(...plottedValues)
-  const range = Math.max(1, max - min)
-  const latestTimestamp = validTimestamps.at(-1)
-  const firstTimestamp = validTimestamps[0]
-  const historyWindowMs = 60 * 60 * 1000
-  const elapsedMs = Number.isFinite(firstTimestamp) && Number.isFinite(latestTimestamp)
-    ? latestTimestamp - firstTimestamp
-    : 0
-  const timelineStart = Number.isFinite(firstTimestamp) && Number.isFinite(latestTimestamp)
-    ? elapsedMs >= historyWindowMs
-      ? latestTimestamp - historyWindowMs
-      : firstTimestamp
-    : null
-  const timelineEnd = timelineStart === null
-    ? null
-    : elapsedMs >= historyWindowMs
-      ? latestTimestamp
-      : Math.max(firstTimestamp + 1, latestTimestamp)
-
-  return values
-    .map((point, index) => {
-      const value = pointValue(point)
-      const timestamp = timestamps[index]
-      const x = timelineStart !== null && Number.isFinite(timestamp)
-        ? Math.max(0, Math.min(width, ((timestamp - timelineStart) / (timelineEnd - timelineStart)) * width))
-        : values.length === 1
-          ? width / 2
-          : (index / (values.length - 1)) * width
-      const y = height - ((value - min) / range) * (height - 6) - 3
-
-      return `${x.toFixed(1)},${y.toFixed(1)}`
-    })
-    .join(' ')
-}
-
-function focusStationOnMap(stationId){
+function focusStationOnMap(stationId:string){
   stationFocusRequest.value = {
     id:stationId,
     requestedAt:Date.now()
@@ -316,63 +195,6 @@ function openNotifications(){
   activeOpsPanel.value = 'alarms'
   notificationOpenSignal.value += 1
 }
-
-const operatorMetrics = computed(() => [
-  {
-    label:t('dashboard.totalLoad'),
-    value:(store.totalLoadMW / 1000).toFixed(2),
-    unit:' GW',
-    trend:trendText('totalLoadMW', ' MW', t('dashboard.live')),
-    trendClass:'text-positive',
-    chartClass:'normal',
-    spark:historyValues('totalLoadMW', 0)
-  },
-  {
-    label:t('dashboard.frequency'),
-    value:(pointValue(store.metricHistory?.frequency?.at(-1)) || 50.02).toFixed(2),
-    unit:' Hz',
-    trend:trendText('frequency', ' Hz', t('dashboard.live')),
-    trendClass:'text-positive',
-    chartClass:'normal',
-    spark:historyValues('frequency', 2)
-  },
-  {
-    label:t('dashboard.voltageStability'),
-    value:voltageStability.value,
-    unit:'%',
-    trend:t('dashboard.good'),
-    trendClass:'text-positive',
-    chartClass:'normal',
-    spark:historyValues('voltageStability', 4)
-  },
-  {
-    label:t('dashboard.powerQuality'),
-    value:avgThd.value,
-    unit:'% THD',
-    trend:avgThd.value > 5 ? t('dashboard.watch') : t('dashboard.good'),
-    trendClass:avgThd.value > 5 ? 'text-warning' : 'text-positive',
-    chartClass:avgThd.value > 5 ? 'warning' : 'normal',
-    spark:historyValues('powerQuality', 1)
-  },
-  {
-    label:t('dashboard.activeAlarms'),
-    value:store.summary.activeAlarms || store.alarms.length,
-    unit:'',
-    trend:trendText('activeAlarms', '', t('dashboard.live')),
-    trendClass:'text-negative',
-    chartClass:'critical',
-    spark:historyValues('activeAlarms', 3)
-  },
-  {
-    label:t('dashboard.energyEfficiency'),
-    value:energyEfficiency.value,
-    unit:'%',
-    trend:t('dashboard.excellent'),
-    trendClass:'text-positive',
-    chartClass:'normal',
-    spark:historyValues('energyEfficiency', 5)
-  }
-])
 
 onMounted(() => {
   store.start()

@@ -6,20 +6,21 @@
     </div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 
 import { computed } from 'vue'
+import type { Station } from '../types/dashboard'
 
-const props = defineProps({
-  sensors: Array
-})
+const props = defineProps<{
+  sensors: Station[]
+}>()
 
 const chartData = computed(() => {
 
   return props.sensors
     .slice(0, 20)
     .reverse()
-    .map(sensor => sensor.electrical.voltage_kv)
+    .map(sensor => sensor.electrical?.voltage_kv)
 })
 
 </script>

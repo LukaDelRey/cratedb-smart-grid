@@ -6,7 +6,7 @@
       <q-page class="page-shell">
         <TwinHeader
           title="Region Digital Twin"
-          :asset-id="region?.id || route.params.id"
+          :asset-id="region?.id || regionId"
           :health="region?.healthScore"
           :risk="region?.blackoutRisk"
           icon="public"
@@ -80,7 +80,7 @@
   </q-layout>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { useSensorStore } from '../stores/sensorStore'
@@ -93,6 +93,11 @@ import { useI18n } from '../i18n'
 const route = useRoute()
 const store = useSensorStore()
 const { t } = useI18n()
+const regionId = computed(() => {
+  const id = route.params.id
+
+  return Array.isArray(id) ? id[0] : id
+})
 
 onMounted(() => {
   if(!store.stations.length){
@@ -101,7 +106,7 @@ onMounted(() => {
 })
 
 const region = computed(() =>
-  store.getRegionById(route.params.id)
+  store.getRegionById(regionId.value)
 )
 </script>
 

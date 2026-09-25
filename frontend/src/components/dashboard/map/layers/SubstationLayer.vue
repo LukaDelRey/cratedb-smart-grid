@@ -2,21 +2,22 @@
   <div />
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { onMounted, onBeforeUnmount, watch } from 'vue'
+import type { PropType } from 'vue'
 import mapboxgl from 'mapbox-gl'
 import { useSensorStore } from '../../../../stores/sensorStore'
 import { useI18n } from '../../../../i18n'
 
 const props = defineProps({
-  map:{ type:Object, required:true },
-  stations:{ type:Array, default:() => [] },
+  map:{ type:Object as PropType<any>, required:true },
+  stations:{ type:Array as PropType<any[]>, default:() => [] },
   visibleStatuses:{
-    type:Array,
+    type:Array as PropType<any[]>,
     default:() => ['normal','warning','critical','offline']
   },
   focusStation:{
-    type:Object,
+    type:Object as PropType<Record<string, any>>,
     default:null
   }
 })

@@ -52,14 +52,15 @@
   </q-card>
 </template>
 
-<script setup>
+<script setup lang="ts">
+import type { PropType } from 'vue'
 import { useI18n } from '../../../i18n'
 
 const { t, translateText } = useI18n()
 
 defineProps({
   insights:{
-    type:Array,
+    type:Array as PropType<any[]>,
     default:() => []
   }
 })
