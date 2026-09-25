@@ -57,11 +57,9 @@
             </div>
 
           </q-card-section>
-
         </q-card>
       </l-popup>
     </l-marker>
-
   </l-map>
 </template>
 

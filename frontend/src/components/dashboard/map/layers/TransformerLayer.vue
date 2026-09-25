@@ -4,6 +4,7 @@
 
 <script setup>
 import { onMounted, onBeforeUnmount, watch } from 'vue'
+import { useRouter } from 'vue-router'
 import mapboxgl from 'mapbox-gl'
 import { useI18n } from '../../../../i18n'
 
@@ -17,6 +18,7 @@ const props = defineProps({
 })
 
 const { t } = useI18n()
+const router = useRouter()
 
 const sourceId = 'transformers-source'
 const glowLayerId = 'transformers-glow'
@@ -99,7 +101,7 @@ function popupHtml(p){
         <strong>${p.risk >= 70 ? t('dashboard.transformerOverloadContingencyRequired') : p.risk >= 38 ? t('dashboard.thermalTrendRequiresMonitoring') : t('dashboard.transformerOperatingNormally')}</strong>
         <small>${p.oilTemp >= 80 ? t('dashboard.coolingInspectionRecommended') : t('dashboard.noImmediateActionRequired')}</small>
       </div>
-      <a class="popup-link" href="/transformers/${p.id}">${t('dashboard.openTransformerTwin')}</a>
+      <a class="popup-link" data-transformer-link href="/transformers/${p.id}">${t('dashboard.openTransformerTwin')}</a>
     </div>
   `
 }
@@ -114,6 +116,11 @@ function openPopup(event){
     .addTo(props.map)
 
   popup.getElement()?.querySelector('.popup-close')?.addEventListener('click', () => popup.remove())
+  popup.getElement()?.querySelector('[data-transformer-link]')?.addEventListener('click', clickEvent => {
+    clickEvent.preventDefault()
+    router.push(`/transformers/${feature.properties.id}`)
+    popup.remove()
+  })
 }
 
 function setPointer(){ props.map.getCanvas().style.cursor = 'pointer' }

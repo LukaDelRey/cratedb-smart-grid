@@ -12,7 +12,7 @@
       <q-item
         v-for="item in insights"
         :key="item.id"
-        class="scada-list-item"
+        class="scada-list-item "
       >
         <q-item-section avatar>
           <q-avatar
@@ -76,3 +76,4 @@ function severityIcon(type){
   return 'bolt'
 }
 </script>
+

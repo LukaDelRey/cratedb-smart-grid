@@ -48,6 +48,22 @@ function alarmList(station){
     .map(([key]) => key)
 }
 
+function assetNumber(id){
+  const match = String(id || '').match(/(\d+)/)
+
+  return match
+    ? Number(match[1])
+    : Number.MAX_SAFE_INTEGER
+}
+
+function normalizeTransformerId(id){
+  const match = String(id || '').toUpperCase().match(/TR-?0*(\d+)/)
+
+  return match
+    ? `TR-${Number(match[1])}`
+    : String(id || '').toUpperCase()
+}
+
 export const useSensorStore = defineStore('sensorStore', () => {
 
   const stationsMap = ref({})
@@ -466,6 +482,7 @@ export const useSensorStore = defineStore('sensorStore', () => {
 
   const stations = computed(() =>
     Object.values(stationsMap.value)
+      .sort((a,b) => assetNumber(a.station_id) - assetNumber(b.station_id))
   )
 
   const alarms = computed(() =>
@@ -486,10 +503,12 @@ export const useSensorStore = defineStore('sensorStore', () => {
       const location = parseLocation(station)
       const health = getStationHealth(station)
       const risk = getStationRisk(station)
+      const stationNumber = assetNumber(station.station_id)
 
       return {
-        id:`TR-${station.station_id.replace('TS-', '')}`,
+        id:`TR-${stationNumber}`,
         name:`Transformer ${station.station_id}`,
+        stationCode:station.station_id,
         substation:station.station_id,
         lng:location.lng + ((index % 4) - 2) * 0.0008,
         lat:location.lat + ((index % 3) - 1) * 0.0008,
@@ -560,11 +579,23 @@ export const useSensorStore = defineStore('sensorStore', () => {
   )
 
   function getSubstationById(id){
-    return stations.value.find(station => station.station_id === id) || stations.value[0]
+    const requestedNumber = assetNumber(id)
+
+    return stations.value.find(station =>
+      station.station_id === id ||
+      assetNumber(station.station_id) === requestedNumber
+    ) || stations.value[0]
   }
 
   function getTransformerById(id){
-    return transformers.value.find(transformer => transformer.id === id) || transformers.value[0]
+    const normalizedId = normalizeTransformerId(id)
+
+    const match = transformers.value.find(transformer =>
+      normalizeTransformerId(transformer.id) === normalizedId ||
+      normalizeTransformerId(transformer.stationCode) === normalizedId.replace('TR-', 'TS-')
+    )
+
+    return match || (id ? null : transformers.value[0])
   }
 
   function getRegionById(id){

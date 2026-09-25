@@ -106,7 +106,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, onBeforeUnmount, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
 import mapboxgl from 'mapbox-gl'
 import { useSensorStore } from '../../../stores/sensorStore'
 import LayerPanel from './controls/LayerPanel.vue'
@@ -121,6 +121,69 @@ import WeatherLayer from './layers/WeatherLayer.vue'
 import ContingencyLayer from './layers/ContingencyLayer.vue'
 import { useI18n } from '../../../i18n'
 
+const LAYER_STORAGE_KEY = 'cratedb-dashboard-map-layers'
+const MARKER_FILTER_STORAGE_KEY = 'cratedb-dashboard-map-marker-filters'
+const memoryPreferences = new Map()
+
+const DEFAULT_LAYERS = {
+  regions:false,
+  substations:true,
+  transformers:false,
+  lines:true,
+  customers:false,
+  risk:false,
+  heatmap:false,
+  weather:false,
+  contingency:false
+}
+
+const DEFAULT_MARKER_FILTERS = {
+  normal:true,
+  warning:true,
+  critical:true,
+  offline:true
+}
+
+function loadStoredObject(key, defaults){
+  const memoryValue = memoryPreferences.get(key)
+
+  if(memoryValue){
+    return {
+      ...defaults,
+      ...memoryValue
+    }
+  }
+
+  if(typeof window === 'undefined'){
+    return { ...defaults }
+  }
+
+  try{
+    const parsed = JSON.parse(window.localStorage?.getItem(key) || '{}')
+
+    return {
+      ...defaults,
+      ...parsed
+    }
+  }catch{
+    return { ...defaults }
+  }
+}
+
+function storeObject(key,value){
+  memoryPreferences.set(key, { ...value })
+
+  if(typeof window === 'undefined'){
+    return
+  }
+
+  try{
+    window.localStorage?.setItem(key, JSON.stringify(value))
+  }catch{
+    // Some embedded browsers disable localStorage; in-memory preferences still cover SPA navigation.
+  }
+}
+
 const props = defineProps({
   focusStation:{
     type:Object,
@@ -134,24 +197,8 @@ const mapContainer = ref(null)
 const map = ref(null)
 const mapLoaded = ref(false)
 
-const layers = ref({
-  regions:false,
-  substations:true,
-  transformers:false,
-  lines:true,
-  customers:false,
-  risk:false,
-  heatmap:false,
-  weather:false,
-  contingency:false
-})
-
-const markerFilters = ref({
-  normal:true,
-  warning:true,
-  critical:true,
-  offline:true
-})
+const layers = ref(loadStoredObject(LAYER_STORAGE_KEY, DEFAULT_LAYERS))
+const markerFilters = ref(loadStoredObject(MARKER_FILTER_STORAGE_KEY, DEFAULT_MARKER_FILTERS))
 
 const visibleStatuses = computed(() =>
   Object.entries(markerFilters.value)
@@ -223,13 +270,32 @@ watch(
 )
 
 watch(
+  layers,
+  value => {
+    storeObject(LAYER_STORAGE_KEY, value)
+  },
+  { deep:true }
+)
+
+watch(
+  markerFilters,
+  value => {
+    storeObject(MARKER_FILTER_STORAGE_KEY, value)
+  },
+  { deep:true }
+)
+
+watch(
   () => props.focusStation,
   request => {
     if(!request?.id){
       return
     }
 
-    layers.value.substations = true
+    layers.value = {
+      ...layers.value,
+      substations:true
+    }
     markerFilters.value = {
       normal:true,
       warning:true,
@@ -239,7 +305,7 @@ watch(
   }
 )
 
-onBeforeUnmount(() => {
+onUnmounted(() => {
   if(map.value){
     map.value.remove()
   }

@@ -16,8 +16,8 @@
           color="cyan"
           icon="open_in_full"
           :label="t('dashboard.viewAll')"
-          size="sm"
-          padding="sm"
+          size="9px"
+          padding="6px"
           class="compact-action-btn q-ml-sm"
           @click="viewAllOpen = true"
         />
