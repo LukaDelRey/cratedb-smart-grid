@@ -11,6 +11,37 @@
         </q-badge>
 
         <q-btn
+          flat
+          round
+          dense
+          icon="sort"
+          size="11px"
+          :color="severitySortEnabled ? 'cyan' : 'blue-grey-3'"
+          :class="['alarm-sort-btn', { active:severitySortEnabled }]"
+          :aria-label="severitySortEnabled ? t('dashboard.sortByTime') : t('dashboard.sortBySeverity')"
+          @click="toggleSeveritySort"
+        >
+          <q-tooltip>
+            {{ severitySortEnabled ? t('dashboard.sortByTime') : t('dashboard.sortBySeverity') }}
+          </q-tooltip>
+        </q-btn>
+
+        <q-btn
+          flat
+          round
+          dense
+          icon="filter_alt"
+          size="11px"
+          :color="mapFilterEnabled ? 'cyan' : 'blue-grey-3'"
+          :class="['alarm-map-filter-btn', { active:mapFilterEnabled }]"
+          :aria-pressed="mapFilterEnabled"
+          :aria-label="mapFilterEnabled ? t('dashboard.restoreMapPins') : t('dashboard.mapTableStations')"
+          @click="emit('update:mapFilterEnabled', !mapFilterEnabled)"
+        >
+          <q-tooltip>{{ mapFilterEnabled ? t('dashboard.restoreMapPins') : t('dashboard.mapTableStations') }}</q-tooltip>
+        </q-btn>
+
+        <q-btn
           dense
           outline
           color="cyan"
@@ -74,7 +105,7 @@
               <td class="alarm-title-cell">{{ translateText(row.title) }}</td>
               <td>{{ row.value }}</td>
               <td>
-                <q-badge :color="statusColor(row)">
+                <q-badge :class="['severity-badge', 'status-badge', statusBadgeClass(row)]">
                   {{ translateStatus(displayStatus(row)) }}
                 </q-badge>
               </td>
@@ -147,7 +178,32 @@
             <div class="section-title">{{ t('dashboard.alarmEventRegister') }}</div>
           </div>
 
-          <q-btn flat round dense icon="close" color="blue-grey-2" v-close-popup />
+          <div class="row items-center q-gutter-xs">
+            <q-btn
+              flat
+              round
+              dense
+              icon="sort"
+              :color="severitySortEnabled ? 'cyan' : 'blue-grey-3'"
+              :class="['alarm-sort-btn', { active:severitySortEnabled }]"
+              :aria-label="severitySortEnabled ? t('dashboard.sortByTime') : t('dashboard.sortBySeverity')"
+              @click="toggleSeveritySort"
+            >
+              <q-tooltip>
+                {{ severitySortEnabled ? t('dashboard.sortByTime') : t('dashboard.sortBySeverity') }}
+              </q-tooltip>
+            </q-btn>
+            <q-btn
+              flat round dense icon="filter_alt"
+              :color="mapFilterEnabled ? 'cyan' : 'blue-grey-3'"
+              :aria-pressed="mapFilterEnabled"
+              :aria-label="mapFilterEnabled ? t('dashboard.restoreMapPins') : t('dashboard.mapTableStations')"
+              @click="emit('update:mapFilterEnabled', !mapFilterEnabled)"
+            >
+              <q-tooltip>{{ mapFilterEnabled ? t('dashboard.restoreMapPins') : t('dashboard.mapTableStations') }}</q-tooltip>
+            </q-btn>
+            <q-btn flat round dense icon="close" color="blue-grey-2" v-close-popup />
+          </div>
         </q-card-section>
 
         <q-card-section class="q-pa-none dialog-alarm-table-frame">
@@ -187,7 +243,7 @@
               </colgroup>
               <tbody>
                 <tr
-                  v-for="row in rows"
+                  v-for="row in displayRows"
                   :key="`dialog-${row.id}`"
                 >
                   <td>{{ row.time }}</td>
@@ -200,7 +256,7 @@
                   <td class="alarm-title-cell">{{ translateText(row.title) }}</td>
                   <td>{{ row.value }}</td>
                   <td>
-                    <q-badge :color="statusColor(row)">
+                    <q-badge :class="['severity-badge', 'status-badge', statusBadgeClass(row)]">
                       {{ translateStatus(displayStatus(row)) }}
                     </q-badge>
                   </td>
@@ -260,17 +316,18 @@
 </template>
 
 <script setup lang="ts">
-import { watch } from 'vue'
+import { computed, watch } from 'vue'
 import type { PropType } from 'vue'
 import { useAlarmRegister } from '../../../../composables/useAlarmRegister'
 import { useI18n } from '../../../../i18n'
-import type { AlarmEvent, TopRiskSubstation } from '../../../../types/dashboard'
+import type { TopRiskSubstation } from '../../../../types/dashboard'
 
 const { t, translateText, translateStatus } = useI18n()
 
 const props = defineProps({
+  mapFilterEnabled:{type:Boolean,default:false},
   events:{
-    type:Array as PropType<AlarmEvent[]>,
+    type:Array as PropType<unknown[]>,
     default:() => []
   },
   topRiskSubstations:{
@@ -289,6 +346,8 @@ const props = defineProps({
 
 const emit = defineEmits<{
   'focus-station': [stationId:string]
+  'update:mapFilterEnabled': [enabled:boolean]
+  'table-stations': [stationIds:string[]]
 }>()
 
 const {
@@ -297,18 +356,19 @@ const {
   activeCount,
   assetRoute,
   createWorkOrder,
+  displayRows,
   displayStatus,
   mapStationId,
   openAsset,
   openRegister,
   pinStation,
-  rows,
-  statusColor,
+  severitySortEnabled,
+  statusBadgeClass,
+  toggleSeveritySort,
   viewAllOpen,
   visibleRows,
   workOrderIds
 } = useAlarmRegister({
-  getEvents:() => props.events,
   getTopRiskSubstations:() => props.topRiskSubstations,
   getMaxVisible:() => props.maxVisible,
   onFocusStation:stationId => emit('focus-station', stationId)
@@ -317,6 +377,14 @@ const {
 defineExpose({
   openRegister
 })
+
+const tableStationIds = computed(() => [...new Set(
+  (viewAllOpen.value ? displayRows.value : visibleRows.value)
+    .map(mapStationId)
+    .filter((id):id is string => Boolean(id))
+)])
+
+watch(tableStationIds, ids => emit('table-stations', ids), {immediate:true})
 
 watch(
   () => props.openRegisterSignal,
@@ -331,6 +399,7 @@ watch(
 </script>
 
 <style scoped>
+.alarm-map-filter-btn.active{background:rgba(64,196,255,.14)}
 .active-alarm-events-card{
   display:flex;
   flex-direction:column;
@@ -346,6 +415,17 @@ watch(
 
 .alarm-count-badge{
   min-height:20px;
+}
+
+.alarm-sort-btn{
+  width:28px;
+  height:28px;
+  border:1px solid transparent;
+}
+
+.alarm-sort-btn.active{
+  border-color:rgba(64,196,255,.4);
+  background:rgba(64,196,255,.12);
 }
 
 .alarm-table-frame{
@@ -491,6 +571,27 @@ watch(
 .severity-badge.info{
   color:#4bd8ff;
   background:rgba(64,196,255,.16);
+}
+
+.status-badge.active{
+  color:#ff7c7c;
+  background:rgba(244,67,54,.18);
+}
+
+.status-badge.work-order,
+.status-badge.watch{
+  color:#ffc266;
+  background:rgba(255,152,0,.18);
+}
+
+.status-badge.ack{
+  color:#61e294;
+  background:rgba(33,186,69,.18);
+}
+
+.status-badge.resolved{
+  color:#b7c5cf;
+  background:rgba(144,164,174,.16);
 }
 
 @media (max-width: 820px){

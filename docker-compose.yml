@@ -14,6 +14,9 @@ services:
       -Cnode.name=node1
       -Cauth.host_based.enabled=false
 
+    volumes:
+      - cratedb_data:/data
+
   emqx:
     image: emqx/emqx:latest
     container_name: emqx
@@ -26,6 +29,12 @@ services:
       - emqx_data:/opt/emqx/data
       - emqx_log:/opt/emqx/log
 
+    healthcheck:
+      test: ["CMD", "/opt/emqx/bin/emqx_ctl", "status"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
   backend:
     build:
       context: .
@@ -35,6 +44,16 @@ services:
 
     ports:
       - "8000:8000"
+
+    environment:
+      CRATE_URL: http://cratedb:4200
+      MQTT_HOST: emqx
+      MQTT_PORT: 1883
+      # EMQX rule is the canonical CrateDB writer. Keep this disabled to avoid
+      # duplicate telemetry rows while the backend consumes the same topic.
+      PERSIST_MQTT_TELEMETRY: "false"
+      TELEMETRY_RETENTION_DAYS: 7
+      CORS_ORIGINS: http://localhost:5173,http://127.0.0.1:5173
 
     depends_on:
       - cratedb
@@ -64,5 +83,6 @@ services:
       - "8089:8089"
 
 volumes:
+  cratedb_data:
   emqx_data:
   emqx_log:

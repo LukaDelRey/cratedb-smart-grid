@@ -1,0 +1,1980 @@
+TAP version 13
+Some realtime endpoints failed: regionData: regions unavailable
+Some realtime endpoints failed: crateData: offline
+# Subtest: application unit suite
+    # Subtest: API fetchLatestStations unwraps data and handles an empty envelope
+    ok 1 - API fetchLatestStations unwraps data and handles an empty envelope
+      ---
+      duration_ms: 4.9232
+      type: 'test'
+      ...
+    # Subtest: API fetchRegions unwraps regions and handles an empty envelope
+    ok 2 - API fetchRegions unwraps regions and handles an empty envelope
+      ---
+      duration_ms: 0.586
+      type: 'test'
+      ...
+    # Subtest: API fetchPowerLines unwraps data and handles an empty envelope
+    ok 3 - API fetchPowerLines unwraps data and handles an empty envelope
+      ---
+      duration_ms: 0.5684
+      type: 'test'
+      ...
+    # Subtest: API fetchForecast unwraps points and handles an empty envelope
+    ok 4 - API fetchForecast unwraps points and handles an empty envelope
+      ---
+      duration_ms: 0.4545
+      type: 'test'
+      ...
+    # Subtest: API fetchAIInsights unwraps insights and handles an empty envelope
+    ok 5 - API fetchAIInsights unwraps insights and handles an empty envelope
+      ---
+      duration_ms: 0.4537
+      type: 'test'
+      ...
+    # Subtest: API fetchAlarmCorrelations unwraps correlations and handles an empty envelope
+    ok 6 - API fetchAlarmCorrelations unwraps correlations and handles an empty envelope
+      ---
+      duration_ms: 0.4674
+      type: 'test'
+      ...
+    # Subtest: API fetchPersistentAlarms unwraps data and handles an empty envelope
+    ok 7 - API fetchPersistentAlarms unwraps data and handles an empty envelope
+      ---
+      duration_ms: 0.5829
+      type: 'test'
+      ...
+    # Subtest: API fetchScenarioDefinitions unwraps data and handles an empty envelope
+    ok 8 - API fetchScenarioDefinitions unwraps data and handles an empty envelope
+      ---
+      duration_ms: 0.4508
+      type: 'test'
+      ...
+    # Subtest: API fetchScenarioRuns unwraps data and handles an empty envelope
+    ok 9 - API fetchScenarioRuns unwraps data and handles an empty envelope
+      ---
+      duration_ms: 0.5447
+      type: 'test'
+      ...
+    # Subtest: API fetchGridSummary preserves response body
+    ok 10 - API fetchGridSummary preserves response body
+      ---
+      duration_ms: 0.3481
+      type: 'test'
+      ...
+    # Subtest: API fetchBlackout preserves response body
+    ok 11 - API fetchBlackout preserves response body
+      ---
+      duration_ms: 0.3141
+      type: 'test'
+      ...
+    # Subtest: API fetchWeatherImpact preserves response body
+    ok 12 - API fetchWeatherImpact preserves response body
+      ---
+      duration_ms: 0.3011
+      type: 'test'
+      ...
+    # Subtest: API fetchAlarmStats preserves response body
+    ok 13 - API fetchAlarmStats preserves response body
+      ---
+      duration_ms: 0.3331
+      type: 'test'
+      ...
+    # Subtest: API fetchSystemTopology preserves response body
+    ok 14 - API fetchSystemTopology preserves response body
+      ---
+      duration_ms: 0.2927
+      type: 'test'
+      ...
+    # Subtest: API fetchCrateHealth preserves response body
+    ok 15 - API fetchCrateHealth preserves response body
+      ---
+      duration_ms: 0.3091
+      type: 'test'
+      ...
+    # Subtest: API history encodes asset ID and sends hours and limit
+    ok 16 - API history encodes asset ID and sends hours and limit
+      ---
+      duration_ms: 0.4979
+      type: 'test'
+      ...
+    # Subtest: API alarm filters use backend parameter names
+    ok 17 - API alarm filters use backend parameter names
+      ---
+      duration_ms: 0.4141
+      type: 'test'
+      ...
+    # Subtest: API acknowledgePersistentAlarm posts actor and note
+    ok 18 - API acknowledgePersistentAlarm posts actor and note
+      ---
+      duration_ms: 0.6058
+      type: 'test'
+      ...
+    # Subtest: API createPersistentAlarmWorkOrder posts actor and note
+    ok 19 - API createPersistentAlarmWorkOrder posts actor and note
+      ---
+      duration_ms: 0.3423
+      type: 'test'
+      ...
+    # Subtest: API resolvePersistentAlarm posts actor and note
+    ok 20 - API resolvePersistentAlarm posts actor and note
+      ---
+      duration_ms: 0.3423
+      type: 'test'
+      ...
+    # Subtest: API propagates HTTP 400 without mock fallback
+    ok 21 - API propagates HTTP 400 without mock fallback
+      ---
+      duration_ms: 1.0954
+      type: 'test'
+      ...
+    # Subtest: API propagates HTTP 401 without mock fallback
+    ok 22 - API propagates HTTP 401 without mock fallback
+      ---
+      duration_ms: 0.35
+      type: 'test'
+      ...
+    # Subtest: API propagates HTTP 403 without mock fallback
+    ok 23 - API propagates HTTP 403 without mock fallback
+      ---
+      duration_ms: 0.2997
+      type: 'test'
+      ...
+    # Subtest: API propagates HTTP 404 without mock fallback
+    ok 24 - API propagates HTTP 404 without mock fallback
+      ---
+      duration_ms: 0.3109
+      type: 'test'
+      ...
+    # Subtest: API propagates HTTP 409 without mock fallback
+    ok 25 - API propagates HTTP 409 without mock fallback
+      ---
+      duration_ms: 0.2825
+      type: 'test'
+      ...
+    # Subtest: API propagates HTTP 422 without mock fallback
+    ok 26 - API propagates HTTP 422 without mock fallback
+      ---
+      duration_ms: 0.304
+      type: 'test'
+      ...
+    # Subtest: API propagates HTTP 500 without mock fallback
+    ok 27 - API propagates HTTP 500 without mock fallback
+      ---
+      duration_ms: 0.2884
+      type: 'test'
+      ...
+    # Subtest: API propagates timeout and network failure
+    ok 28 - API propagates timeout and network failure
+      ---
+      duration_ms: 0.732
+      type: 'test'
+      ...
+    # Subtest: WebSocket URL follows the configured HTTP endpoint
+    ok 29 - WebSocket URL follows the configured HTTP endpoint
+      ---
+      duration_ms: 0.181
+      type: 'test'
+      ...
+    # Subtest: store derives load, station identity, alarms and risk from REST telemetry
+    ok 30 - store derives load, station identity, alarms and risk from REST telemetry
+      ---
+      duration_ms: 11.2455
+      type: 'test'
+      ...
+    # Subtest: store partial API failure preserves successful data and reports degradation
+    ok 31 - store partial API failure preserves successful data and reports degradation
+      ---
+      duration_ms: 2.5788
+      type: 'test'
+      ...
+    # Subtest: store DB health failure marks database disconnected
+    ok 32 - store DB health failure marks database disconnected
+      ---
+      duration_ms: 2.1886
+      type: 'test'
+      ...
+    # Subtest: store history is bounded to 720 samples
+    ok 33 - store history is bounded to 720 samples
+      ---
+      duration_ms: 1940.8815
+      type: 'test'
+      ...
+    # Subtest: forecast workspace aggregates actual forecast and threshold boundaries
+    ok 34 - forecast workspace aggregates actual forecast and threshold boundaries
+      ---
+      duration_ms: 1.2127
+      type: 'test'
+      ...
+    # Subtest: forecast workspace empty data gives zero totals
+    ok 35 - forecast workspace empty data gives zero totals
+      ---
+      duration_ms: 0.8833
+      type: 'test'
+      ...
+    # Subtest: load forecast uses telemetry history and produces finite SVG coordinates
+    ok 36 - load forecast uses telemetry history and produces finite SVG coordinates
+      ---
+      duration_ms: 2.3895
+      type: 'test'
+      ...
+    # Subtest: heuristic forecast confidence stays unavailable instead of becoming a percentage
+    ok 37 - heuristic forecast confidence stays unavailable instead of becoming a percentage
+      ---
+      duration_ms: 1.1707
+      type: 'test'
+      ...
+    # Subtest: alarm center filters case-insensitive search and severity
+    ok 38 - alarm center filters case-insensitive search and severity
+      ---
+      duration_ms: 28.0996
+      type: 'test'
+      ...
+    # Subtest: alarm action rejection never changes server-confirmed state
+    ok 39 - alarm action rejection never changes server-confirmed state
+      ---
+      duration_ms: 3.1504
+      type: 'test'
+      ...
+    # Subtest: alarm center refresh failure clears loading and exposes error
+    ok 40 - alarm center refresh failure clears loading and exposes error
+      ---
+      duration_ms: 1.8508
+      type: 'test'
+      ...
+    # Subtest: alarm register deduplicates risk rows for persistent station and sorts severity
+    ok 41 - alarm register deduplicates risk rows for persistent station and sorts severity
+      ---
+      duration_ms: 25.8917
+      type: 'test'
+      ...
+    # Subtest: voltage drop updates active rows, map status and topbar then disappears on recovery
+    ok 42 - voltage drop updates active rows, map status and topbar then disappears on recovery
+      ---
+      duration_ms: 10.866
+      type: 'test'
+      ...
+    # Subtest: scenario control forwards single-station request and handles server error
+    ok 43 - scenario control forwards single-station request and handles server error
+      ---
+      duration_ms: 2.1184
+      type: 'test'
+      ...
+    # Subtest: scenario multi-asset selection uses minimum three targets
+    ok 44 - scenario multi-asset selection uses minimum three targets
+      ---
+      duration_ms: 1.1283
+      type: 'test'
+      ...
+    # Subtest: station history filters invalid samples and bounds series to 48
+    ok 45 - station history filters invalid samples and bounds series to 48
+      ---
+      duration_ms: 2.218
+      type: 'test'
+      ...
+    # Subtest: station history failure reports an error
+    ok 46 - station history failure reports an error
+      ---
+      duration_ms: 1.3394
+      type: 'test'
+      ...
+    # Subtest: station history discards responses from a previously selected station
+    ok 47 - station history discards responses from a previously selected station
+      ---
+      duration_ms: 1.9218
+      type: 'test'
+      ...
+    # Subtest: station history clears data after asset selection is removed
+    ok 48 - station history clears data after asset selection is removed
+      ---
+      duration_ms: 1.1428
+      type: 'test'
+      ...
+    # Subtest: i18n language selection falls back for unsupported language
+    ok 49 - i18n language selection falls back for unsupported language
+      ---
+      duration_ms: 0.3512
+      type: 'test'
+      ...
+    # Subtest: WebSocket telemetry updates station and deduplicates repeated alarm events
+    ok 50 - WebSocket telemetry updates station and deduplicates repeated alarm events
+      ---
+      duration_ms: 3.5907
+      type: 'test'
+      ...
+    # Subtest: WebSocket disconnect schedules reconnect and marks degraded state
+    ok 51 - WebSocket disconnect schedules reconnect and marks degraded state
+      ---
+      duration_ms: 2.5853
+      type: 'test'
+      ...
+    # Subtest: WebSocket malformed JSON is handled without an uncaught exception
+    ok 52 - WebSocket malformed JSON is handled without an uncaught exception
+      ---
+      duration_ms: 2.4855
+      type: 'test'
+      ...
+    # Subtest: repeated start while WebSocket connects does not open a duplicate connection
+    ok 53 - repeated start while WebSocket connects does not open a duplicate connection
+      ---
+      duration_ms: 4.5332
+      type: 'test'
+      ...
+    # Subtest: older WebSocket telemetry never replaces newer station state
+    ok 54 - older WebSocket telemetry never replaces newer station state
+      ---
+      duration_ms: 3.8222
+      type: 'test'
+      ...
+    # Subtest: map preference changes survive composable recreation
+    ok 55 - map preference changes survive composable recreation
+      ---
+      duration_ms: 1.535
+      type: 'test'
+      ...
+    # Subtest: scenario control polling is removed on unmount
+    ok 56 - scenario control polling is removed on unmount
+      ---
+      duration_ms: 0.9844
+      type: 'test'
+      ...
+    # Subtest: alarm center polling is removed on unmount
+    ok 57 - alarm center polling is removed on unmount
+      ---
+      duration_ms: 0.8465
+      type: 'test'
+      ...
+    # Subtest: API audit, root cause, contingency and scenario actions target requested IDs
+    ok 58 - API audit, root cause, contingency and scenario actions target requested IDs
+      ---
+      duration_ms: 1.3737
+      type: 'test'
+      ...
+    # Subtest: dashboard topbar derives critical status and limits notifications to five
+    ok 59 - dashboard topbar derives critical status and limits notifications to five
+      ---
+      duration_ms: 2.2936
+      type: 'test'
+      ...
+    # Subtest: operator metric trends use the difference between real history samples
+    ok 60 - operator metric trends use the difference between real history samples
+      ---
+      duration_ms: 1.6108
+      type: 'test'
+      ...
+    # Subtest: alarm center successful acknowledgement uses confirmed response and audit
+    ok 61 - alarm center successful acknowledgement uses confirmed response and audit
+      ---
+      duration_ms: 6.3712
+      type: 'test'
+      ...
+    # Subtest: alarm register failed acknowledgement never marks a persistent alarm as ACK
+    ok 62 - alarm register failed acknowledgement never marks a persistent alarm as ACK
+      ---
+      duration_ms: 2.5768
+      type: 'test'
+      ...
+    # Subtest: stale history errors do not affect loading or error for the current request
+    ok 63 - stale history errors do not affect loading or error for the current request
+      ---
+      duration_ms: 1.8818
+      type: 'test'
+      ...
+    # Subtest: history selection change immediately clears previous samples
+    ok 64 - history selection change immediately clears previous samples
+      ---
+      duration_ms: 1.5649
+      type: 'test'
+      ...
+    # Subtest: WebSocket rejects null, arrays and primitive payloads and accepts the next valid message
+    ok 65 - WebSocket rejects null, arrays and primitive payloads and accepts the next valid message
+      ---
+      duration_ms: 3.7977
+      type: 'test'
+      ...
+    # Subtest: telemetry timestamp ordering handles numeric milliseconds and ISO timestamps
+    ok 66 - telemetry timestamp ordering handles numeric milliseconds and ISO timestamps
+      ---
+      duration_ms: 3.0583
+      type: 'test'
+      ...
+    1..66
+ok 1 - application unit suite
+  ---
+  duration_ms: 2108.3121
+  type: 'suite'
+  ...
+# Subtest: Vue component unit suite
+    # Subtest: open substation popup and marker refresh together after warning clears
+    ok 1 - open substation popup and marker refresh together after warning clears
+      ---
+      duration_ms: 167.4722
+      type: 'test'
+      ...
+    # Subtest: selecting alarm correlation opens the root cause panel
+    ok 2 - selecting alarm correlation opens the root cause panel
+      ---
+      duration_ms: 1149.3328
+      type: 'test'
+      ...
+    # Subtest: a disappeared correlation reports a useful error instead of an unhandled rejection
+    ok 3 - a disappeared correlation reports a useful error instead of an unhandled rejection
+      ---
+      duration_ms: 3.8935
+      type: 'test'
+      ...
+    # Subtest: transformer popup uses current warning data and refreshes on recovery
+    ok 4 - transformer popup uses current warning data and refreshes on recovery
+      ---
+      duration_ms: 2.6009
+      type: 'test'
+      ...
+    # Subtest: component boundary App.vue: empty data
+    ok 5 - component boundary App.vue: empty data
+      ---
+      duration_ms: 7.1566
+      type: 'test'
+      ...
+    # Subtest: component boundary App.vue: telemetry fixture
+    ok 6 - component boundary App.vue: telemetry fixture
+      ---
+      duration_ms: 7.7012
+      type: 'test'
+      ...
+    # Subtest: component template App.vue renders empty-state boundaries
+    ok 7 - component template App.vue renders empty-state boundaries
+      ---
+      duration_ms: 3.0211
+      type: 'test'
+      ...
+    # Subtest: component boundary components/AlarmPanel.vue: empty data
+    ok 8 - component boundary components/AlarmPanel.vue: empty data
+      ---
+      duration_ms: 12.8679
+      type: 'test'
+      ...
+    # Subtest: component boundary components/AlarmPanel.vue: telemetry fixture
+    ok 9 - component boundary components/AlarmPanel.vue: telemetry fixture
+      ---
+      duration_ms: 1.511
+      type: 'test'
+      ...
+    # Subtest: component template components/AlarmPanel.vue renders empty-state boundaries
+    ok 10 - component template components/AlarmPanel.vue renders empty-state boundaries
+      ---
+      duration_ms: 3.3708
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/layout/GridHealthPanel.vue: empty data
+    ok 11 - component boundary components/dashboard/layout/GridHealthPanel.vue: empty data
+      ---
+      duration_ms: 2.3112
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/layout/GridHealthPanel.vue: telemetry fixture
+    ok 12 - component boundary components/dashboard/layout/GridHealthPanel.vue: telemetry fixture
+      ---
+      duration_ms: 1.5729
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/layout/GridHealthPanel.vue renders empty-state boundaries
+    ok 13 - component template components/dashboard/layout/GridHealthPanel.vue renders empty-state boundaries
+      ---
+      duration_ms: 2.8845
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/layout/Sidebar.vue: empty data
+    ok 14 - component boundary components/dashboard/layout/Sidebar.vue: empty data
+      ---
+      duration_ms: 2.5387
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/layout/Sidebar.vue: telemetry fixture
+    ok 15 - component boundary components/dashboard/layout/Sidebar.vue: telemetry fixture
+      ---
+      duration_ms: 1.8049
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/layout/Sidebar.vue renders empty-state boundaries
+    ok 16 - component template components/dashboard/layout/Sidebar.vue renders empty-state boundaries
+      ---
+      duration_ms: 4.3109
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/layout/Topbar.vue: empty data
+    ok 17 - component boundary components/dashboard/layout/Topbar.vue: empty data
+      ---
+      duration_ms: 2.8146
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/layout/Topbar.vue: telemetry fixture
+    ok 18 - component boundary components/dashboard/layout/Topbar.vue: telemetry fixture
+      ---
+      duration_ms: 2.37
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/layout/Topbar.vue renders empty-state boundaries
+    ok 19 - component template components/dashboard/layout/Topbar.vue renders empty-state boundaries
+      ---
+      duration_ms: 5.4928
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/map/controls/LayerPanel.vue: empty data
+    ok 20 - component boundary components/dashboard/map/controls/LayerPanel.vue: empty data
+      ---
+      duration_ms: 2.0306
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/map/controls/LayerPanel.vue: telemetry fixture
+    ok 21 - component boundary components/dashboard/map/controls/LayerPanel.vue: telemetry fixture
+      ---
+      duration_ms: 1.4123
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/map/controls/LayerPanel.vue renders empty-state boundaries
+    ok 22 - component template components/dashboard/map/controls/LayerPanel.vue renders empty-state boundaries
+      ---
+      duration_ms: 3.9295
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/map/DashboardMap.vue: empty data
+    ok 23 - component boundary components/dashboard/map/DashboardMap.vue: empty data
+      ---
+      duration_ms: 3.1862
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/map/DashboardMap.vue: telemetry fixture
+    ok 24 - component boundary components/dashboard/map/DashboardMap.vue: telemetry fixture
+      ---
+      duration_ms: 2.3302
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/map/DashboardMap.vue renders empty-state boundaries
+    ok 25 - component template components/dashboard/map/DashboardMap.vue renders empty-state boundaries
+      ---
+      duration_ms: 5.3329
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/map/layers/ContingencyLayer.vue: empty data
+    ok 26 - component boundary components/dashboard/map/layers/ContingencyLayer.vue: empty data
+      ---
+      duration_ms: 2.4034
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/map/layers/ContingencyLayer.vue: telemetry fixture
+    ok 27 - component boundary components/dashboard/map/layers/ContingencyLayer.vue: telemetry fixture
+      ---
+      duration_ms: 2.0708
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/map/layers/ContingencyLayer.vue renders empty-state boundaries
+    ok 28 - component template components/dashboard/map/layers/ContingencyLayer.vue renders empty-state boundaries
+      ---
+      duration_ms: 1.9793
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/map/layers/CustomerLayer.vue: empty data
+    ok 29 - component boundary components/dashboard/map/layers/CustomerLayer.vue: empty data
+      ---
+      duration_ms: 2.1212
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/map/layers/CustomerLayer.vue: telemetry fixture
+    ok 30 - component boundary components/dashboard/map/layers/CustomerLayer.vue: telemetry fixture
+      ---
+      duration_ms: 1.697
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/map/layers/CustomerLayer.vue renders empty-state boundaries
+    ok 31 - component template components/dashboard/map/layers/CustomerLayer.vue renders empty-state boundaries
+      ---
+      duration_ms: 1.5979
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/map/layers/HeatmapLayer.vue: empty data
+    ok 32 - component boundary components/dashboard/map/layers/HeatmapLayer.vue: empty data
+      ---
+      duration_ms: 2.1013
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/map/layers/HeatmapLayer.vue: telemetry fixture
+    ok 33 - component boundary components/dashboard/map/layers/HeatmapLayer.vue: telemetry fixture
+      ---
+      duration_ms: 1.9896
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/map/layers/HeatmapLayer.vue renders empty-state boundaries
+    ok 34 - component template components/dashboard/map/layers/HeatmapLayer.vue renders empty-state boundaries
+      ---
+      duration_ms: 1.9934
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/map/layers/PowerLineLayer.vue: empty data
+    ok 35 - component boundary components/dashboard/map/layers/PowerLineLayer.vue: empty data
+      ---
+      duration_ms: 3.2268
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/map/layers/PowerLineLayer.vue: telemetry fixture
+    ok 36 - component boundary components/dashboard/map/layers/PowerLineLayer.vue: telemetry fixture
+      ---
+      duration_ms: 2.6404
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/map/layers/PowerLineLayer.vue renders empty-state boundaries
+    ok 37 - component template components/dashboard/map/layers/PowerLineLayer.vue renders empty-state boundaries
+      ---
+      duration_ms: 6.3222
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/map/layers/RegionLayer.vue: empty data
+    ok 38 - component boundary components/dashboard/map/layers/RegionLayer.vue: empty data
+      ---
+      duration_ms: 1.6001
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/map/layers/RegionLayer.vue: telemetry fixture
+    ok 39 - component boundary components/dashboard/map/layers/RegionLayer.vue: telemetry fixture
+      ---
+      duration_ms: 1.2672
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/map/layers/RegionLayer.vue renders empty-state boundaries
+    ok 40 - component template components/dashboard/map/layers/RegionLayer.vue renders empty-state boundaries
+      ---
+      duration_ms: 1.3783
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/map/layers/RiskLayer.vue: empty data
+    ok 41 - component boundary components/dashboard/map/layers/RiskLayer.vue: empty data
+      ---
+      duration_ms: 2.2842
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/map/layers/RiskLayer.vue: telemetry fixture
+    ok 42 - component boundary components/dashboard/map/layers/RiskLayer.vue: telemetry fixture
+      ---
+      duration_ms: 2.0449
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/map/layers/RiskLayer.vue renders empty-state boundaries
+    ok 43 - component template components/dashboard/map/layers/RiskLayer.vue renders empty-state boundaries
+      ---
+      duration_ms: 2.0447
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/map/layers/SubstationLayer.vue: empty data
+    ok 44 - component boundary components/dashboard/map/layers/SubstationLayer.vue: empty data
+      ---
+      duration_ms: 2.3959
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/map/layers/SubstationLayer.vue: telemetry fixture
+    ok 45 - component boundary components/dashboard/map/layers/SubstationLayer.vue: telemetry fixture
+      ---
+      duration_ms: 2.2313
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/map/layers/SubstationLayer.vue renders empty-state boundaries
+    ok 46 - component template components/dashboard/map/layers/SubstationLayer.vue renders empty-state boundaries
+      ---
+      duration_ms: 2.1867
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/map/layers/TransformerLayer.vue: empty data
+    ok 47 - component boundary components/dashboard/map/layers/TransformerLayer.vue: empty data
+      ---
+      duration_ms: 1.7291
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/map/layers/TransformerLayer.vue: telemetry fixture
+    ok 48 - component boundary components/dashboard/map/layers/TransformerLayer.vue: telemetry fixture
+      ---
+      duration_ms: 1.6907
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/map/layers/TransformerLayer.vue renders empty-state boundaries
+    ok 49 - component template components/dashboard/map/layers/TransformerLayer.vue renders empty-state boundaries
+      ---
+      duration_ms: 1.5433
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/map/layers/WeatherLayer.vue: empty data
+    ok 50 - component boundary components/dashboard/map/layers/WeatherLayer.vue: empty data
+      ---
+      duration_ms: 1.8808
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/map/layers/WeatherLayer.vue: telemetry fixture
+    ok 51 - component boundary components/dashboard/map/layers/WeatherLayer.vue: telemetry fixture
+      ---
+      duration_ms: 1.4907
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/map/layers/WeatherLayer.vue renders empty-state boundaries
+    ok 52 - component template components/dashboard/map/layers/WeatherLayer.vue renders empty-state boundaries
+      ---
+      duration_ms: 1.9076
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/operations/alarms/ActiveAlarmsEventsPanel.vue: empty data
+    ok 53 - component boundary components/dashboard/operations/alarms/ActiveAlarmsEventsPanel.vue: empty data
+      ---
+      duration_ms: 2.6288
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/operations/alarms/ActiveAlarmsEventsPanel.vue: telemetry fixture
+    ok 54 - component boundary components/dashboard/operations/alarms/ActiveAlarmsEventsPanel.vue: telemetry fixture
+      ---
+      duration_ms: 2.423
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/operations/alarms/ActiveAlarmsEventsPanel.vue renders empty-state boundaries
+    ok 55 - component template components/dashboard/operations/alarms/ActiveAlarmsEventsPanel.vue renders empty-state boundaries
+      ---
+      duration_ms: 9.675
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/operations/alarms/AlarmCorrelationPanel.vue: empty data
+    ok 56 - component boundary components/dashboard/operations/alarms/AlarmCorrelationPanel.vue: empty data
+      ---
+      duration_ms: 8.1254
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/operations/alarms/AlarmCorrelationPanel.vue: telemetry fixture
+    ok 57 - component boundary components/dashboard/operations/alarms/AlarmCorrelationPanel.vue: telemetry fixture
+      ---
+      duration_ms: 1.5309
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/operations/alarms/AlarmCorrelationPanel.vue renders empty-state boundaries
+    ok 58 - component template components/dashboard/operations/alarms/AlarmCorrelationPanel.vue renders empty-state boundaries
+      ---
+      duration_ms: 2.7853
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/operations/alarms/AlarmRootCausePanel.vue: empty data
+    ok 59 - component boundary components/dashboard/operations/alarms/AlarmRootCausePanel.vue: empty data
+      ---
+      duration_ms: 1.8184
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/operations/alarms/AlarmRootCausePanel.vue: telemetry fixture
+    ok 60 - component boundary components/dashboard/operations/alarms/AlarmRootCausePanel.vue: telemetry fixture
+      ---
+      duration_ms: 4.4026
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/operations/alarms/AlarmRootCausePanel.vue renders empty-state boundaries
+    ok 61 - component template components/dashboard/operations/alarms/AlarmRootCausePanel.vue renders empty-state boundaries
+      ---
+      duration_ms: 2.1898
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/operations/alarms/RootCauseGraph.vue: empty data
+    ok 62 - component boundary components/dashboard/operations/alarms/RootCauseGraph.vue: empty data
+      ---
+      duration_ms: 1.6691
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/operations/alarms/RootCauseGraph.vue: telemetry fixture
+    ok 63 - component boundary components/dashboard/operations/alarms/RootCauseGraph.vue: telemetry fixture
+      ---
+      duration_ms: 1.3202
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/operations/alarms/RootCauseGraph.vue renders empty-state boundaries
+    ok 64 - component template components/dashboard/operations/alarms/RootCauseGraph.vue renders empty-state boundaries
+      ---
+      duration_ms: 1.7223
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/operations/RealtimeConnectionStatus.vue: empty data
+    ok 65 - component boundary components/dashboard/operations/RealtimeConnectionStatus.vue: empty data
+      ---
+      duration_ms: 24.792
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/operations/RealtimeConnectionStatus.vue: telemetry fixture
+    ok 66 - component boundary components/dashboard/operations/RealtimeConnectionStatus.vue: telemetry fixture
+      ---
+      duration_ms: 1.5257
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/operations/RealtimeConnectionStatus.vue renders empty-state boundaries
+    ok 67 - component template components/dashboard/operations/RealtimeConnectionStatus.vue renders empty-state boundaries
+      ---
+      duration_ms: 1.8724
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/operations/RealtimeEventStream.vue: empty data
+    ok 68 - component boundary components/dashboard/operations/RealtimeEventStream.vue: empty data
+      ---
+      duration_ms: 1.9467
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/operations/RealtimeEventStream.vue: telemetry fixture
+    ok 69 - component boundary components/dashboard/operations/RealtimeEventStream.vue: telemetry fixture
+      ---
+      duration_ms: 1.5146
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/operations/RealtimeEventStream.vue renders empty-state boundaries
+    ok 70 - component template components/dashboard/operations/RealtimeEventStream.vue renders empty-state boundaries
+      ---
+      duration_ms: 2.4281
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/operations/RealtimeMetricsTicker.vue: empty data
+    ok 71 - component boundary components/dashboard/operations/RealtimeMetricsTicker.vue: empty data
+      ---
+      duration_ms: 23.5014
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/operations/RealtimeMetricsTicker.vue: telemetry fixture
+    ok 72 - component boundary components/dashboard/operations/RealtimeMetricsTicker.vue: telemetry fixture
+      ---
+      duration_ms: 1.7177
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/operations/RealtimeMetricsTicker.vue renders empty-state boundaries
+    ok 73 - component template components/dashboard/operations/RealtimeMetricsTicker.vue renders empty-state boundaries
+      ---
+      duration_ms: 1.4032
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/right-sidebar/AIInsightsPanel.vue: empty data
+    ok 74 - component boundary components/dashboard/right-sidebar/AIInsightsPanel.vue: empty data
+      ---
+      duration_ms: 1.2926
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/right-sidebar/AIInsightsPanel.vue: telemetry fixture
+    ok 75 - component boundary components/dashboard/right-sidebar/AIInsightsPanel.vue: telemetry fixture
+      ---
+      duration_ms: 1.0534
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/right-sidebar/AIInsightsPanel.vue renders empty-state boundaries
+    ok 76 - component template components/dashboard/right-sidebar/AIInsightsPanel.vue renders empty-state boundaries
+      ---
+      duration_ms: 1.9275
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/right-sidebar/BlackoutPredictionCard.vue: empty data
+    ok 77 - component boundary components/dashboard/right-sidebar/BlackoutPredictionCard.vue: empty data
+      ---
+      duration_ms: 1.2634
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/right-sidebar/BlackoutPredictionCard.vue: telemetry fixture
+    ok 78 - component boundary components/dashboard/right-sidebar/BlackoutPredictionCard.vue: telemetry fixture
+      ---
+      duration_ms: 1.0558
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/right-sidebar/BlackoutPredictionCard.vue renders empty-state boundaries
+    ok 79 - component template components/dashboard/right-sidebar/BlackoutPredictionCard.vue renders empty-state boundaries
+      ---
+      duration_ms: 1.7282
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/right-sidebar/LoadForecastCard.vue: empty data
+    ok 80 - component boundary components/dashboard/right-sidebar/LoadForecastCard.vue: empty data
+      ---
+      duration_ms: 2.2283
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/right-sidebar/LoadForecastCard.vue: telemetry fixture
+    ok 81 - component boundary components/dashboard/right-sidebar/LoadForecastCard.vue: telemetry fixture
+      ---
+      duration_ms: 2.4026
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/right-sidebar/LoadForecastCard.vue renders empty-state boundaries
+    ok 82 - component template components/dashboard/right-sidebar/LoadForecastCard.vue renders empty-state boundaries
+      ---
+      duration_ms: 4.1328
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/right-sidebar/OutageRiskMapCard.vue: empty data
+    ok 83 - component boundary components/dashboard/right-sidebar/OutageRiskMapCard.vue: empty data
+      ---
+      duration_ms: 1.8573
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/right-sidebar/OutageRiskMapCard.vue: telemetry fixture
+    ok 84 - component boundary components/dashboard/right-sidebar/OutageRiskMapCard.vue: telemetry fixture
+      ---
+      duration_ms: 1.2034
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/right-sidebar/OutageRiskMapCard.vue renders empty-state boundaries
+    ok 85 - component template components/dashboard/right-sidebar/OutageRiskMapCard.vue renders empty-state boundaries
+      ---
+      duration_ms: 1.8525
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/right-sidebar/TopRiskSubstationsCard.vue: empty data
+    ok 86 - component boundary components/dashboard/right-sidebar/TopRiskSubstationsCard.vue: empty data
+      ---
+      duration_ms: 1.184
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/right-sidebar/TopRiskSubstationsCard.vue: telemetry fixture
+    ok 87 - component boundary components/dashboard/right-sidebar/TopRiskSubstationsCard.vue: telemetry fixture
+      ---
+      duration_ms: 1.4196
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/right-sidebar/TopRiskSubstationsCard.vue renders empty-state boundaries
+    ok 88 - component template components/dashboard/right-sidebar/TopRiskSubstationsCard.vue renders empty-state boundaries
+      ---
+      duration_ms: 1.6223
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/system/SystemTopologyDialog.vue: empty data
+    ok 89 - component boundary components/dashboard/system/SystemTopologyDialog.vue: empty data
+      ---
+      duration_ms: 1.7624
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/system/SystemTopologyDialog.vue: telemetry fixture
+    ok 90 - component boundary components/dashboard/system/SystemTopologyDialog.vue: telemetry fixture
+      ---
+      duration_ms: 1.3788
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/system/SystemTopologyDialog.vue renders empty-state boundaries
+    ok 91 - component template components/dashboard/system/SystemTopologyDialog.vue renders empty-state boundaries
+      ---
+      duration_ms: 2.3478
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/WeatherPanel.vue: empty data
+    ok 92 - component boundary components/dashboard/WeatherPanel.vue: empty data
+      ---
+      duration_ms: 33.9938
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/WeatherPanel.vue: telemetry fixture
+    ok 93 - component boundary components/dashboard/WeatherPanel.vue: telemetry fixture
+      ---
+      duration_ms: 1.3695
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/WeatherPanel.vue renders empty-state boundaries
+    ok 94 - component template components/dashboard/WeatherPanel.vue renders empty-state boundaries
+      ---
+      duration_ms: 4.6857
+      type: 'test'
+      ...
+    # Subtest: inactive components/map/GridMap.vue
+    ok 95 - inactive components/map/GridMap.vue # SKIP Entire legacy SFC starts with an unclosed HTML comment and is not imported by the application
+      ---
+      duration_ms: 0.0576
+      type: 'test'
+      ...
+    # Subtest: component boundary components/MapView.vue: empty data
+    ok 96 - component boundary components/MapView.vue: empty data
+      ---
+      duration_ms: 26.6622
+      type: 'test'
+      ...
+    # Subtest: component boundary components/MapView.vue: telemetry fixture
+    ok 97 - component boundary components/MapView.vue: telemetry fixture
+      ---
+      duration_ms: 1.3846
+      type: 'test'
+      ...
+    # Subtest: component template components/MapView.vue renders empty-state boundaries
+    ok 98 - component template components/MapView.vue renders empty-state boundaries
+      ---
+      duration_ms: 1.463
+      type: 'test'
+      ...
+    # Subtest: component boundary components/scenarios/ScenarioControlDialog.vue: empty data
+    ok 99 - component boundary components/scenarios/ScenarioControlDialog.vue: empty data
+      ---
+      duration_ms: 52.8489
+      type: 'test'
+      ...
+    # Subtest: component boundary components/scenarios/ScenarioControlDialog.vue: telemetry fixture
+    ok 100 - component boundary components/scenarios/ScenarioControlDialog.vue: telemetry fixture
+      ---
+      duration_ms: 1.4211
+      type: 'test'
+      ...
+    # Subtest: component template components/scenarios/ScenarioControlDialog.vue renders empty-state boundaries
+    ok 101 - component template components/scenarios/ScenarioControlDialog.vue renders empty-state boundaries
+      ---
+      duration_ms: 3.2913
+      type: 'test'
+      ...
+    # Subtest: component boundary components/SensorChart.vue: empty data
+    ok 102 - component boundary components/SensorChart.vue: empty data
+      ---
+      duration_ms: 12.8316
+      type: 'test'
+      ...
+    # Subtest: component boundary components/SensorChart.vue: telemetry fixture
+    ok 103 - component boundary components/SensorChart.vue: telemetry fixture
+      ---
+      duration_ms: 1.1833
+      type: 'test'
+      ...
+    # Subtest: component template components/SensorChart.vue renders empty-state boundaries
+    ok 104 - component template components/SensorChart.vue renders empty-state boundaries
+      ---
+      duration_ms: 1.3531
+      type: 'test'
+      ...
+    # Subtest: component boundary components/transformer-twin/TransformerTwinDiagram.vue: empty data
+    ok 105 - component boundary components/transformer-twin/TransformerTwinDiagram.vue: empty data
+      ---
+      duration_ms: 28.4407
+      type: 'test'
+      ...
+    # Subtest: component boundary components/transformer-twin/TransformerTwinDiagram.vue: telemetry fixture
+    ok 106 - component boundary components/transformer-twin/TransformerTwinDiagram.vue: telemetry fixture
+      ---
+      duration_ms: 1.2786
+      type: 'test'
+      ...
+    # Subtest: component template components/transformer-twin/TransformerTwinDiagram.vue renders empty-state boundaries
+    ok 107 - component template components/transformer-twin/TransformerTwinDiagram.vue renders empty-state boundaries
+      ---
+      duration_ms: 8.4717
+      type: 'test'
+      ...
+    # Subtest: component boundary components/transformer-twin/TransformerTwinMiniChart.vue: empty data
+    ok 108 - component boundary components/transformer-twin/TransformerTwinMiniChart.vue: empty data
+      ---
+      duration_ms: 30.3636
+      type: 'test'
+      ...
+    # Subtest: component boundary components/transformer-twin/TransformerTwinMiniChart.vue: telemetry fixture
+    ok 109 - component boundary components/transformer-twin/TransformerTwinMiniChart.vue: telemetry fixture
+      ---
+      duration_ms: 1.694
+      type: 'test'
+      ...
+    # Subtest: component template components/transformer-twin/TransformerTwinMiniChart.vue renders empty-state boundaries
+    ok 110 - component template components/transformer-twin/TransformerTwinMiniChart.vue renders empty-state boundaries
+      ---
+      duration_ms: 1.5547
+      type: 'test'
+      ...
+    # Subtest: component boundary components/transformer-twin/TransformerTwinShell.vue: empty data
+    ok 111 - component boundary components/transformer-twin/TransformerTwinShell.vue: empty data
+      ---
+      duration_ms: 34.1694
+      type: 'test'
+      ...
+    # Subtest: component boundary components/transformer-twin/TransformerTwinShell.vue: telemetry fixture
+    ok 112 - component boundary components/transformer-twin/TransformerTwinShell.vue: telemetry fixture
+      ---
+      duration_ms: 1.0392
+      type: 'test'
+      ...
+    # Subtest: component template components/transformer-twin/TransformerTwinShell.vue renders empty-state boundaries
+    ok 113 - component template components/transformer-twin/TransformerTwinShell.vue renders empty-state boundaries
+      ---
+      duration_ms: 3.4514
+      type: 'test'
+      ...
+    # Subtest: component boundary components/transformer-twin/TransformerTwinTopbar.vue: empty data
+    ok 114 - component boundary components/transformer-twin/TransformerTwinTopbar.vue: empty data
+      ---
+      duration_ms: 1.1044
+      type: 'test'
+      ...
+    # Subtest: component boundary components/transformer-twin/TransformerTwinTopbar.vue: telemetry fixture
+    ok 115 - component boundary components/transformer-twin/TransformerTwinTopbar.vue: telemetry fixture
+      ---
+      duration_ms: 1.02
+      type: 'test'
+      ...
+    # Subtest: component template components/transformer-twin/TransformerTwinTopbar.vue renders empty-state boundaries
+    ok 116 - component template components/transformer-twin/TransformerTwinTopbar.vue renders empty-state boundaries
+      ---
+      duration_ms: 1.3286
+      type: 'test'
+      ...
+    # Subtest: component boundary components/VoltageChart.vue: empty data
+    ok 117 - component boundary components/VoltageChart.vue: empty data
+      ---
+      duration_ms: 11.0426
+      type: 'test'
+      ...
+    # Subtest: component boundary components/VoltageChart.vue: telemetry fixture
+    ok 118 - component boundary components/VoltageChart.vue: telemetry fixture
+      ---
+      duration_ms: 1.3192
+      type: 'test'
+      ...
+    # Subtest: component template components/VoltageChart.vue renders empty-state boundaries
+    ok 119 - component template components/VoltageChart.vue renders empty-state boundaries
+      ---
+      duration_ms: 1.3418
+      type: 'test'
+      ...
+    # Subtest: component boundary pages/AIForecastingPage.vue: empty data
+    ok 120 - component boundary pages/AIForecastingPage.vue: empty data
+      ---
+      duration_ms: 54.8085
+      type: 'test'
+      ...
+    # Subtest: component boundary pages/AIForecastingPage.vue: telemetry fixture
+    ok 121 - component boundary pages/AIForecastingPage.vue: telemetry fixture
+      ---
+      duration_ms: 4.1485
+      type: 'test'
+      ...
+    # Subtest: component template pages/AIForecastingPage.vue renders empty-state boundaries
+    ok 122 - component template pages/AIForecastingPage.vue renders empty-state boundaries
+      ---
+      duration_ms: 18.8419
+      type: 'test'
+      ...
+    # Subtest: component boundary pages/AlarmCenterPage.vue: empty data
+    ok 123 - component boundary pages/AlarmCenterPage.vue: empty data
+      ---
+      duration_ms: 100.4646
+      type: 'test'
+      ...
+    # Subtest: component boundary pages/AlarmCenterPage.vue: telemetry fixture
+    ok 124 - component boundary pages/AlarmCenterPage.vue: telemetry fixture
+      ---
+      duration_ms: 4.3813
+      type: 'test'
+      ...
+    # Subtest: component template pages/AlarmCenterPage.vue renders empty-state boundaries
+    ok 125 - component template pages/AlarmCenterPage.vue renders empty-state boundaries
+      ---
+      duration_ms: 15.5081
+      type: 'test'
+      ...
+    # Subtest: component boundary pages/DashboardPage.vue: empty data
+    ok 126 - component boundary pages/DashboardPage.vue: empty data
+      ---
+      duration_ms: 3.0539
+      type: 'test'
+      ...
+    # Subtest: component boundary pages/DashboardPage.vue: telemetry fixture
+    ok 127 - component boundary pages/DashboardPage.vue: telemetry fixture
+      ---
+      duration_ms: 3.3586
+      type: 'test'
+      ...
+    # Subtest: component template pages/DashboardPage.vue renders empty-state boundaries
+    ok 128 - component template pages/DashboardPage.vue renders empty-state boundaries
+      ---
+      duration_ms: 24.1344
+      type: 'test'
+      ...
+    # Subtest: component boundary pages/RegionTwin.vue: empty data
+    ok 129 - component boundary pages/RegionTwin.vue: empty data
+      ---
+      duration_ms: 87.1191
+      type: 'test'
+      ...
+    # Subtest: component boundary pages/RegionTwin.vue: telemetry fixture
+    ok 130 - component boundary pages/RegionTwin.vue: telemetry fixture
+      ---
+      duration_ms: 3.359
+      type: 'test'
+      ...
+    # Subtest: component template pages/RegionTwin.vue renders empty-state boundaries
+    ok 131 - component template pages/RegionTwin.vue renders empty-state boundaries
+      ---
+      duration_ms: 16.1884
+      type: 'test'
+      ...
+    # Subtest: component boundary pages/SubstationTwin.vue: empty data
+    ok 132 - component boundary pages/SubstationTwin.vue: empty data
+      ---
+      duration_ms: 286.3071
+      type: 'test'
+      ...
+    # Subtest: component boundary pages/SubstationTwin.vue: telemetry fixture
+    ok 133 - component boundary pages/SubstationTwin.vue: telemetry fixture
+      ---
+      duration_ms: 3.723
+      type: 'test'
+      ...
+    # Subtest: component template pages/SubstationTwin.vue renders empty-state boundaries
+    ok 134 - component template pages/SubstationTwin.vue renders empty-state boundaries
+      ---
+      duration_ms: 24.2015
+      type: 'test'
+      ...
+    # Subtest: component boundary pages/TransformerTwin.vue: empty data
+    ok 135 - component boundary pages/TransformerTwin.vue: empty data
+      ---
+      duration_ms: 293.2009
+      type: 'test'
+      ...
+    # Subtest: component boundary pages/TransformerTwin.vue: telemetry fixture
+    ok 136 - component boundary pages/TransformerTwin.vue: telemetry fixture
+      ---
+      duration_ms: 2.9059
+      type: 'test'
+      ...
+    # Subtest: component template pages/TransformerTwin.vue renders empty-state boundaries
+    ok 137 - component template pages/TransformerTwin.vue renders empty-state boundaries
+      ---
+      duration_ms: 24.2898
+      type: 'test'
+      ...
+    # Subtest: component boundary pages/TwinHeader.vue: empty data
+    ok 138 - component boundary pages/TwinHeader.vue: empty data
+      ---
+      duration_ms: 1.3371
+      type: 'test'
+      ...
+    # Subtest: component boundary pages/TwinHeader.vue: telemetry fixture
+    ok 139 - component boundary pages/TwinHeader.vue: telemetry fixture
+      ---
+      duration_ms: 3.0042
+      type: 'test'
+      ...
+    # Subtest: component template pages/TwinHeader.vue renders empty-state boundaries
+    ok 140 - component template pages/TwinHeader.vue renders empty-state boundaries
+      ---
+      duration_ms: 1.4053
+      type: 'test'
+      ...
+    # Subtest: map Contingency adds GeoJSON sources and removes layers/listeners on unmount
+    ok 141 - map Contingency adds GeoJSON sources and removes layers/listeners on unmount
+      ---
+      duration_ms: 1.8967
+      type: 'test'
+      ...
+    # Subtest: map Customer adds GeoJSON sources and removes layers/listeners on unmount
+    ok 142 - map Customer adds GeoJSON sources and removes layers/listeners on unmount
+      ---
+      duration_ms: 1.1831
+      type: 'test'
+      ...
+    # Subtest: map Heatmap adds GeoJSON sources and removes layers/listeners on unmount
+    ok 143 - map Heatmap adds GeoJSON sources and removes layers/listeners on unmount
+      ---
+      duration_ms: 1.3675
+      type: 'test'
+      ...
+    # Subtest: map PowerLine adds GeoJSON sources and removes layers/listeners on unmount
+    ok 144 - map PowerLine adds GeoJSON sources and removes layers/listeners on unmount
+      ---
+      duration_ms: 1.632
+      type: 'test'
+      ...
+    # Subtest: map Region adds GeoJSON sources and removes layers/listeners on unmount
+    ok 145 - map Region adds GeoJSON sources and removes layers/listeners on unmount
+      ---
+      duration_ms: 1.4123
+      type: 'test'
+      ...
+    # Subtest: map Risk adds GeoJSON sources and removes layers/listeners on unmount
+    ok 146 - map Risk adds GeoJSON sources and removes layers/listeners on unmount
+      ---
+      duration_ms: 5.554
+      type: 'test'
+      ...
+    # Subtest: map Substation adds GeoJSON sources and removes layers/listeners on unmount
+    ok 147 - map Substation adds GeoJSON sources and removes layers/listeners on unmount
+      ---
+      duration_ms: 2.0867
+      type: 'test'
+      ...
+    # Subtest: map Transformer adds GeoJSON sources and removes layers/listeners on unmount
+    ok 148 - map Transformer adds GeoJSON sources and removes layers/listeners on unmount
+      ---
+      duration_ms: 1.2963
+      type: 'test'
+      ...
+    # Subtest: map Weather adds GeoJSON sources and removes layers/listeners on unmount
+    ok 149 - map Weather adds GeoJSON sources and removes layers/listeners on unmount
+      ---
+      duration_ms: 1.0001
+      type: 'test'
+      ...
+    # Subtest: realtime event component filters text/severity and ignores invalid timestamps
+    ok 150 - realtime event component filters text/severity and ignores invalid timestamps
+      ---
+      duration_ms: 1.2161
+      type: 'test'
+      ...
+    # Subtest: blackout card probability 0 has correct risk color
+    ok 151 - blackout card probability 0 has correct risk color
+      ---
+      duration_ms: 1.2454
+      type: 'test'
+      ...
+    # Subtest: blackout card probability 34 has correct risk color
+    ok 152 - blackout card probability 34 has correct risk color
+      ---
+      duration_ms: 1.2837
+      type: 'test'
+      ...
+    # Subtest: blackout card probability 35 has correct risk color
+    ok 153 - blackout card probability 35 has correct risk color
+      ---
+      duration_ms: 1.2446
+      type: 'test'
+      ...
+    # Subtest: blackout card probability 69 has correct risk color
+    ok 154 - blackout card probability 69 has correct risk color
+      ---
+      duration_ms: 1.0948
+      type: 'test'
+      ...
+    # Subtest: blackout card probability 70 has correct risk color
+    ok 155 - blackout card probability 70 has correct risk color
+      ---
+      duration_ms: 0.8567
+      type: 'test'
+      ...
+    # Subtest: mini chart finite history retains endpoints and filters NaN
+    ok 156 - mini chart finite history retains endpoints and filters NaN
+      ---
+      duration_ms: 1.2797
+      type: 'test'
+      ...
+    # Subtest: mini chart does not invent actual measurements when history is empty
+    ok 157 - mini chart does not invent actual measurements when history is empty
+      ---
+      duration_ms: 1.0975
+      type: 'test'
+      ...
+    # Subtest: grid health component preserves an authoritative health score of zero
+    ok 158 - grid health component preserves an authoritative health score of zero
+      ---
+      duration_ms: 0.9587
+      type: 'test'
+      ...
+    # Subtest: grid health component does not invent offline or maintenance stations
+    ok 159 - grid health component does not invent offline or maintenance stations
+      ---
+      duration_ms: 0.9746
+      type: 'test'
+      ...
+    # Subtest: substation twin preserves zero measured current instead of demo fallback
+    ok 160 - substation twin preserves zero measured current instead of demo fallback
+      ---
+      duration_ms: 6.8537
+      type: 'test'
+      ...
+    # Subtest: router resolves every documented page with its requested asset ID
+    ok 161 - router resolves every documented page with its requested asset ID
+      ---
+      duration_ms: 2.3012
+      type: 'test'
+      ...
+    # Subtest: layer controls emit an updated copy without changing parent preferences
+    ok 162 - layer controls emit an updated copy without changing parent preferences
+      ---
+      duration_ms: 1.5966
+      type: 'test'
+      ...
+    # Subtest: risk card expands all stations and emits exact selection ID
+    ok 163 - risk card expands all stations and emits exact selection ID
+      ---
+      duration_ms: 1.2709
+      type: 'test'
+      ...
+    # Subtest: alarm correlation summary counts unique affected assets
+    ok 164 - alarm correlation summary counts unique affected assets
+      ---
+      duration_ms: 1.139
+      type: 'test'
+      ...
+    # Subtest: voltage chart preserves zero and chronological ordering without mutating source
+    ok 165 - voltage chart preserves zero and chronological ordering without mutating source
+      ---
+      duration_ms: 1.1303
+      type: 'test'
+      ...
+    # Subtest: sensor chart maps readings directly into the plotting boundary
+    ok 166 - sensor chart maps readings directly into the plotting boundary
+      ---
+      duration_ms: 1.1446
+      type: 'test'
+      ...
+    # Subtest: forecast chart preserves zero load and zero risk from server
+    ok 167 - forecast chart preserves zero load and zero risk from server
+      ---
+      duration_ms: 0.658
+      type: 'test'
+      ...
+    # Subtest: forecast chart does not invent a history/forecast series without any input
+    ok 168 - forecast chart does not invent a history/forecast series without any input
+      ---
+      duration_ms: 0.7458
+      type: 'test'
+      ...
+    # Subtest: operator frequency metric preserves a measured zero instead of nominal fallback
+    ok 169 - operator frequency metric preserves a measured zero instead of nominal fallback
+      ---
+      duration_ms: 0.8192
+      type: 'test'
+      ...
+    # Subtest: transformer twin preserves a real zero oil temperature
+    ok 170 - transformer twin preserves a real zero oil temperature
+      ---
+      duration_ms: 4.9872
+      type: 'test'
+      ...
+    # Subtest: substation twin does not display fabricated measurement values for an unknown ID
+    ok 171 - substation twin does not display fabricated measurement values for an unknown ID
+      ---
+      duration_ms: 2.5117
+      type: 'test'
+      ...
+    # Subtest: map popup text cannot inject HTML from a customer name
+    ok 172 - map popup text cannot inject HTML from a customer name
+      ---
+      duration_ms: 1.3771
+      type: 'test'
+      ...
+    1..172
+ok 2 - Vue component unit suite
+  ---
+  duration_ms: 2905.604
+  type: 'suite'
+  ...
+# Subtest: cross-module semantic contracts
+    # Subtest: coordinates outside world bounds use a finite map fallback
+    ok 1 - coordinates outside world bounds use a finite map fallback
+      ---
+      duration_ms: 0.4557
+      type: 'test'
+      ...
+    # Subtest: Croatian and English translations cover the same keys
+    ok 2 - Croatian and English translations cover the same keys
+      ---
+      duration_ms: 0.6296
+      type: 'test'
+      ...
+    # Subtest: translated interpolation placeholders retain every required parameter
+    ok 3 - translated interpolation placeholders retain every required parameter
+      ---
+      duration_ms: 1.5009
+      type: 'test'
+      ...
+    # Subtest: translation supports raw English strings, null and missing keys
+    ok 4 - translation supports raw English strings, null and missing keys
+      ---
+      duration_ms: 0.1063
+      type: 'test'
+      ...
+    # Subtest: store location parsing preserves valid coordinate zero
+    ok 5 - store location parsing preserves valid coordinate zero
+      ---
+      duration_ms: 0.376
+      type: 'test'
+      ...
+    # Subtest: store invalid numeric coordinates are not exposed as NaN to map renderers
+    ok 6 - store invalid numeric coordinates are not exposed as NaN to map renderers
+      ---
+      duration_ms: 0.3316
+      type: 'test'
+      ...
+    # Subtest: GeoJSON Point coordinates use the same longitude/latitude as string coordinates
+    ok 7 - GeoJSON Point coordinates use the same longitude/latitude as string coordinates
+      ---
+      duration_ms: 0.3274
+      type: 'test'
+      ...
+    1..7
+ok 3 - cross-module semantic contracts
+  ---
+  duration_ms: 3.9187
+  type: 'suite'
+  ...
+# Subtest: number utilities
+    # Subtest: clamp coerces numeric input and enforces both bounds
+    ok 1 - clamp coerces numeric input and enforces both bounds
+      ---
+      duration_ms: 0.0979
+      type: 'test'
+      ...
+    # Subtest: average ignores non-finite values and uses the fallback when empty
+    ok 2 - average ignores non-finite values and uses the fallback when empty
+      ---
+      duration_ms: 0.0818
+      type: 'test'
+      ...
+    # Subtest: rounding helpers use the requested precision
+    ok 3 - rounding helpers use the requested precision
+      ---
+      duration_ms: 0.0722
+      type: 'test'
+      ...
+    1..3
+ok 4 - number utilities
+  ---
+  duration_ms: 0.3354
+  type: 'suite'
+  ...
+# Subtest: asset utilities
+    # Subtest: humanizes backend asset keys
+    ok 1 - humanizes backend asset keys
+      ---
+      duration_ms: 0.1487
+      type: 'test'
+      ...
+    # Subtest: maps transformer and station IDs to their station
+    ok 2 - maps transformer and station IDs to their station
+      ---
+      duration_ms: 0.0916
+      type: 'test'
+      ...
+    # Subtest: builds only supported application routes
+    ok 3 - builds only supported application routes
+      ---
+      duration_ms: 0.0949
+      type: 'test'
+      ...
+    1..3
+ok 5 - asset utilities
+  ---
+  duration_ms: 0.4179
+  type: 'suite'
+  ...
+# Subtest: metric series utilities
+    # Subtest: creates deterministic, bounded sparkline seed data
+    ok 1 - creates deterministic, bounded sparkline seed data
+      ---
+      duration_ms: 0.1638
+      type: 'test'
+      ...
+    # Subtest: normalizes values and timestamps
+    ok 2 - normalizes values and timestamps
+      ---
+      duration_ms: 0.0987
+      type: 'test'
+      ...
+    # Subtest: returns an empty line for empty history and centers a single point
+    ok 3 - returns an empty line for empty history and centers a single point
+      ---
+      duration_ms: 0.0853
+      type: 'test'
+      ...
+    # Subtest: uses timestamps for horizontal position and preserves endpoints
+    ok 4 - uses timestamps for horizontal position and preserves endpoints
+      ---
+      duration_ms: 0.1221
+      type: 'test'
+      ...
+    # Subtest: reduces dense histories to a width-based visual budget
+    ok 5 - reduces dense histories to a width-based visual budget
+      ---
+      duration_ms: 1.2027
+      type: 'test'
+      ...
+    1..5
+ok 6 - metric series utilities
+  ---
+  duration_ms: 1.808
+  type: 'suite'
+  ...
+# Subtest: station analytics
+    # Subtest: faults lower health and increase risk
+    ok 1 - faults lower health and increase risk
+      ---
+      duration_ms: 0.2975
+      type: 'test'
+      ...
+    # Subtest: scores stay inside the public 0-100 range
+    ok 2 - scores stay inside the public 0-100 range
+      ---
+      duration_ms: 0.1256
+      type: 'test'
+      ...
+    # Subtest: a normal station matches the backend risk score
+    ok 3 - a normal station matches the backend risk score
+      ---
+      duration_ms: 0.0883
+      type: 'test'
+      ...
+    # Subtest: critical alarm penalties match the backend analytics rules
+    ok 4 - critical alarm penalties match the backend analytics rules
+      ---
+      duration_ms: 0.1112
+      type: 'test'
+      ...
+    1..4
+ok 7 - station analytics
+  ---
+  duration_ms: 0.775
+  type: 'suite'
+  ...
+# Subtest: date formatting
+    # Subtest: returns a stable placeholder for invalid timestamps
+    ok 1 - returns a stable placeholder for invalid timestamps
+      ---
+      duration_ms: 0.1194
+      type: 'test'
+      ...
+    # Subtest: supports output with and without seconds
+    ok 2 - supports output with and without seconds
+      ---
+      duration_ms: 1.056
+      type: 'test'
+      ...
+    1..2
+ok 8 - date formatting
+  ---
+  duration_ms: 1.2695
+  type: 'suite'
+  ...
+# Subtest: dashboard alarm rules agree with backend: normal
+ok 9 - dashboard alarm rules agree with backend: normal
+  ---
+  duration_ms: 0.1477
+  type: 'test'
+  ...
+# Subtest: dashboard alarm rules agree with backend: flag-overload
+ok 10 - dashboard alarm rules agree with backend: flag-overload
+  ---
+  duration_ms: 0.1072
+  type: 'test'
+  ...
+# Subtest: dashboard alarm rules agree with backend: flag-overheating
+ok 11 - dashboard alarm rules agree with backend: flag-overheating
+  ---
+  duration_ms: 0.0674
+  type: 'test'
+  ...
+# Subtest: dashboard alarm rules agree with backend: flag-sensor_failure
+ok 12 - dashboard alarm rules agree with backend: flag-sensor_failure
+  ---
+  duration_ms: 0.0644
+  type: 'test'
+  ...
+# Subtest: dashboard alarm rules agree with backend: flag-offline
+ok 13 - dashboard alarm rules agree with backend: flag-offline
+  ---
+  duration_ms: 0.0592
+  type: 'test'
+  ...
+# Subtest: dashboard alarm rules agree with backend: flag-voltage_drop
+ok 14 - dashboard alarm rules agree with backend: flag-voltage_drop
+  ---
+  duration_ms: 0.0573
+  type: 'test'
+  ...
+# Subtest: dashboard alarm rules agree with backend: flag-overvoltage
+ok 15 - dashboard alarm rules agree with backend: flag-overvoltage
+  ---
+  duration_ms: 0.0569
+  type: 'test'
+  ...
+# Subtest: dashboard alarm rules agree with backend: flag-frequency_instability
+ok 16 - dashboard alarm rules agree with backend: flag-frequency_instability
+  ---
+  duration_ms: 0.0547
+  type: 'test'
+  ...
+# Subtest: dashboard alarm rules agree with backend: flag-harmonics_spike
+ok 17 - dashboard alarm rules agree with backend: flag-harmonics_spike
+  ---
+  duration_ms: 0.0554
+  type: 'test'
+  ...
+# Subtest: dashboard alarm rules agree with backend: flag-short_circuit
+ok 18 - dashboard alarm rules agree with backend: flag-short_circuit
+  ---
+  duration_ms: 0.0541
+  type: 'test'
+  ...
+# Subtest: dashboard alarm rules agree with backend: flag-cooling_failure
+ok 19 - dashboard alarm rules agree with backend: flag-cooling_failure
+  ---
+  duration_ms: 0.0517
+  type: 'test'
+  ...
+# Subtest: dashboard alarm rules agree with backend: flag-insulation_degradation
+ok 20 - dashboard alarm rules agree with backend: flag-insulation_degradation
+  ---
+  duration_ms: 0.0555
+  type: 'test'
+  ...
+# Subtest: dashboard alarm rules agree with backend: flag-oil_leak
+ok 21 - dashboard alarm rules agree with backend: flag-oil_leak
+  ---
+  duration_ms: 0.0529
+  type: 'test'
+  ...
+# Subtest: dashboard alarm rules agree with backend: flag-arc_discharge
+ok 22 - dashboard alarm rules agree with backend: flag-arc_discharge
+  ---
+  duration_ms: 0.0568
+  type: 'test'
+  ...
+# Subtest: dashboard alarm rules agree with backend: flag-feeder_failure
+ok 23 - dashboard alarm rules agree with backend: flag-feeder_failure
+  ---
+  duration_ms: 0.0528
+  type: 'test'
+  ...
+# Subtest: dashboard alarm rules agree with backend: flag-transformer_trip
+ok 24 - dashboard alarm rules agree with backend: flag-transformer_trip
+  ---
+  duration_ms: 0.0539
+  type: 'test'
+  ...
+# Subtest: dashboard alarm rules agree with backend: current_a-499
+ok 25 - dashboard alarm rules agree with backend: current_a-499
+  ---
+  duration_ms: 0.0514
+  type: 'test'
+  ...
+# Subtest: dashboard alarm rules agree with backend: current_a-500
+ok 26 - dashboard alarm rules agree with backend: current_a-500
+  ---
+  duration_ms: 0.0478
+  type: 'test'
+  ...
+# Subtest: dashboard alarm rules agree with backend: current_a-800
+ok 27 - dashboard alarm rules agree with backend: current_a-800
+  ---
+  duration_ms: 0.0484
+  type: 'test'
+  ...
+# Subtest: dashboard alarm rules agree with backend: voltage_kv-0
+ok 28 - dashboard alarm rules agree with backend: voltage_kv-0
+  ---
+  duration_ms: 0.0446
+  type: 'test'
+  ...
+# Subtest: dashboard alarm rules agree with backend: voltage_kv-9.19
+ok 29 - dashboard alarm rules agree with backend: voltage_kv-9.19
+  ---
+  duration_ms: 0.0497
+  type: 'test'
+  ...
+# Subtest: dashboard alarm rules agree with backend: voltage_kv-9.2
+ok 30 - dashboard alarm rules agree with backend: voltage_kv-9.2
+  ---
+  duration_ms: 0.0451
+  type: 'test'
+  ...
+# Subtest: dashboard alarm rules agree with backend: voltage_kv-10.79
+ok 31 - dashboard alarm rules agree with backend: voltage_kv-10.79
+  ---
+  duration_ms: 0.0557
+  type: 'test'
+  ...
+# Subtest: dashboard alarm rules agree with backend: voltage_kv-10.8
+ok 32 - dashboard alarm rules agree with backend: voltage_kv-10.8
+  ---
+  duration_ms: 0.0565
+  type: 'test'
+  ...
+# Subtest: dashboard alarm rules agree with backend: frequency_hz-49.75
+ok 33 - dashboard alarm rules agree with backend: frequency_hz-49.75
+  ---
+  duration_ms: 0.0467
+  type: 'test'
+  ...
+# Subtest: dashboard alarm rules agree with backend: frequency_hz-49.76
+ok 34 - dashboard alarm rules agree with backend: frequency_hz-49.76
+  ---
+  duration_ms: 0.0459
+  type: 'test'
+  ...
+# Subtest: dashboard alarm rules agree with backend: frequency_hz-50.24
+ok 35 - dashboard alarm rules agree with backend: frequency_hz-50.24
+  ---
+  duration_ms: 0.0432
+  type: 'test'
+  ...
+# Subtest: dashboard alarm rules agree with backend: frequency_hz-50.25
+ok 36 - dashboard alarm rules agree with backend: frequency_hz-50.25
+  ---
+  duration_ms: 0.0469
+  type: 'test'
+  ...
+# Subtest: dashboard alarm rules agree with backend: harmonics_thd-4.99
+ok 37 - dashboard alarm rules agree with backend: harmonics_thd-4.99
+  ---
+  duration_ms: 0.0426
+  type: 'test'
+  ...
+# Subtest: dashboard alarm rules agree with backend: harmonics_thd-5
+ok 38 - dashboard alarm rules agree with backend: harmonics_thd-5
+  ---
+  duration_ms: 0.0467
+  type: 'test'
+  ...
+# Subtest: dashboard alarm rules agree with backend: oil_temp_c-89
+ok 39 - dashboard alarm rules agree with backend: oil_temp_c-89
+  ---
+  duration_ms: 0.0429
+  type: 'test'
+  ...
+# Subtest: dashboard alarm rules agree with backend: oil_temp_c-90
+ok 40 - dashboard alarm rules agree with backend: oil_temp_c-90
+  ---
+  duration_ms: 0.0462
+  type: 'test'
+  ...
+# Subtest: dashboard alarm rules agree with backend: winding_temp_c-94
+ok 41 - dashboard alarm rules agree with backend: winding_temp_c-94
+  ---
+  duration_ms: 0.0449
+  type: 'test'
+  ...
+# Subtest: dashboard alarm rules agree with backend: winding_temp_c-95
+ok 42 - dashboard alarm rules agree with backend: winding_temp_c-95
+  ---
+  duration_ms: 0.0469
+  type: 'test'
+  ...
+# Subtest: dashboard alarm rules agree with backend: oil_level_percent-65
+ok 43 - dashboard alarm rules agree with backend: oil_level_percent-65
+  ---
+  duration_ms: 0.0473
+  type: 'test'
+  ...
+# Subtest: dashboard alarm rules agree with backend: oil_level_percent-66
+ok 44 - dashboard alarm rules agree with backend: oil_level_percent-66
+  ---
+  duration_ms: 0.0431
+  type: 'test'
+  ...
+# Subtest: dashboard alarm rules agree with backend: acetylene_ppm-3.99
+ok 45 - dashboard alarm rules agree with backend: acetylene_ppm-3.99
+  ---
+  duration_ms: 0.0456
+  type: 'test'
+  ...
+# Subtest: dashboard alarm rules agree with backend: acetylene_ppm-4
+ok 46 - dashboard alarm rules agree with backend: acetylene_ppm-4
+  ---
+  duration_ms: 0.0472
+  type: 'test'
+  ...
+# Subtest: dashboard alarm rules agree with backend: gas-threshold
+ok 47 - dashboard alarm rules agree with backend: gas-threshold
+  ---
+  duration_ms: 0.047
+  type: 'test'
+  ...
+1..47
+# tests 301
+# suites 8
+# pass 300
+# fail 0
+# cancelled 0
+# skipped 1
+# todo 0
+# duration_ms 6513.1644
+# start of coverage report
+# ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# file                               | line % | branch % | funcs % | uncovered lines
+# ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# src                                |        |          |         | 
+#  App.vue                           | 100.00 |   100.00 |  100.00 | 
+#  assets                            |        |          |         | 
+#   transformer-twin                 |        |          |         | 
+#    power-transformer.png           |   0.59 |   100.00 |  100.00 | 3-96 98-119 121-1034 1036-1330 1332-1625 1627-1771 1773-2151 2153-2251 2253-2452 2454-2550 2552-2573 2575-2585 2587-2677 2679-2738 2740-2875 2877-2892 2894-2901 2903-3093 3095-3154 3156-3191 3193-3628 3630-3665 3667-3720 3722-3831 3833-3870 3872-3893 3895-4085 4087-4209 4211-4381 4383-4493 4495-4641 4643-4704 4706-4710 4712-5366 5368-5378 5380-5956 5958-5990 5992-6469 6471-6820
+#  components                        |        |          |         | 
+#   AlarmPanel.vue                   | 100.00 |   100.00 |  100.00 | 
+#   dashboard                        |        |          |         | 
+#    layout                          |        |          |         | 
+#     GridHealthPanel.vue            |  95.53 |    88.57 |   95.45 | 106-109 116-122
+#     Sidebar.vue                    |  99.48 |    80.95 |  100.00 | 32
+#     Topbar.vue                     |  93.73 |    97.30 |   93.75 | 185-208
+#    map                             |        |          |         | 
+#     controls                       |        |          |         | 
+#      LayerPanel.vue                | 100.00 |   100.00 |  100.00 | 
+#     DashboardMap.vue               |  84.87 |    81.40 |   72.73 | 107 120-123 129-131 136-145 150-161 267 284 287-300
+#     layers                         |        |          |         | 
+#      ContingencyLayer.vue          |  67.63 |    90.91 |   71.43 | 60-86 89-106
+#      CustomerLayer.vue             |  85.53 |    61.11 |   73.33 | 92-112 114 116
+#      HeatmapLayer.vue              |  99.23 |    80.00 |   88.89 | 81
+#      PowerLineLayer.vue            |  44.49 |    80.00 |   63.89 | 50-57 59-68 71-132 161-162 175-178 189-225 244-245 252-343 345-374 379-380 382-383 386
+#      RegionLayer.vue               |  70.89 |    69.23 |   64.29 | 73-98 100-115 119-122
+#      RiskLayer.vue                 | 100.00 |    88.89 |   88.89 | 
+#      SubstationLayer.vue           |  93.09 |    64.52 |   87.50 | 106-107 284-293 303-304 314-315 328-337 340-342 344-346
+#      TransformerLayer.vue          |  95.38 |    76.32 |   82.76 | 178-184 187-190
+#      WeatherLayer.vue              |  98.13 |    80.00 |   88.89 | 80-81
+#    operations                      |        |          |         | 
+#     alarms                         |        |          |         | 
+#      ActiveAlarmsEventsPanel.vue   |  47.51 |    87.88 |   80.00 | 39-40 45 169 282-583
+#      AlarmCorrelationPanel.vue     |  88.34 |    86.36 |   83.33 | 37-41 256-283
+#      AlarmRootCausePanel.vue       |  42.86 |    61.54 |   63.64 | 22-25 28-31 105-135 148-252
+#      RootCauseGraph.vue            |  70.80 |   100.00 |   63.64 | 34-55 60-73 134-137
+#     RealtimeConnectionStatus.vue   | 100.00 |    83.33 |  100.00 | 
+#     RealtimeEventStream.vue        |  95.80 |   100.00 |   82.61 | 70-75 78-82 258
+#     RealtimeMetricsTicker.vue      | 100.00 |   100.00 |  100.00 | 
+#    right-sidebar                   |        |          |         | 
+#     AIInsightsPanel.vue            |  85.71 |   100.00 |   66.67 | 13-19 21-27
+#     BlackoutPredictionCard.vue     | 100.00 |    87.50 |  100.00 | 
+#     LoadForecastCard.vue           |  93.38 |    93.33 |   81.82 | 123-125 250-267
+#     OutageRiskMapCard.vue          |  68.78 |    70.83 |   55.17 | 32-44 61-63 73 82 93-98 102-129 134-146 148-154 351-367 377-398 405-422 431-449
+#     TopRiskSubstationsCard.vue     |  87.04 |    81.82 |   78.57 | 38 55 184-185 220-247
+#    system                          |        |          |         | 
+#     SystemTopologyDialog.vue       |  86.69 |    70.83 |   73.68 | 15-22 63 101-121 123-126 217
+#    WeatherPanel.vue                |  92.74 |    75.00 |  100.00 | 111-119
+#   MapView.vue                      |  80.91 |   100.00 |   87.50 | 18-38
+#   scenarios                        |        |          |         | 
+#    ScenarioControlDialog.vue       |  92.11 |   100.00 |   68.42 | 37-38 238-259
+#   SensorChart.vue                  | 100.00 |   100.00 |   85.71 | 
+#   transformer-twin                 |        |          |         | 
+#    TransformerTwinDiagram.vue      |  60.68 |   100.00 |   60.00 | 90-91 208-215 217-227 229-231 233-243 245-251 253-255 257-259 261-268 270-275 277-279 281-289 291-295 297-301 303-309 311-316 318-321 323-326 328-330 332-335 337-340 342-346 348-350 352-355 357-360 362-364 366-370 372-374 376-378 380-384
+#    TransformerTwinMiniChart.vue    |  98.03 |   100.00 |   80.00 | 29 34-35
+#    TransformerTwinShell.vue        | 100.00 |   100.00 |  100.00 | 
+#    TransformerTwinTopbar.vue       | 100.00 |    66.67 |  100.00 | 
+#   VoltageChart.vue                 | 100.00 |   100.00 |  100.00 | 
+#  composables                       |        |          |         | 
+#   useAlarmCenter.ts                |  86.71 |    77.78 |   76.47 | 38-39 81-82 85 101 127-129 131-133 135-145
+#   useAlarmRegister.ts              |  72.22 |    75.86 |   75.68 | 116 128-130 145-153 184-203 205-228 231 234-243 246 248-258
+#   useDashboardMapPreferences.ts    |  72.60 |    76.92 |   80.00 | 24-26 34-35 41 57-62 65-67 69-73
+#   useDashboardTopbar.ts            |  97.79 |    84.91 |   93.75 | 112 122-123
+#   useForecastWorkspace.ts          | 100.00 |    95.65 |  100.00 | 
+#   useLoadForecast.ts               |  86.90 |    68.29 |   97.30 | 34-43 58-60 75-84 207 232-234 263-264 322-336
+#   useOperatorMetrics.ts            |  96.38 |    66.67 |   80.00 | 58-59 62-63 105
+#   useScenarioControl.ts            |  79.08 |    65.38 |   81.25 | 45 59-61 74-76 80-81 102-103 112-129 133-135
+#   useStationHistory.ts             | 100.00 |    94.74 |  100.00 | 
+#  i18n                              |        |          |         | 
+#   en.ts                            | 100.00 |   100.00 |  100.00 | 
+#   hr.ts                            | 100.00 |   100.00 |  100.00 | 
+#   index.ts                         |  81.30 |    78.38 |   92.86 | 16-17 49-50 103-114 116-119 121-123
+#  pages                             |        |          |         | 
+#   AIForecastingPage.vue            |  99.55 |    77.27 |   88.24 | 56
+#   AlarmCenterPage.vue              |  92.09 |    95.83 |   62.96 | 90-95 97-98 101 320-326 355-356 439-457
+#   DashboardPage.vue                |  77.90 |    91.30 |   80.95 | 70-71 73-74 352-393 485-581
+#   RegionTwin.vue                   |  95.42 |    67.92 |   91.67 | 38-48 64 90 92-95
+#   SubstationTwin.vue               |  83.37 |    57.58 |   80.28 | 55 63 84-85 147-148 460-464 471-476 608 723-728 733-747 811-829 833-842 844-847 851-857 859-866 869-873 876-882 885-887 890-900 904-908 911-920 1166-1204 1250-1252 1417-1421 1491-1492 2308-2555
+#   TransformerTwin.vue              |  50.32 |    69.84 |   80.00 | 56-57 66-67 334-341 493-500 582-596 604-617 630-646 797-804 1589-3009
+#   TwinHeader.vue                   | 100.00 |   100.00 |  100.00 | 
+#  router                            |        |          |         | 
+#   index.ts                         | 100.00 |   100.00 |  100.00 | 
+#  services                          |        |          |         | 
+#   gridApi.ts                       |  84.62 |    95.56 |  100.00 | 35 182 184-185 187-188 190-191 193-194 196 198 200-201 203 205 207-208 210 212 214-215 217-222 224 226-227 229 231-234
+#   stationAlarms.ts                 |  93.94 |    91.67 |  100.00 | 32-33
+#   stationAnalytics.ts              | 100.00 |    63.64 |  100.00 | 
+#  stores                            |        |          |         | 
+#   sensorStore.ts                   |  88.48 |    85.98 |   92.86 | 223-224 239 389-390 467-469 471 489-490 507-508 557-582 592-613 639 645-660
+#  utils                             |        |          |         | 
+#   assets.ts                        | 100.00 |   100.00 |  100.00 | 
+#   dateTime.ts                      |  76.47 |    88.89 |  100.00 | 5 15-17
+#   metricSeries.ts                  |  97.89 |    93.88 |  100.00 | 140-142
+#   numbers.ts                       |  89.66 |   100.00 |  100.00 | 27-29
+# tests                              |        |          |         | 
+#  application.test.mjs              | 100.00 |   100.00 |   90.54 | 
+#  componentHarness.mjs              | 100.00 |    93.10 |   76.00 | 
+#  components.test.mjs               |  99.67 |    99.01 |   87.10 | 93
+#  contracts.test.mjs                | 100.00 |    94.44 |  100.00 | 
+#  coreLogic.test.mjs                | 100.00 |   100.00 |  100.00 | 
+#  dashboardAlarms.test.mjs          | 100.00 |   100.00 |  100.00 | 
+#  register-loader.mjs               | 100.00 |    66.67 |   50.00 | 
+#  visual-boundaries.mjs             | 100.00 |    96.55 |   79.41 | 
+# ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# all files                          |  59.92 |    81.60 |   84.35 | 
+# ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# end of coverage report

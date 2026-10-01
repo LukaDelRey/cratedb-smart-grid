@@ -2,7 +2,7 @@
   <q-card flat bordered class="scada-card load-forecast-card">
     <q-card-section class="row items-center justify-between q-pa-sm">
       <div>
-        <div class="section-kicker-light">{{ t('dashboard.loadForecast') }}</div>
+        <div class="section-kicker-light">{{ t('dashboard.loadForecast') }} <q-icon name="info_outline" size="12px"><q-tooltip>{{ forecastNote }} · {{ t('dashboard.forecastCapacityInfo') }}</q-tooltip></q-icon></div>
       </div>
 
       <q-btn-toggle
@@ -57,36 +57,39 @@
           class="forecast-current-value text-blue-3"
           :style="currentValueStyle"
         >
-          {{ currentPercent }}%
+          {{ dataAvailable ? `${currentPercent}%` : t('dashboard.confidenceUnavailable') }}
         </div>
 
         <div class="forecast-time-axis">
           <span
-            v-for="label in axisLabels"
-            :key="label"
+            v-for="(label, index) in axisLabels"
+            :key="`${label}-${index}`"
           >
             {{ label }}
           </span>
         </div>
       </div>
 
+      <div class="forecast-note">{{ forecastNote }}</div>
       <div class="row forecast-summary-row">
         <div class="col-4 q-pr-sm">
           <div class="metric-box forecast-metric-box">
             <span>{{ t('dashboard.peak') }}</span>
-            <strong>{{ peakLoad }} MW</strong>
+            <strong>{{ dataAvailable ? `${peakLoad} MW` : t('dashboard.confidenceUnavailable') }}</strong>
           </div>
         </div>
         <div class="col-4 q-pr-sm">
           <div class="metric-box forecast-metric-box">
-            <span>{{ t('dashboard.avgRisk') }}</span>
-            <strong>{{ avgRisk }}%</strong>
+            <span>{{ t('dashboard.currentRisk') }}</span>
+            <strong>{{ dataAvailable ? `${avgRisk}%` : t('dashboard.confidenceUnavailable') }}</strong>
           </div>
         </div>
         <div class="col-4">
           <div class="metric-box forecast-metric-box">
             <span>{{ t('dashboard.confidence') }}</span>
-            <strong>{{ avgConfidence }}%</strong>
+            <strong>{{ confidenceAvailable ? `${avgConfidence}%` : t('dashboard.confidenceUnavailable') }}
+              <q-tooltip v-if="!confidenceAvailable">{{ t('dashboard.forecastConfidenceInfo') }}</q-tooltip>
+            </strong>
           </div>
         </div>
       </div>
@@ -109,8 +112,11 @@ const props = defineProps({
 
 const { t } = useI18n()
 const {
+  dataAvailable,
+  forecastNote,
   areaPath,
   avgConfidence,
+  confidenceAvailable,
   avgRisk,
   axisLabels,
   currentGuidePath,
@@ -247,7 +253,7 @@ const {
 }
 
 .forecast-chart-wrap{
-  min-height:158px;
+  min-height:144px;
   padding-right:33px;
 }
 
@@ -286,6 +292,8 @@ const {
   padding-right:0;
   font-size:9.5px;
 }
+
+.forecast-note{ font-size:9px; color:#8fa9b8; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
 
 .forecast-summary-row{
   flex:0 0 auto;

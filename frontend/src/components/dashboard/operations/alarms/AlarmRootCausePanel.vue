@@ -24,7 +24,7 @@
           <div class="root-cause-summary-card">
             <span>{{ t('dashboard.affected') }}</span>
             <strong>{{ rootCause.affectedAssets.length }} {{ t('dashboard.assetsLower') }}</strong>
-            <small>{{ affectedAssetsLabel }}</small>
+            <small :title="affectedAssetsLabel">{{ affectedAssetsLabel }}</small>
           </div>
 
           <div class="root-cause-summary-card">
@@ -32,7 +32,7 @@
             <strong :class="severityTextClass(rootCause.severity)">
               {{ translateStatus(rootCause.severity) }}
             </strong>
-            <small>{{ recommendedAction }}</small>
+            <small :title="recommendedAction">{{ recommendedAction }}</small>
           </div>
         </aside>
 
@@ -132,8 +132,10 @@ function severityTextClass(severity){
 .root-cause-summary-stack{
   min-height:0;
   display:grid;
-  grid-template-rows:1.15fr 1fr 1fr;
+  grid-template-rows:repeat(3,minmax(58px,1fr));
   gap:7px;
+  overflow:auto;
+  scrollbar-width:thin;
 }
 
 .root-cause-summary-card{
@@ -142,7 +144,7 @@ function severityTextClass(severity){
   display:flex;
   flex-direction:column;
   justify-content:center;
-  padding:8px 9px;
+  padding:5px 8px;
   border:1px solid rgba(255,255,255,.075);
   border-radius:8px;
   background:rgba(255,255,255,.028);
@@ -150,6 +152,8 @@ function severityTextClass(severity){
 
 .root-cause-summary-card span,
 .root-cause-summary-card small{
+  flex-shrink:0;
+  line-height:1.2;
   overflow:hidden;
   color:#8fa9b8;
   font-size:10px;
@@ -162,8 +166,9 @@ function severityTextClass(severity){
   margin-top:3px;
   overflow:hidden;
   color:#f5fbff;
-  font-size:15px;
-  line-height:1.12;
+  font-size:14px;
+  line-height:1.25;
+  flex-shrink:0;
   text-overflow:ellipsis;
 }
 
@@ -173,6 +178,8 @@ function severityTextClass(severity){
   -webkit-box-orient:vertical;
   white-space:normal;
 }
+
+.root-cause-summary-card small{margin-top:2px}
 
 .root-cause-graph-panel{
   min-width:0;

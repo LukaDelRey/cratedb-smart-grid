@@ -4,6 +4,7 @@
 
     <q-page-container>
       <q-page class="sst-page">
+        <q-banner v-if="!station" class="bg-blue-grey-10 text-white">{{ t('dashboard.noAssetTelemetry') }}</q-banner>
         <header class="sst-topbar">
           <div class="breadcrumbs">
             <span>Grid Digital Twin</span>
@@ -14,10 +15,23 @@
           </div>
 
           <div class="topbar-actions">
-            <span class="online-pill"><i /> Online</span>
+            <span class="online-pill" :class="{ waiting:!station }">
+              <i /> {{ station ? 'Online' : 'Waiting data' }}
+            </span>
             <span class="clock">{{ lastUpdate }}</span>
             <q-btn flat round dense icon="notifications" color="blue-grey-3">
               <q-badge v-if="activeAlarmCount" color="negative" floating>{{ activeAlarmCount }}</q-badge>
+            </q-btn>
+            <q-btn
+              flat
+              round
+              dense
+              icon="science"
+              color="cyan"
+              :aria-label="t('dashboard.runScenario')"
+              @click="scenarioOpen = true"
+            >
+              <q-tooltip>{{ t('dashboard.runScenario') }}</q-tooltip>
             </q-btn>
             <q-btn flat round dense icon="account_tree" color="blue-grey-3" @click="runStationContingency" />
             <span class="admin">dispatcher</span>
@@ -36,7 +50,10 @@
               </div>
 
               <div class="time-controls">
-                <button type="button">{{ activeTab === 'analytics' ? 'Last 7 days' : 'Last 5 minutes' }}</button>
+                <button type="button">
+                  <span class="range-long">{{ activeTab === 'analytics' ? 'Last 7 days' : 'Last 5 minutes' }}</span>
+                  <span class="range-short">{{ activeTab === 'analytics' ? '7 days' : '5 min' }}</span>
+                </button>
                 <button type="button" class="active">Live Data</button>
                 <button type="button" aria-label="Refresh" @click="store.refreshAll">
                   <q-icon name="refresh" size="17px" />
@@ -135,6 +152,7 @@
                 <TrendPanel
                   title="Load & Voltage"
                   :seed="loadPct + 8"
+                  :values="historyLoadSeries"
                   legend-a="Load (%)"
                   legend-b="Voltage Stability"
                   :footer="[
@@ -147,6 +165,7 @@
                 <TrendPanel
                   title="Thermal & Power Quality"
                   :seed="busbarTemp + 12"
+                  :values="historyThermalSeries"
                   legend-a="Busbar Temp"
                   legend-b="THD"
                   :footer="[
@@ -307,6 +326,12 @@
         </main>
       </q-page>
     </q-page-container>
+
+    <ScenarioControlDialog
+      v-model="scenarioOpen"
+      :station-id="stationId"
+      default-type="voltage_drop"
+    />
   </q-layout>
 </template>
 
@@ -318,11 +343,16 @@ import { useSensorStore } from '../stores/sensorStore'
 import { humanizeAssetKey as alarmLabel } from '../utils/assets'
 import { clamp, round1, round2 } from '../utils/numbers'
 import Sidebar from '../components/dashboard/layout/Sidebar.vue'
+import ScenarioControlDialog from '../components/scenarios/ScenarioControlDialog.vue'
 import TransformerTwinMiniChart from '../components/transformer-twin/TransformerTwinMiniChart.vue'
+import { useI18n } from '../i18n'
+import { useStationHistory } from '../composables/useStationHistory'
 
 const route = useRoute()
 const store = useSensorStore()
 const activeTab = ref('overview')
+const scenarioOpen = ref(false)
+const { t } = useI18n()
 
 onMounted(() => {
   if(!store.stations.length){
@@ -355,6 +385,12 @@ const transformers = computed(() =>
 
 const stationId = computed(() => station.value?.station_id || routeStationId.value || 'TS-001')
 const stationName = computed(() => station.value?.station_name || `Substation ${stationId.value}`)
+const stationHistory = useStationHistory(() => stationId.value)
+const historyLoadSeries = stationHistory.series(point => {
+  const current = point.electrical?.current_a
+  return Number.isFinite(current) ? clamp(Number(current) / 5.7,0,100) : null
+})
+const historyThermalSeries = stationHistory.series(point => point.thermal?.oil_temp_c)
 const activeTabLabel = computed(() =>
   tabs.find(tab => tab.key === activeTab.value)?.label || 'Overview'
 )
@@ -383,17 +419,17 @@ const activeAlarmCount = computed(() =>
     : 0
 )
 
-const voltage = computed(() => round1(station.value?.electrical?.voltage_kv || 20.4))
-const current = computed(() => Math.round(station.value?.electrical?.current_a || 354))
-const frequency = computed(() => round2(station.value?.electrical?.frequency_hz || 50.01))
-const activePowerKw = computed(() => Math.round(station.value?.electrical?.active_power_kw || 7320))
-const reactivePower = computed(() => Math.round(station.value?.electrical?.reactive_power_kvar || activePowerKw.value * .16))
-const harmonics = computed(() => round1(station.value?.electrical?.harmonics_thd || 2.4))
-const busbarTemp = computed(() => round1(station.value?.thermal?.busbar_temp_c || 43.6))
-const oilTemp = computed(() => round1(station.value?.thermal?.oil_temp_c || 62.8))
-const windingTemp = computed(() => round1(station.value?.thermal?.winding_temp_c || 71.2))
-const ambientTemp = computed(() => round1(station.value?.thermal?.ambient_temp_c || store.weather?.temperatureC || 24))
-const hydrogen = computed(() => round1(station.value?.oil_gas?.hydrogen_ppm || 11.8))
+const voltage = computed(() => round1(station.value?.electrical?.voltage_kv ?? 0))
+const current = computed(() => Math.round(station.value?.electrical?.current_a ?? 0))
+const frequency = computed(() => round2(station.value?.electrical?.frequency_hz ?? 0))
+const activePowerKw = computed(() => Math.round(station.value?.electrical?.active_power_kw ?? 0))
+const reactivePower = computed(() => Math.round(station.value?.electrical?.reactive_power_kvar ?? 0))
+const harmonics = computed(() => round1(station.value?.electrical?.harmonics_thd ?? 0))
+const busbarTemp = computed(() => round1(station.value?.thermal?.busbar_temp_c ?? 0))
+const oilTemp = computed(() => round1(station.value?.thermal?.oil_temp_c ?? 0))
+const windingTemp = computed(() => round1(station.value?.thermal?.winding_temp_c ?? 0))
+const ambientTemp = computed(() => round1(station.value?.thermal?.ambient_temp_c ?? store.weather?.temperatureC ?? 0))
+const hydrogen = computed(() => round1(station.value?.oil_gas?.hydrogen_ppm ?? 0))
 const activePowerMw = computed(() => round1(activePowerKw.value / 1000))
 const transformerCount = computed(() => Math.max(transformers.value.length, 2))
 const installedCapacity = computed(() => transformerCount.value * 40)
@@ -729,6 +765,7 @@ const TrendPanel = defineComponent({
     seed:{ type:Number, default:72 },
     legendA:{ type:String, default:'Actual' },
     legendB:{ type:String, default:'Forecast' },
+    values:{ type:Array as PropType<number[]>, default:() => [] },
     footer:{ type:Array as PropType<any[]>, default:() => [] },
     sideStats:{ type:Array as PropType<any[]>, default:() => [] }
   },
@@ -742,7 +779,7 @@ const TrendPanel = defineComponent({
         ])
       ]),
       h('div', { class:'trend-body' }, [
-        h(TransformerTwinMiniChart, { seed:props.seed }),
+        h(TransformerTwinMiniChart, { seed:props.seed, actualValues:props.values }),
         props.sideStats.length
           ? h('div', { class:'side-stats' }, props.sideStats.map(stat =>
               h('div', [h('span', stat[0]), h('strong', stat[1])])
@@ -1168,6 +1205,17 @@ const EventTimeline = simplePanel('EventTimeline', 'event-card', props => [
   box-shadow:0 0 12px rgba(113,242,63,.86);
 }
 
+.online-pill.waiting{
+  color:#ffb238;
+  border-color:rgba(255,178,56,.34);
+  background:rgba(255,178,56,.09);
+}
+
+.online-pill.waiting i{
+  background:#ffb238;
+  box-shadow:0 0 10px rgba(255,178,56,.65);
+}
+
 .clock,
 .admin{
   color:#d7e4ee;
@@ -1272,6 +1320,10 @@ const EventTimeline = simplePanel('EventTimeline', 'event-card', props => [
   border-color:rgba(64,196,255,.48);
   background:linear-gradient(180deg,#1688ef,#0c64bd);
   box-shadow:0 0 18px rgba(40,143,255,.22), inset 0 1px 0 rgba(255,255,255,.18);
+}
+
+.range-short{
+  display:none;
 }
 
 .tab-row{
@@ -2433,6 +2485,14 @@ const EventTimeline = simplePanel('EventTimeline', 'event-card', props => [
 }
 
 @media (max-width: 760px){
+  .range-long{
+    display:none;
+  }
+
+  .range-short{
+    display:inline;
+  }
+
   .sst-content{
     padding:14px;
   }

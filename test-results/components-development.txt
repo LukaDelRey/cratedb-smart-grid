@@ -1,0 +1,1303 @@
+TAP version 13
+# Subtest: Vue component unit suite
+    # Subtest: component boundary App.vue: empty data
+    ok 1 - component boundary App.vue: empty data
+      ---
+      duration_ms: 18.5989
+      type: 'test'
+      ...
+    # Subtest: component boundary App.vue: telemetry fixture
+    ok 2 - component boundary App.vue: telemetry fixture
+      ---
+      duration_ms: 2.4219
+      type: 'test'
+      ...
+    # Subtest: component template App.vue renders empty-state boundaries
+    ok 3 - component template App.vue renders empty-state boundaries
+      ---
+      duration_ms: 3.2139
+      type: 'test'
+      ...
+    # Subtest: component boundary components/AlarmPanel.vue: empty data
+    ok 4 - component boundary components/AlarmPanel.vue: empty data
+      ---
+      duration_ms: 37.8096
+      type: 'test'
+      ...
+    # Subtest: component boundary components/AlarmPanel.vue: telemetry fixture
+    ok 5 - component boundary components/AlarmPanel.vue: telemetry fixture
+      ---
+      duration_ms: 1.47
+      type: 'test'
+      ...
+    # Subtest: component template components/AlarmPanel.vue renders empty-state boundaries
+    ok 6 - component template components/AlarmPanel.vue renders empty-state boundaries
+      ---
+      duration_ms: 8.1415
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/layout/GridHealthPanel.vue: empty data
+    ok 7 - component boundary components/dashboard/layout/GridHealthPanel.vue: empty data
+      ---
+      duration_ms: 51.4495
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/layout/GridHealthPanel.vue: telemetry fixture
+    ok 8 - component boundary components/dashboard/layout/GridHealthPanel.vue: telemetry fixture
+      ---
+      duration_ms: 1.7493
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/layout/GridHealthPanel.vue renders empty-state boundaries
+    ok 9 - component template components/dashboard/layout/GridHealthPanel.vue renders empty-state boundaries
+      ---
+      duration_ms: 2.2658
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/layout/Sidebar.vue: empty data
+    ok 10 - component boundary components/dashboard/layout/Sidebar.vue: empty data
+      ---
+      duration_ms: 19.328
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/layout/Sidebar.vue: telemetry fixture
+    ok 11 - component boundary components/dashboard/layout/Sidebar.vue: telemetry fixture
+      ---
+      duration_ms: 1.2001
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/layout/Sidebar.vue renders empty-state boundaries
+    ok 12 - component template components/dashboard/layout/Sidebar.vue renders empty-state boundaries
+      ---
+      duration_ms: 2.1965
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/layout/Topbar.vue: empty data
+    ok 13 - component boundary components/dashboard/layout/Topbar.vue: empty data
+      ---
+      duration_ms: 40.5297
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/layout/Topbar.vue: telemetry fixture
+    ok 14 - component boundary components/dashboard/layout/Topbar.vue: telemetry fixture
+      ---
+      duration_ms: 1.2583
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/layout/Topbar.vue renders empty-state boundaries
+    ok 15 - component template components/dashboard/layout/Topbar.vue renders empty-state boundaries
+      ---
+      duration_ms: 2.9864
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/map/controls/LayerPanel.vue: empty data
+    ok 16 - component boundary components/dashboard/map/controls/LayerPanel.vue: empty data
+      ---
+      duration_ms: 16.1024
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/map/controls/LayerPanel.vue: telemetry fixture
+    ok 17 - component boundary components/dashboard/map/controls/LayerPanel.vue: telemetry fixture
+      ---
+      duration_ms: 0.8393
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/map/controls/LayerPanel.vue renders empty-state boundaries
+    ok 18 - component template components/dashboard/map/controls/LayerPanel.vue renders empty-state boundaries
+      ---
+      duration_ms: 1.7635
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/map/DashboardMap.vue: empty data
+    ok 19 - component boundary components/dashboard/map/DashboardMap.vue: empty data
+      ---
+      duration_ms: 117.7875
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/map/DashboardMap.vue: telemetry fixture
+    ok 20 - component boundary components/dashboard/map/DashboardMap.vue: telemetry fixture
+      ---
+      duration_ms: 1.6298
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/map/DashboardMap.vue renders empty-state boundaries
+    ok 21 - component template components/dashboard/map/DashboardMap.vue renders empty-state boundaries
+      ---
+      duration_ms: 2.6922
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/map/layers/ContingencyLayer.vue: empty data
+    ok 22 - component boundary components/dashboard/map/layers/ContingencyLayer.vue: empty data
+      ---
+      duration_ms: 1.5273
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/map/layers/ContingencyLayer.vue: telemetry fixture
+    ok 23 - component boundary components/dashboard/map/layers/ContingencyLayer.vue: telemetry fixture
+      ---
+      duration_ms: 1.3138
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/map/layers/ContingencyLayer.vue renders empty-state boundaries
+    ok 24 - component template components/dashboard/map/layers/ContingencyLayer.vue renders empty-state boundaries
+      ---
+      duration_ms: 1.0728
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/map/layers/CustomerLayer.vue: empty data
+    ok 25 - component boundary components/dashboard/map/layers/CustomerLayer.vue: empty data
+      ---
+      duration_ms: 1.0979
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/map/layers/CustomerLayer.vue: telemetry fixture
+    ok 26 - component boundary components/dashboard/map/layers/CustomerLayer.vue: telemetry fixture
+      ---
+      duration_ms: 1.2991
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/map/layers/CustomerLayer.vue renders empty-state boundaries
+    ok 27 - component template components/dashboard/map/layers/CustomerLayer.vue renders empty-state boundaries
+      ---
+      duration_ms: 3.1422
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/map/layers/HeatmapLayer.vue: empty data
+    ok 28 - component boundary components/dashboard/map/layers/HeatmapLayer.vue: empty data
+      ---
+      duration_ms: 1.1839
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/map/layers/HeatmapLayer.vue: telemetry fixture
+    ok 29 - component boundary components/dashboard/map/layers/HeatmapLayer.vue: telemetry fixture
+      ---
+      duration_ms: 1.0053
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/map/layers/HeatmapLayer.vue renders empty-state boundaries
+    ok 30 - component template components/dashboard/map/layers/HeatmapLayer.vue renders empty-state boundaries
+      ---
+      duration_ms: 0.9294
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/map/layers/PowerLineLayer.vue: empty data
+    ok 31 - component boundary components/dashboard/map/layers/PowerLineLayer.vue: empty data
+      ---
+      duration_ms: 1.5976
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/map/layers/PowerLineLayer.vue: telemetry fixture
+    ok 32 - component boundary components/dashboard/map/layers/PowerLineLayer.vue: telemetry fixture
+      ---
+      duration_ms: 1.1945
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/map/layers/PowerLineLayer.vue renders empty-state boundaries
+    ok 33 - component template components/dashboard/map/layers/PowerLineLayer.vue renders empty-state boundaries
+      ---
+      duration_ms: 1.0667
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/map/layers/RegionLayer.vue: empty data
+    ok 34 - component boundary components/dashboard/map/layers/RegionLayer.vue: empty data
+      ---
+      duration_ms: 1.1869
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/map/layers/RegionLayer.vue: telemetry fixture
+    ok 35 - component boundary components/dashboard/map/layers/RegionLayer.vue: telemetry fixture
+      ---
+      duration_ms: 0.8114
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/map/layers/RegionLayer.vue renders empty-state boundaries
+    ok 36 - component template components/dashboard/map/layers/RegionLayer.vue renders empty-state boundaries
+      ---
+      duration_ms: 0.7389
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/map/layers/RiskLayer.vue: empty data
+    ok 37 - component boundary components/dashboard/map/layers/RiskLayer.vue: empty data
+      ---
+      duration_ms: 1.0568
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/map/layers/RiskLayer.vue: telemetry fixture
+    ok 38 - component boundary components/dashboard/map/layers/RiskLayer.vue: telemetry fixture
+      ---
+      duration_ms: 0.9576
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/map/layers/RiskLayer.vue renders empty-state boundaries
+    ok 39 - component template components/dashboard/map/layers/RiskLayer.vue renders empty-state boundaries
+      ---
+      duration_ms: 0.9668
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/map/layers/SubstationLayer.vue: empty data
+    ok 40 - component boundary components/dashboard/map/layers/SubstationLayer.vue: empty data
+      ---
+      duration_ms: 1.4749
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/map/layers/SubstationLayer.vue: telemetry fixture
+    ok 41 - component boundary components/dashboard/map/layers/SubstationLayer.vue: telemetry fixture
+      ---
+      duration_ms: 1.3199
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/map/layers/SubstationLayer.vue renders empty-state boundaries
+    ok 42 - component template components/dashboard/map/layers/SubstationLayer.vue renders empty-state boundaries
+      ---
+      duration_ms: 1.1104
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/map/layers/TransformerLayer.vue: empty data
+    ok 43 - component boundary components/dashboard/map/layers/TransformerLayer.vue: empty data
+      ---
+      duration_ms: 1.1851
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/map/layers/TransformerLayer.vue: telemetry fixture
+    ok 44 - component boundary components/dashboard/map/layers/TransformerLayer.vue: telemetry fixture
+      ---
+      duration_ms: 0.7899
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/map/layers/TransformerLayer.vue renders empty-state boundaries
+    ok 45 - component template components/dashboard/map/layers/TransformerLayer.vue renders empty-state boundaries
+      ---
+      duration_ms: 0.8582
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/map/layers/WeatherLayer.vue: empty data
+    ok 46 - component boundary components/dashboard/map/layers/WeatherLayer.vue: empty data
+      ---
+      duration_ms: 0.9795
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/map/layers/WeatherLayer.vue: telemetry fixture
+    ok 47 - component boundary components/dashboard/map/layers/WeatherLayer.vue: telemetry fixture
+      ---
+      duration_ms: 0.8111
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/map/layers/WeatherLayer.vue renders empty-state boundaries
+    ok 48 - component template components/dashboard/map/layers/WeatherLayer.vue renders empty-state boundaries
+      ---
+      duration_ms: 4.7532
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/operations/alarms/ActiveAlarmsEventsPanel.vue: empty data
+    ok 49 - component boundary components/dashboard/operations/alarms/ActiveAlarmsEventsPanel.vue: empty data
+      ---
+      duration_ms: 40.9412
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/operations/alarms/ActiveAlarmsEventsPanel.vue: telemetry fixture
+    ok 50 - component boundary components/dashboard/operations/alarms/ActiveAlarmsEventsPanel.vue: telemetry fixture
+      ---
+      duration_ms: 1.1706
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/operations/alarms/ActiveAlarmsEventsPanel.vue renders empty-state boundaries
+    ok 51 - component template components/dashboard/operations/alarms/ActiveAlarmsEventsPanel.vue renders empty-state boundaries
+      ---
+      duration_ms: 4.1805
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/operations/alarms/AlarmCorrelationPanel.vue: empty data
+    ok 52 - component boundary components/dashboard/operations/alarms/AlarmCorrelationPanel.vue: empty data
+      ---
+      duration_ms: 18.4036
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/operations/alarms/AlarmCorrelationPanel.vue: telemetry fixture
+    ok 53 - component boundary components/dashboard/operations/alarms/AlarmCorrelationPanel.vue: telemetry fixture
+      ---
+      duration_ms: 0.8879
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/operations/alarms/AlarmCorrelationPanel.vue renders empty-state boundaries
+    ok 54 - component template components/dashboard/operations/alarms/AlarmCorrelationPanel.vue renders empty-state boundaries
+      ---
+      duration_ms: 1.5757
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/operations/alarms/AlarmRootCausePanel.vue: empty data
+    ok 55 - component boundary components/dashboard/operations/alarms/AlarmRootCausePanel.vue: empty data
+      ---
+      duration_ms: 29.2621
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/operations/alarms/AlarmRootCausePanel.vue: telemetry fixture
+    ok 56 - component boundary components/dashboard/operations/alarms/AlarmRootCausePanel.vue: telemetry fixture
+      ---
+      duration_ms: 0.8195
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/operations/alarms/AlarmRootCausePanel.vue renders empty-state boundaries
+    ok 57 - component template components/dashboard/operations/alarms/AlarmRootCausePanel.vue renders empty-state boundaries
+      ---
+      duration_ms: 1.1046
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/operations/alarms/RootCauseGraph.vue: empty data
+    ok 58 - component boundary components/dashboard/operations/alarms/RootCauseGraph.vue: empty data
+      ---
+      duration_ms: 0.9195
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/operations/alarms/RootCauseGraph.vue: telemetry fixture
+    ok 59 - component boundary components/dashboard/operations/alarms/RootCauseGraph.vue: telemetry fixture
+      ---
+      duration_ms: 0.7391
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/operations/alarms/RootCauseGraph.vue renders empty-state boundaries
+    ok 60 - component template components/dashboard/operations/alarms/RootCauseGraph.vue renders empty-state boundaries
+      ---
+      duration_ms: 0.9784
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/operations/RealtimeConnectionStatus.vue: empty data
+    ok 61 - component boundary components/dashboard/operations/RealtimeConnectionStatus.vue: empty data
+      ---
+      duration_ms: 6.7135
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/operations/RealtimeConnectionStatus.vue: telemetry fixture
+    ok 62 - component boundary components/dashboard/operations/RealtimeConnectionStatus.vue: telemetry fixture
+      ---
+      duration_ms: 0.7318
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/operations/RealtimeConnectionStatus.vue renders empty-state boundaries
+    ok 63 - component template components/dashboard/operations/RealtimeConnectionStatus.vue renders empty-state boundaries
+      ---
+      duration_ms: 0.9984
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/operations/RealtimeEventStream.vue: empty data
+    ok 64 - component boundary components/dashboard/operations/RealtimeEventStream.vue: empty data
+      ---
+      duration_ms: 10.9138
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/operations/RealtimeEventStream.vue: telemetry fixture
+    ok 65 - component boundary components/dashboard/operations/RealtimeEventStream.vue: telemetry fixture
+      ---
+      duration_ms: 0.8547
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/operations/RealtimeEventStream.vue renders empty-state boundaries
+    ok 66 - component template components/dashboard/operations/RealtimeEventStream.vue renders empty-state boundaries
+      ---
+      duration_ms: 1.4368
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/operations/RealtimeMetricsTicker.vue: empty data
+    ok 67 - component boundary components/dashboard/operations/RealtimeMetricsTicker.vue: empty data
+      ---
+      duration_ms: 8.7319
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/operations/RealtimeMetricsTicker.vue: telemetry fixture
+    ok 68 - component boundary components/dashboard/operations/RealtimeMetricsTicker.vue: telemetry fixture
+      ---
+      duration_ms: 0.7714
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/operations/RealtimeMetricsTicker.vue renders empty-state boundaries
+    ok 69 - component template components/dashboard/operations/RealtimeMetricsTicker.vue renders empty-state boundaries
+      ---
+      duration_ms: 0.8757
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/right-sidebar/AIInsightsPanel.vue: empty data
+    ok 70 - component boundary components/dashboard/right-sidebar/AIInsightsPanel.vue: empty data
+      ---
+      duration_ms: 8.9418
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/right-sidebar/AIInsightsPanel.vue: telemetry fixture
+    ok 71 - component boundary components/dashboard/right-sidebar/AIInsightsPanel.vue: telemetry fixture
+      ---
+      duration_ms: 0.7058
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/right-sidebar/AIInsightsPanel.vue renders empty-state boundaries
+    ok 72 - component template components/dashboard/right-sidebar/AIInsightsPanel.vue renders empty-state boundaries
+      ---
+      duration_ms: 1.1143
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/right-sidebar/BlackoutPredictionCard.vue: empty data
+    ok 73 - component boundary components/dashboard/right-sidebar/BlackoutPredictionCard.vue: empty data
+      ---
+      duration_ms: 11.4918
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/right-sidebar/BlackoutPredictionCard.vue: telemetry fixture
+    ok 74 - component boundary components/dashboard/right-sidebar/BlackoutPredictionCard.vue: telemetry fixture
+      ---
+      duration_ms: 0.7576
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/right-sidebar/BlackoutPredictionCard.vue renders empty-state boundaries
+    ok 75 - component template components/dashboard/right-sidebar/BlackoutPredictionCard.vue renders empty-state boundaries
+      ---
+      duration_ms: 1.1948
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/right-sidebar/LoadForecastCard.vue: empty data
+    ok 76 - component boundary components/dashboard/right-sidebar/LoadForecastCard.vue: empty data
+      ---
+      duration_ms: 12.0407
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/right-sidebar/LoadForecastCard.vue: telemetry fixture
+    ok 77 - component boundary components/dashboard/right-sidebar/LoadForecastCard.vue: telemetry fixture
+      ---
+      duration_ms: 4.3928
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/right-sidebar/LoadForecastCard.vue renders empty-state boundaries
+    ok 78 - component template components/dashboard/right-sidebar/LoadForecastCard.vue renders empty-state boundaries
+      ---
+      duration_ms: 1.969
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/right-sidebar/OutageRiskMapCard.vue: empty data
+    ok 79 - component boundary components/dashboard/right-sidebar/OutageRiskMapCard.vue: empty data
+      ---
+      duration_ms: 14.6908
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/right-sidebar/OutageRiskMapCard.vue: telemetry fixture
+    ok 80 - component boundary components/dashboard/right-sidebar/OutageRiskMapCard.vue: telemetry fixture
+      ---
+      duration_ms: 0.914
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/right-sidebar/OutageRiskMapCard.vue renders empty-state boundaries
+    ok 81 - component template components/dashboard/right-sidebar/OutageRiskMapCard.vue renders empty-state boundaries
+      ---
+      duration_ms: 1.2453
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/right-sidebar/TopRiskSubstationsCard.vue: empty data
+    ok 82 - component boundary components/dashboard/right-sidebar/TopRiskSubstationsCard.vue: empty data
+      ---
+      duration_ms: 14.6292
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/right-sidebar/TopRiskSubstationsCard.vue: telemetry fixture
+    ok 83 - component boundary components/dashboard/right-sidebar/TopRiskSubstationsCard.vue: telemetry fixture
+      ---
+      duration_ms: 0.8592
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/right-sidebar/TopRiskSubstationsCard.vue renders empty-state boundaries
+    ok 84 - component template components/dashboard/right-sidebar/TopRiskSubstationsCard.vue renders empty-state boundaries
+      ---
+      duration_ms: 1.2424
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/system/SystemTopologyDialog.vue: empty data
+    ok 85 - component boundary components/dashboard/system/SystemTopologyDialog.vue: empty data
+      ---
+      duration_ms: 14.4538
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/system/SystemTopologyDialog.vue: telemetry fixture
+    ok 86 - component boundary components/dashboard/system/SystemTopologyDialog.vue: telemetry fixture
+      ---
+      duration_ms: 0.9613
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/system/SystemTopologyDialog.vue renders empty-state boundaries
+    ok 87 - component template components/dashboard/system/SystemTopologyDialog.vue renders empty-state boundaries
+      ---
+      duration_ms: 1.5127
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/WeatherPanel.vue: empty data
+    ok 88 - component boundary components/dashboard/WeatherPanel.vue: empty data
+      ---
+      duration_ms: 12.1757
+      type: 'test'
+      ...
+    # Subtest: component boundary components/dashboard/WeatherPanel.vue: telemetry fixture
+    ok 89 - component boundary components/dashboard/WeatherPanel.vue: telemetry fixture
+      ---
+      duration_ms: 0.7763
+      type: 'test'
+      ...
+    # Subtest: component template components/dashboard/WeatherPanel.vue renders empty-state boundaries
+    ok 90 - component template components/dashboard/WeatherPanel.vue renders empty-state boundaries
+      ---
+      duration_ms: 1.3085
+      type: 'test'
+      ...
+    # Subtest: inactive components/map/GridMap.vue
+    ok 91 - inactive components/map/GridMap.vue # SKIP Entire legacy SFC starts with an unclosed HTML comment and is not imported by the application
+      ---
+      duration_ms: 0.0515
+      type: 'test'
+      ...
+    # Subtest: component boundary components/MapView.vue: empty data
+    ok 92 - component boundary components/MapView.vue: empty data
+      ---
+      duration_ms: 8.8106
+      type: 'test'
+      ...
+    # Subtest: component boundary components/MapView.vue: telemetry fixture
+    ok 93 - component boundary components/MapView.vue: telemetry fixture
+      ---
+      duration_ms: 0.7792
+      type: 'test'
+      ...
+    # Subtest: component template components/MapView.vue renders empty-state boundaries
+    ok 94 - component template components/MapView.vue renders empty-state boundaries
+      ---
+      duration_ms: 1.0041
+      type: 'test'
+      ...
+    # Subtest: component boundary components/scenarios/ScenarioControlDialog.vue: empty data
+    ok 95 - component boundary components/scenarios/ScenarioControlDialog.vue: empty data
+      ---
+      duration_ms: 26.9762
+      type: 'test'
+      ...
+    # Subtest: component boundary components/scenarios/ScenarioControlDialog.vue: telemetry fixture
+    ok 96 - component boundary components/scenarios/ScenarioControlDialog.vue: telemetry fixture
+      ---
+      duration_ms: 1.2419
+      type: 'test'
+      ...
+    # Subtest: component template components/scenarios/ScenarioControlDialog.vue renders empty-state boundaries
+    ok 97 - component template components/scenarios/ScenarioControlDialog.vue renders empty-state boundaries
+      ---
+      duration_ms: 2.8731
+      type: 'test'
+      ...
+    # Subtest: component boundary components/SensorChart.vue: empty data
+    ok 98 - component boundary components/SensorChart.vue: empty data
+      ---
+      duration_ms: 4.8271
+      type: 'test'
+      ...
+    # Subtest: component boundary components/SensorChart.vue: telemetry fixture
+    ok 99 - component boundary components/SensorChart.vue: telemetry fixture
+      ---
+      duration_ms: 0.8627
+      type: 'test'
+      ...
+    # Subtest: component template components/SensorChart.vue renders empty-state boundaries
+    ok 100 - component template components/SensorChart.vue renders empty-state boundaries
+      ---
+      duration_ms: 0.9591
+      type: 'test'
+      ...
+    # Subtest: component boundary components/transformer-twin/TransformerTwinDiagram.vue: empty data
+    ok 101 - component boundary components/transformer-twin/TransformerTwinDiagram.vue: empty data
+      ---
+      duration_ms: 9.3248
+      type: 'test'
+      ...
+    # Subtest: component boundary components/transformer-twin/TransformerTwinDiagram.vue: telemetry fixture
+    ok 102 - component boundary components/transformer-twin/TransformerTwinDiagram.vue: telemetry fixture
+      ---
+      duration_ms: 0.8203
+      type: 'test'
+      ...
+    # Subtest: component template components/transformer-twin/TransformerTwinDiagram.vue renders empty-state boundaries
+    not ok 103 - component template components/transformer-twin/TransformerTwinDiagram.vue renders empty-state boundaries
+      ---
+      duration_ms: 1.075
+      type: 'test'
+      location: 'C:\\Users\\HiwePC8\\Documents\\Websites\\CrateDB-project\\CrateDB\\frontend\\tests\\components.test.mjs:75:3'
+      failureType: 'testCodeFailure'
+      error: 'hostInsertStaticContent is not a function or its return value is not iterable'
+      code: 'ERR_TEST_FAILURE'
+      name: 'TypeError'
+      stack: |-
+        mountStaticNode (C:\Users\HiwePC8\Documents\Websites\CrateDB-project\CrateDB\frontend\node_modules\@vue\runtime-core\dist\runtime-core.cjs.js:5512:26)
+        patch (C:\Users\HiwePC8\Documents\Websites\CrateDB-project\CrateDB\frontend\node_modules\@vue\runtime-core\dist\runtime-core.cjs.js:5407:11)
+        mountChildren (C:\Users\HiwePC8\Documents\Websites\CrateDB-project\CrateDB\frontend\node_modules\@vue\runtime-core\dist\runtime-core.cjs.js:5690:7)
+        mountElement (C:\Users\HiwePC8\Documents\Websites\CrateDB-project\CrateDB\frontend\node_modules\@vue\runtime-core\dist\runtime-core.cjs.js:5606:7)
+        processElement (C:\Users\HiwePC8\Documents\Websites\CrateDB-project\CrateDB\frontend\node_modules\@vue\runtime-core\dist\runtime-core.cjs.js:5561:7)
+        patch (C:\Users\HiwePC8\Documents\Websites\CrateDB-project\CrateDB\frontend\node_modules\@vue\runtime-core\dist\runtime-core.cjs.js:5427:11)
+        mountChildren (C:\Users\HiwePC8\Documents\Websites\CrateDB-project\CrateDB\frontend\node_modules\@vue\runtime-core\dist\runtime-core.cjs.js:5690:7)
+        mountElement (C:\Users\HiwePC8\Documents\Websites\CrateDB-project\CrateDB\frontend\node_modules\@vue\runtime-core\dist\runtime-core.cjs.js:5606:7)
+        processElement (C:\Users\HiwePC8\Documents\Websites\CrateDB-project\CrateDB\frontend\node_modules\@vue\runtime-core\dist\runtime-core.cjs.js:5561:7)
+        patch (C:\Users\HiwePC8\Documents\Websites\CrateDB-project\CrateDB\frontend\node_modules\@vue\runtime-core\dist\runtime-core.cjs.js:5427:11)
+      ...
+    # Subtest: component boundary components/transformer-twin/TransformerTwinMiniChart.vue: empty data
+    ok 104 - component boundary components/transformer-twin/TransformerTwinMiniChart.vue: empty data
+      ---
+      duration_ms: 9.7786
+      type: 'test'
+      ...
+    # Subtest: component boundary components/transformer-twin/TransformerTwinMiniChart.vue: telemetry fixture
+    ok 105 - component boundary components/transformer-twin/TransformerTwinMiniChart.vue: telemetry fixture
+      ---
+      duration_ms: 1.1308
+      type: 'test'
+      ...
+    # Subtest: component template components/transformer-twin/TransformerTwinMiniChart.vue renders empty-state boundaries
+    not ok 106 - component template components/transformer-twin/TransformerTwinMiniChart.vue renders empty-state boundaries
+      ---
+      duration_ms: 1.6576
+      type: 'test'
+      location: 'C:\\Users\\HiwePC8\\Documents\\Websites\\CrateDB-project\\CrateDB\\frontend\\tests\\components.test.mjs:75:3'
+      failureType: 'testCodeFailure'
+      error: 'hostInsertStaticContent is not a function or its return value is not iterable'
+      code: 'ERR_TEST_FAILURE'
+      name: 'TypeError'
+      stack: |-
+        mountStaticNode (C:\Users\HiwePC8\Documents\Websites\CrateDB-project\CrateDB\frontend\node_modules\@vue\runtime-core\dist\runtime-core.cjs.js:5512:26)
+        patch (C:\Users\HiwePC8\Documents\Websites\CrateDB-project\CrateDB\frontend\node_modules\@vue\runtime-core\dist\runtime-core.cjs.js:5407:11)
+        mountChildren (C:\Users\HiwePC8\Documents\Websites\CrateDB-project\CrateDB\frontend\node_modules\@vue\runtime-core\dist\runtime-core.cjs.js:5690:7)
+        mountElement (C:\Users\HiwePC8\Documents\Websites\CrateDB-project\CrateDB\frontend\node_modules\@vue\runtime-core\dist\runtime-core.cjs.js:5606:7)
+        processElement (C:\Users\HiwePC8\Documents\Websites\CrateDB-project\CrateDB\frontend\node_modules\@vue\runtime-core\dist\runtime-core.cjs.js:5561:7)
+        patch (C:\Users\HiwePC8\Documents\Websites\CrateDB-project\CrateDB\frontend\node_modules\@vue\runtime-core\dist\runtime-core.cjs.js:5427:11)
+        ReactiveEffect.componentUpdateFn [as fn] (C:\Users\HiwePC8\Documents\Websites\CrateDB-project\CrateDB\frontend\node_modules\@vue\runtime-core\dist\runtime-core.cjs.js:6077:11)
+        ReactiveEffect.run (C:\Users\HiwePC8\Documents\Websites\CrateDB-project\CrateDB\frontend\node_modules\@vue\reactivity\dist\reactivity.cjs.js:264:19)
+        setupRenderEffect (C:\Users\HiwePC8\Documents\Websites\CrateDB-project\CrateDB\frontend\node_modules\@vue\runtime-core\dist\runtime-core.cjs.js:6205:5)
+        mountComponent (C:\Users\HiwePC8\Documents\Websites\CrateDB-project\CrateDB\frontend\node_modules\@vue\runtime-core\dist\runtime-core.cjs.js:5977:7)
+      ...
+    # Subtest: component boundary components/transformer-twin/TransformerTwinShell.vue: empty data
+    ok 107 - component boundary components/transformer-twin/TransformerTwinShell.vue: empty data
+      ---
+      duration_ms: 21.7997
+      type: 'test'
+      ...
+    # Subtest: component boundary components/transformer-twin/TransformerTwinShell.vue: telemetry fixture
+    ok 108 - component boundary components/transformer-twin/TransformerTwinShell.vue: telemetry fixture
+      ---
+      duration_ms: 0.8744
+      type: 'test'
+      ...
+    # Subtest: component template components/transformer-twin/TransformerTwinShell.vue renders empty-state boundaries
+    ok 109 - component template components/transformer-twin/TransformerTwinShell.vue renders empty-state boundaries
+      ---
+      duration_ms: 2.8487
+      type: 'test'
+      ...
+    # Subtest: component boundary components/transformer-twin/TransformerTwinTopbar.vue: empty data
+    ok 110 - component boundary components/transformer-twin/TransformerTwinTopbar.vue: empty data
+      ---
+      duration_ms: 0.7583
+      type: 'test'
+      ...
+    # Subtest: component boundary components/transformer-twin/TransformerTwinTopbar.vue: telemetry fixture
+    ok 111 - component boundary components/transformer-twin/TransformerTwinTopbar.vue: telemetry fixture
+      ---
+      duration_ms: 0.707
+      type: 'test'
+      ...
+    # Subtest: component template components/transformer-twin/TransformerTwinTopbar.vue renders empty-state boundaries
+    ok 112 - component template components/transformer-twin/TransformerTwinTopbar.vue renders empty-state boundaries
+      ---
+      duration_ms: 0.9838
+      type: 'test'
+      ...
+    # Subtest: component boundary components/VoltageChart.vue: empty data
+    ok 113 - component boundary components/VoltageChart.vue: empty data
+      ---
+      duration_ms: 7.2397
+      type: 'test'
+      ...
+    # Subtest: component boundary components/VoltageChart.vue: telemetry fixture
+    ok 114 - component boundary components/VoltageChart.vue: telemetry fixture
+      ---
+      duration_ms: 0.8172
+      type: 'test'
+      ...
+    # Subtest: component template components/VoltageChart.vue renders empty-state boundaries
+    ok 115 - component template components/VoltageChart.vue renders empty-state boundaries
+      ---
+      duration_ms: 3.3245
+      type: 'test'
+      ...
+    # Subtest: component boundary pages/AIForecastingPage.vue: empty data
+    ok 116 - component boundary pages/AIForecastingPage.vue: empty data
+      ---
+      duration_ms: 23.5541
+      type: 'test'
+      ...
+    # Subtest: component boundary pages/AIForecastingPage.vue: telemetry fixture
+    ok 117 - component boundary pages/AIForecastingPage.vue: telemetry fixture
+      ---
+      duration_ms: 2.0466
+      type: 'test'
+      ...
+    # Subtest: component template pages/AIForecastingPage.vue renders empty-state boundaries
+    not ok 118 - component template pages/AIForecastingPage.vue renders empty-state boundaries
+      ---
+      duration_ms: 11.3492
+      type: 'test'
+      location: 'C:\\Users\\HiwePC8\\Documents\\Websites\\CrateDB-project\\CrateDB\\frontend\\tests\\components.test.mjs:75:3'
+      failureType: 'testCodeFailure'
+      error: |-
+        Expected values to be strictly deep-equal:
+        + actual - expected
+        
+        + [
+        +   "Cannot read properties of null (reading 'children')"
+        + ]
+        - []
+        
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected:
+      actual:
+        0: "Cannot read properties of null (reading 'children')"
+      operator: 'deepStrictEqual'
+      stack: |-
+        TestContext.<anonymous> (file:///C:/Users/HiwePC8/Documents/Websites/CrateDB-project/CrateDB/frontend/tests/components.test.mjs:79:12)
+        async Test.run (node:internal/test_runner/test:1054:7)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    # Subtest: component boundary pages/AlarmCenterPage.vue: empty data
+    ok 119 - component boundary pages/AlarmCenterPage.vue: empty data
+      ---
+      duration_ms: 40.7631
+      type: 'test'
+      ...
+    # Subtest: component boundary pages/AlarmCenterPage.vue: telemetry fixture
+    ok 120 - component boundary pages/AlarmCenterPage.vue: telemetry fixture
+      ---
+      duration_ms: 2.0535
+      type: 'test'
+      ...
+    # Subtest: component template pages/AlarmCenterPage.vue renders empty-state boundaries
+    not ok 121 - component template pages/AlarmCenterPage.vue renders empty-state boundaries
+      ---
+      duration_ms: 8.2991
+      type: 'test'
+      location: 'C:\\Users\\HiwePC8\\Documents\\Websites\\CrateDB-project\\CrateDB\\frontend\\tests\\components.test.mjs:75:3'
+      failureType: 'testCodeFailure'
+      error: |-
+        Expected values to be strictly deep-equal:
+        + actual - expected
+        
+        + [
+        +   "Cannot read properties of null (reading 'children')",
+        +   "Cannot read properties of null (reading 'children')",
+        +   "Cannot set properties of null (setting '__vnode')",
+        +   "Cannot read properties of null (reading 'children')"
+        + ]
+        - []
+        
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected:
+      actual:
+        0: "Cannot read properties of null (reading 'children')"
+        1: "Cannot read properties of null (reading 'children')"
+        2: "Cannot set properties of null (setting '__vnode')"
+        3: "Cannot read properties of null (reading 'children')"
+      operator: 'deepStrictEqual'
+      stack: |-
+        TestContext.<anonymous> (file:///C:/Users/HiwePC8/Documents/Websites/CrateDB-project/CrateDB/frontend/tests/components.test.mjs:79:12)
+        async Test.run (node:internal/test_runner/test:1054:7)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    # Subtest: component boundary pages/DashboardPage.vue: empty data
+    ok 122 - component boundary pages/DashboardPage.vue: empty data
+      ---
+      duration_ms: 21.5585
+      type: 'test'
+      ...
+    # Subtest: component boundary pages/DashboardPage.vue: telemetry fixture
+    ok 123 - component boundary pages/DashboardPage.vue: telemetry fixture
+      ---
+      duration_ms: 1.9571
+      type: 'test'
+      ...
+    # Subtest: component template pages/DashboardPage.vue renders empty-state boundaries
+    not ok 124 - component template pages/DashboardPage.vue renders empty-state boundaries
+      ---
+      duration_ms: 14.3798
+      type: 'test'
+      location: 'C:\\Users\\HiwePC8\\Documents\\Websites\\CrateDB-project\\CrateDB\\frontend\\tests\\components.test.mjs:75:3'
+      failureType: 'testCodeFailure'
+      error: |-
+        Expected values to be strictly deep-equal:
+        + actual - expected
+        
+        + [
+        +   "Cannot read properties of null (reading 'children')"
+        + ]
+        - []
+        
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected:
+      actual:
+        0: "Cannot read properties of null (reading 'children')"
+      operator: 'deepStrictEqual'
+      stack: |-
+        TestContext.<anonymous> (file:///C:/Users/HiwePC8/Documents/Websites/CrateDB-project/CrateDB/frontend/tests/components.test.mjs:79:12)
+        async Test.run (node:internal/test_runner/test:1054:7)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    # Subtest: component boundary pages/RegionTwin.vue: empty data
+    ok 125 - component boundary pages/RegionTwin.vue: empty data
+      ---
+      duration_ms: 28.4864
+      type: 'test'
+      ...
+    # Subtest: component boundary pages/RegionTwin.vue: telemetry fixture
+    ok 126 - component boundary pages/RegionTwin.vue: telemetry fixture
+      ---
+      duration_ms: 2.0606
+      type: 'test'
+      ...
+    # Subtest: component template pages/RegionTwin.vue renders empty-state boundaries
+    ok 127 - component template pages/RegionTwin.vue renders empty-state boundaries
+      ---
+      duration_ms: 9.3014
+      type: 'test'
+      ...
+    # Subtest: component boundary pages/SubstationTwin.vue: empty data
+    ok 128 - component boundary pages/SubstationTwin.vue: empty data
+      ---
+      duration_ms: 78.7481
+      type: 'test'
+      ...
+    # Subtest: component boundary pages/SubstationTwin.vue: telemetry fixture
+    ok 129 - component boundary pages/SubstationTwin.vue: telemetry fixture
+      ---
+      duration_ms: 2.4037
+      type: 'test'
+      ...
+    # Subtest: component template pages/SubstationTwin.vue renders empty-state boundaries
+    not ok 130 - component template pages/SubstationTwin.vue renders empty-state boundaries
+      ---
+      duration_ms: 13.5697
+      type: 'test'
+      location: 'C:\\Users\\HiwePC8\\Documents\\Websites\\CrateDB-project\\CrateDB\\frontend\\tests\\components.test.mjs:75:3'
+      failureType: 'testCodeFailure'
+      error: 'hostInsertStaticContent is not a function or its return value is not iterable'
+      code: 'ERR_TEST_FAILURE'
+      name: 'TypeError'
+      stack: |-
+        mountStaticNode (C:\Users\HiwePC8\Documents\Websites\CrateDB-project\CrateDB\frontend\node_modules\@vue\runtime-core\dist\runtime-core.cjs.js:5512:26)
+        patch (C:\Users\HiwePC8\Documents\Websites\CrateDB-project\CrateDB\frontend\node_modules\@vue\runtime-core\dist\runtime-core.cjs.js:5407:11)
+        mountChildren (C:\Users\HiwePC8\Documents\Websites\CrateDB-project\CrateDB\frontend\node_modules\@vue\runtime-core\dist\runtime-core.cjs.js:5690:7)
+        mountElement (C:\Users\HiwePC8\Documents\Websites\CrateDB-project\CrateDB\frontend\node_modules\@vue\runtime-core\dist\runtime-core.cjs.js:5606:7)
+        processElement (C:\Users\HiwePC8\Documents\Websites\CrateDB-project\CrateDB\frontend\node_modules\@vue\runtime-core\dist\runtime-core.cjs.js:5561:7)
+        patch (C:\Users\HiwePC8\Documents\Websites\CrateDB-project\CrateDB\frontend\node_modules\@vue\runtime-core\dist\runtime-core.cjs.js:5427:11)
+        ReactiveEffect.componentUpdateFn [as fn] (C:\Users\HiwePC8\Documents\Websites\CrateDB-project\CrateDB\frontend\node_modules\@vue\runtime-core\dist\runtime-core.cjs.js:6077:11)
+        ReactiveEffect.run (C:\Users\HiwePC8\Documents\Websites\CrateDB-project\CrateDB\frontend\node_modules\@vue\reactivity\dist\reactivity.cjs.js:264:19)
+        setupRenderEffect (C:\Users\HiwePC8\Documents\Websites\CrateDB-project\CrateDB\frontend\node_modules\@vue\runtime-core\dist\runtime-core.cjs.js:6205:5)
+        mountComponent (C:\Users\HiwePC8\Documents\Websites\CrateDB-project\CrateDB\frontend\node_modules\@vue\runtime-core\dist\runtime-core.cjs.js:5977:7)
+      ...
+    # Subtest: component boundary pages/TransformerTwin.vue: empty data
+    ok 131 - component boundary pages/TransformerTwin.vue: empty data
+      ---
+      duration_ms: 73.6855
+      type: 'test'
+      ...
+    # Subtest: component boundary pages/TransformerTwin.vue: telemetry fixture
+    ok 132 - component boundary pages/TransformerTwin.vue: telemetry fixture
+      ---
+      duration_ms: 2.2211
+      type: 'test'
+      ...
+    # Subtest: component template pages/TransformerTwin.vue renders empty-state boundaries
+    not ok 133 - component template pages/TransformerTwin.vue renders empty-state boundaries
+      ---
+      duration_ms: 6.7305
+      type: 'test'
+      location: 'C:\\Users\\HiwePC8\\Documents\\Websites\\CrateDB-project\\CrateDB\\frontend\\tests\\components.test.mjs:75:3'
+      failureType: 'testCodeFailure'
+      error: 'hostInsertStaticContent is not a function or its return value is not iterable'
+      code: 'ERR_TEST_FAILURE'
+      name: 'TypeError'
+      stack: |-
+        mountStaticNode (C:\Users\HiwePC8\Documents\Websites\CrateDB-project\CrateDB\frontend\node_modules\@vue\runtime-core\dist\runtime-core.cjs.js:5512:26)
+        patch (C:\Users\HiwePC8\Documents\Websites\CrateDB-project\CrateDB\frontend\node_modules\@vue\runtime-core\dist\runtime-core.cjs.js:5407:11)
+        mountChildren (C:\Users\HiwePC8\Documents\Websites\CrateDB-project\CrateDB\frontend\node_modules\@vue\runtime-core\dist\runtime-core.cjs.js:5690:7)
+        mountElement (C:\Users\HiwePC8\Documents\Websites\CrateDB-project\CrateDB\frontend\node_modules\@vue\runtime-core\dist\runtime-core.cjs.js:5606:7)
+        processElement (C:\Users\HiwePC8\Documents\Websites\CrateDB-project\CrateDB\frontend\node_modules\@vue\runtime-core\dist\runtime-core.cjs.js:5561:7)
+        patch (C:\Users\HiwePC8\Documents\Websites\CrateDB-project\CrateDB\frontend\node_modules\@vue\runtime-core\dist\runtime-core.cjs.js:5427:11)
+        mountChildren (C:\Users\HiwePC8\Documents\Websites\CrateDB-project\CrateDB\frontend\node_modules\@vue\runtime-core\dist\runtime-core.cjs.js:5690:7)
+        mountElement (C:\Users\HiwePC8\Documents\Websites\CrateDB-project\CrateDB\frontend\node_modules\@vue\runtime-core\dist\runtime-core.cjs.js:5606:7)
+        processElement (C:\Users\HiwePC8\Documents\Websites\CrateDB-project\CrateDB\frontend\node_modules\@vue\runtime-core\dist\runtime-core.cjs.js:5561:7)
+        patch (C:\Users\HiwePC8\Documents\Websites\CrateDB-project\CrateDB\frontend\node_modules\@vue\runtime-core\dist\runtime-core.cjs.js:5427:11)
+      ...
+    # Subtest: component boundary pages/TwinHeader.vue: empty data
+    ok 134 - component boundary pages/TwinHeader.vue: empty data
+      ---
+      duration_ms: 0.975
+      type: 'test'
+      ...
+    # Subtest: component boundary pages/TwinHeader.vue: telemetry fixture
+    ok 135 - component boundary pages/TwinHeader.vue: telemetry fixture
+      ---
+      duration_ms: 0.7433
+      type: 'test'
+      ...
+    # Subtest: component template pages/TwinHeader.vue renders empty-state boundaries
+    ok 136 - component template pages/TwinHeader.vue renders empty-state boundaries
+      ---
+      duration_ms: 0.8351
+      type: 'test'
+      ...
+    # Subtest: map Contingency adds GeoJSON sources and removes layers/listeners on unmount
+    ok 137 - map Contingency adds GeoJSON sources and removes layers/listeners on unmount
+      ---
+      duration_ms: 1.165
+      type: 'test'
+      ...
+    # Subtest: map Customer adds GeoJSON sources and removes layers/listeners on unmount
+    ok 138 - map Customer adds GeoJSON sources and removes layers/listeners on unmount
+      ---
+      duration_ms: 0.8616
+      type: 'test'
+      ...
+    # Subtest: map Heatmap adds GeoJSON sources and removes layers/listeners on unmount
+    ok 139 - map Heatmap adds GeoJSON sources and removes layers/listeners on unmount
+      ---
+      duration_ms: 1.0644
+      type: 'test'
+      ...
+    # Subtest: map PowerLine adds GeoJSON sources and removes layers/listeners on unmount
+    ok 140 - map PowerLine adds GeoJSON sources and removes layers/listeners on unmount
+      ---
+      duration_ms: 1.0547
+      type: 'test'
+      ...
+    # Subtest: map Region adds GeoJSON sources and removes layers/listeners on unmount
+    ok 141 - map Region adds GeoJSON sources and removes layers/listeners on unmount
+      ---
+      duration_ms: 1.1958
+      type: 'test'
+      ...
+    # Subtest: map Risk adds GeoJSON sources and removes layers/listeners on unmount
+    ok 142 - map Risk adds GeoJSON sources and removes layers/listeners on unmount
+      ---
+      duration_ms: 4.3524
+      type: 'test'
+      ...
+    # Subtest: map Substation adds GeoJSON sources and removes layers/listeners on unmount
+    ok 143 - map Substation adds GeoJSON sources and removes layers/listeners on unmount
+      ---
+      duration_ms: 1.2826
+      type: 'test'
+      ...
+    # Subtest: map Transformer adds GeoJSON sources and removes layers/listeners on unmount
+    ok 144 - map Transformer adds GeoJSON sources and removes layers/listeners on unmount
+      ---
+      duration_ms: 1.0695
+      type: 'test'
+      ...
+    # Subtest: map Weather adds GeoJSON sources and removes layers/listeners on unmount
+    ok 145 - map Weather adds GeoJSON sources and removes layers/listeners on unmount
+      ---
+      duration_ms: 0.8015
+      type: 'test'
+      ...
+    # Subtest: realtime event component filters text/severity and ignores invalid timestamps
+    ok 146 - realtime event component filters text/severity and ignores invalid timestamps
+      ---
+      duration_ms: 0.8923
+      type: 'test'
+      ...
+    # Subtest: blackout card probability 0 has correct risk color
+    ok 147 - blackout card probability 0 has correct risk color
+      ---
+      duration_ms: 0.7725
+      type: 'test'
+      ...
+    # Subtest: blackout card probability 34 has correct risk color
+    ok 148 - blackout card probability 34 has correct risk color
+      ---
+      duration_ms: 0.6593
+      type: 'test'
+      ...
+    # Subtest: blackout card probability 35 has correct risk color
+    ok 149 - blackout card probability 35 has correct risk color
+      ---
+      duration_ms: 0.6451
+      type: 'test'
+      ...
+    # Subtest: blackout card probability 69 has correct risk color
+    ok 150 - blackout card probability 69 has correct risk color
+      ---
+      duration_ms: 0.6546
+      type: 'test'
+      ...
+    # Subtest: blackout card probability 70 has correct risk color
+    ok 151 - blackout card probability 70 has correct risk color
+      ---
+      duration_ms: 0.6454
+      type: 'test'
+      ...
+    # Subtest: mini chart finite history retains endpoints and filters NaN
+    ok 152 - mini chart finite history retains endpoints and filters NaN
+      ---
+      duration_ms: 0.9719
+      type: 'test'
+      ...
+    # Subtest: mini chart does not invent actual measurements when history is empty
+    not ok 153 - mini chart does not invent actual measurements when history is empty
+      ---
+      duration_ms: 0.8963
+      type: 'test'
+      location: 'C:\\Users\\HiwePC8\\Documents\\Websites\\CrateDB-project\\CrateDB\\frontend\\tests\\components.test.mjs:126:1'
+      failureType: 'testCodeFailure'
+      error: |-
+        Expected values to be strictly equal:
+        
+        18 !== 0
+        
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: 0
+      actual: 18
+      operator: 'strictEqual'
+      stack: |-
+        TestContext.<anonymous> (file:///C:/Users/HiwePC8/Documents/Websites/CrateDB-project/CrateDB/frontend/tests/components.test.mjs:128:10)
+        async Test.run (node:internal/test_runner/test:1054:7)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    # Subtest: grid health component preserves an authoritative health score of zero
+    ok 154 - grid health component preserves an authoritative health score of zero
+      ---
+      duration_ms: 0.7736
+      type: 'test'
+      ...
+    # Subtest: grid health component does not invent offline or maintenance stations
+    not ok 155 - grid health component does not invent offline or maintenance stations
+      ---
+      duration_ms: 0.8037
+      type: 'test'
+      location: 'C:\\Users\\HiwePC8\\Documents\\Websites\\CrateDB-project\\CrateDB\\frontend\\tests\\components.test.mjs:135:1'
+      failureType: 'testCodeFailure'
+      error: |-
+        Expected values to be strictly equal:
+        
+        45 !== 0
+        
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: 0
+      actual: 45
+      operator: 'strictEqual'
+      stack: |-
+        TestContext.<anonymous> (file:///C:/Users/HiwePC8/Documents/Websites/CrateDB-project/CrateDB/frontend/tests/components.test.mjs:139:10)
+        async Test.run (node:internal/test_runner/test:1054:7)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    # Subtest: substation twin preserves zero measured current instead of demo fallback
+    not ok 156 - substation twin preserves zero measured current instead of demo fallback
+      ---
+      duration_ms: 23.8581
+      type: 'test'
+      location: 'C:\\Users\\HiwePC8\\Documents\\Websites\\CrateDB-project\\CrateDB\\frontend\\tests\\components.test.mjs:141:1'
+      failureType: 'testCodeFailure'
+      error: |-
+        Expected values to be strictly equal:
+        
+        354 !== 0
+        
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: 0
+      actual: 354
+      operator: 'strictEqual'
+      stack: |-
+        TestContext.<anonymous> (file:///C:/Users/HiwePC8/Documents/Websites/CrateDB-project/CrateDB/frontend/tests/components.test.mjs:149:10)
+        async Test.run (node:internal/test_runner/test:1054:7)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    # Subtest: router resolves every documented page with its requested asset ID
+    ok 157 - router resolves every documented page with its requested asset ID
+      ---
+      duration_ms: 2.8486
+      type: 'test'
+      ...
+    # Subtest: layer controls emit an updated copy without changing parent preferences
+    ok 158 - layer controls emit an updated copy without changing parent preferences
+      ---
+      duration_ms: 1.1752
+      type: 'test'
+      ...
+    # Subtest: risk card expands all stations and emits exact selection ID
+    ok 159 - risk card expands all stations and emits exact selection ID
+      ---
+      duration_ms: 0.8615
+      type: 'test'
+      ...
+    # Subtest: alarm correlation summary counts unique affected assets
+    ok 160 - alarm correlation summary counts unique affected assets
+      ---
+      duration_ms: 0.7546
+      type: 'test'
+      ...
+    # Subtest: voltage chart preserves zero and chronological ordering without mutating source
+    ok 161 - voltage chart preserves zero and chronological ordering without mutating source
+      ---
+      duration_ms: 0.7343
+      type: 'test'
+      ...
+    # Subtest: sensor chart maps readings directly into the plotting boundary
+    ok 162 - sensor chart maps readings directly into the plotting boundary
+      ---
+      duration_ms: 0.8414
+      type: 'test'
+      ...
+    # Subtest: forecast chart preserves zero load and zero risk from server
+    not ok 163 - forecast chart preserves zero load and zero risk from server
+      ---
+      duration_ms: 0.7156
+      type: 'test'
+      location: 'C:\\Users\\HiwePC8\\Documents\\Websites\\CrateDB-project\\CrateDB\\frontend\\tests\\components.test.mjs:201:1'
+      failureType: 'testCodeFailure'
+      error: |-
+        Expected values to be strictly equal:
+        
+        1 !== 0
+        
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: 0
+      actual: 1
+      operator: 'strictEqual'
+      stack: |-
+        TestContext.<anonymous> (file:///C:/Users/HiwePC8/Documents/Websites/CrateDB-project/CrateDB/frontend/tests/components.test.mjs:204:10)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    # Subtest: forecast chart does not invent a history/forecast series without any input
+    not ok 164 - forecast chart does not invent a history/forecast series without any input
+      ---
+      duration_ms: 0.6323
+      type: 'test'
+      location: 'C:\\Users\\HiwePC8\\Documents\\Websites\\CrateDB-project\\CrateDB\\frontend\\tests\\components.test.mjs:206:1'
+      failureType: 'testCodeFailure'
+      error: |-
+        Expected values to be strictly equal:
+        + actual - expected
+        
+        + '0.0,71.2 13.9,71.2 27.8,71.2 41.7,66.0 55.7,66.0 69.6,66.0 83.5,66.0 97.4,66.0 111.3,66.0 125.2,66.0 139.1,66.0 153.0,66.0 167.0,66.0 180.9,66.0 194.8,66.0 208.7,66.0 222.6,66.0 236.5,66.0 250.4,66.0 264.3,66.0 278.3,66.0 292.2,66.0 306.1,66.0 320.0,60.8'
+        - ''
+        
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: ''
+      actual: '0.0,71.2 13.9,71.2 27.8,71.2 41.7,66.0 55.7,66.0 69.6,66.0 83.5,66.0 97.4,66.0 111.3,66.0 125.2,66.0 139.1,66.0 153.0,66.0 167.0,66.0 180.9,66.0 194.8,66.0 208.7,66.0 222.6,66.0 236.5,66.0 250.4,66.0 264.3,66.0 278.3,66.0 292.2,66.0 306.1,66.0 320.0,60.8'
+      operator: 'strictEqual'
+      stack: |-
+        TestContext.<anonymous> (file:///C:/Users/HiwePC8/Documents/Websites/CrateDB-project/CrateDB/frontend/tests/components.test.mjs:209:10)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    # Subtest: operator frequency metric preserves a measured zero instead of nominal fallback
+    not ok 165 - operator frequency metric preserves a measured zero instead of nominal fallback
+      ---
+      duration_ms: 0.6226
+      type: 'test'
+      location: 'C:\\Users\\HiwePC8\\Documents\\Websites\\CrateDB-project\\CrateDB\\frontend\\tests\\components.test.mjs:211:1'
+      failureType: 'testCodeFailure'
+      error: |-
+        Expected values to be strictly equal:
+        
+        '50.02' !== '0.00'
+        
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: '0.00'
+      actual: '50.02'
+      operator: 'strictEqual'
+      stack: |-
+        TestContext.<anonymous> (file:///C:/Users/HiwePC8/Documents/Websites/CrateDB-project/CrateDB/frontend/tests/components.test.mjs:215:10)
+        Test.runInAsyncScope (node:async_hooks:214:14)
+        Test.run (node:internal/test_runner/test:1047:25)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    # Subtest: transformer twin preserves a real zero oil temperature
+    not ok 166 - transformer twin preserves a real zero oil temperature
+      ---
+      duration_ms: 18.5361
+      type: 'test'
+      location: 'C:\\Users\\HiwePC8\\Documents\\Websites\\CrateDB-project\\CrateDB\\frontend\\tests\\components.test.mjs:217:1'
+      failureType: 'testCodeFailure'
+      error: |-
+        Expected values to be strictly equal:
+        
+        65.4 !== 0
+        
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: 0
+      actual: 65.4
+      operator: 'strictEqual'
+      stack: |-
+        TestContext.<anonymous> (file:///C:/Users/HiwePC8/Documents/Websites/CrateDB-project/CrateDB/frontend/tests/components.test.mjs:225:10)
+        async Test.run (node:internal/test_runner/test:1054:7)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    # Subtest: substation twin does not display fabricated measurement values for an unknown ID
+    not ok 167 - substation twin does not display fabricated measurement values for an unknown ID
+      ---
+      duration_ms: 19.972
+      type: 'test'
+      location: 'C:\\Users\\HiwePC8\\Documents\\Websites\\CrateDB-project\\CrateDB\\frontend\\tests\\components.test.mjs:227:1'
+      failureType: 'testCodeFailure'
+      error: 'Unknown station displays 354 A fallback'
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: true
+      actual: false
+      operator: '=='
+      stack: |-
+        TestContext.<anonymous> (file:///C:/Users/HiwePC8/Documents/Websites/CrateDB-project/CrateDB/frontend/tests/components.test.mjs:232:10)
+        async Test.run (node:internal/test_runner/test:1054:7)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    # Subtest: map popup text cannot inject HTML from a customer name
+    not ok 168 - map popup text cannot inject HTML from a customer name
+      ---
+      duration_ms: 1.652
+      type: 'test'
+      location: 'C:\\Users\\HiwePC8\\Documents\\Websites\\CrateDB-project\\CrateDB\\frontend\\tests\\components.test.mjs:234:1'
+      failureType: 'testCodeFailure'
+      error: 'Popup interpolates untrusted customer names into raw HTML'
+      code: 'ERR_ASSERTION'
+      name: 'AssertionError'
+      expected: true
+      actual: false
+      operator: '=='
+      stack: |-
+        TestContext.<anonymous> (file:///C:/Users/HiwePC8/Documents/Websites/CrateDB-project/CrateDB/frontend/tests/components.test.mjs:238:10)
+        async Test.run (node:internal/test_runner/test:1054:7)
+        async Suite.processPendingSubtests (node:internal/test_runner/test:744:7)
+      ...
+    1..168
+not ok 1 - Vue component unit suite
+  ---
+  duration_ms: 1169.9014
+  type: 'suite'
+  location: 'C:\\Users\\HiwePC8\\Documents\\Websites\\CrateDB-project\\CrateDB\\frontend\\tests\\components.test.mjs:26:1'
+  failureType: 'subtestsFailed'
+  error: '16 subtests failed'
+  code: 'ERR_TEST_FAILURE'
+  ...
+1..1
+# tests 168
+# suites 1
+# pass 151
+# fail 16
+# cancelled 0
+# skipped 1
+# todo 0
+# duration_ms 1978.8488

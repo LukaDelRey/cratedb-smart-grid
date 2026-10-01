@@ -48,21 +48,23 @@ function buildGeoJson(){
 }
 
 function popupHtml(p){
+  const escapeHtml = value => String(value ?? '').replace(/[&<>"']/g, character =>
+    ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[character]))
   const riskClass = p.outageRisk >= 70 ? 'critical' : p.outageRisk >= 38 ? 'warning' : 'normal'
 
   return `
     <div class="scada-popup scada-map-popup">
       <div class="popup-head">
         <div>
-          <h3>${p.name} <small class="status-pill ${riskClass}">${t(p.typeLabel)}</small></h3>
-          <p>${p.id}</p>
+          <h3>${escapeHtml(p.name)} <small class="status-pill ${riskClass}">${escapeHtml(t(p.typeLabel))}</small></h3>
+          <p>${escapeHtml(p.id)}</p>
         </div>
         <button class="popup-close" type="button">x</button>
       </div>
       <div class="popup-grid two-col">
-        <div><span>${t('dashboard.consumption')}</span><b>${p.consumption} MW</b></div>
-        <div><span>${t('dashboard.outageRisk')}</span><b class="${riskClass}">${p.outageRisk}%</b></div>
-        <div><span>${t('dashboard.substation')}</span><b>${p.substation}</b></div>
+        <div><span>${t('dashboard.consumption')}</span><b>${escapeHtml(p.consumption)} MW</b></div>
+        <div><span>${t('dashboard.outageRisk')}</span><b class="${riskClass}">${escapeHtml(p.outageRisk)}%</b></div>
+        <div><span>${t('dashboard.substation')}</span><b>${escapeHtml(p.substation)}</b></div>
       </div>
       <div class="popup-ai-block compact">
         <span>${t('dashboard.customerImpact')}</span>

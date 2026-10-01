@@ -27,7 +27,10 @@
         <div class="dashboard-workspace noc-workspace">
           <main class="primary-ops-column">
             <section class="map-zone">
-              <DashboardMap :focus-station="stationFocusRequest" />
+              <DashboardMap
+                :focus-station="stationFocusRequest"
+                :station-filter-ids="alarmMapOnly ? alarmTableStationIds : null"
+              />
             </section>
 
             <section class="operator-kpi-row">
@@ -62,6 +65,7 @@
 
             <section class="ops-drawer-layout">
               <div class="ops-drawer-content">
+                <q-banner v-if="rootCauseError" dense class="bg-blue-grey-10 text-warning">{{ rootCauseError }}</q-banner>
                 <transition name="ops-expand" mode="out-in">
                   <ActiveAlarmsEventsPanel
                     v-if="activeOpsPanel === 'alarms'"
@@ -69,8 +73,10 @@
                     :events="store.eventStream"
                     :top-risk-substations="store.topRiskSubstations"
                     :open-register-signal="notificationOpenSignal"
+                    v-model:map-filter-enabled="alarmMapOnly"
                     class="ops-panel-card"
                     @focus-station="focusStationOnMap"
+                    @table-stations="alarmTableStationIds = $event"
                   />
 
                   <AlarmCorrelationPanel
@@ -78,7 +84,7 @@
                     key="correlation"
                     :correlations="store.correlations"
                     class="ops-panel-card"
-                    @select="store.openRootCause"
+                    @select="openCorrelation"
                   />
 
                   <AlarmRootCausePanel
@@ -149,7 +155,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useSensorStore } from '../stores/sensorStore'
 import Sidebar from '../components/dashboard/layout/Sidebar.vue'
 import Topbar from '../components/dashboard/layout/Topbar.vue'
@@ -172,6 +178,10 @@ const store = useSensorStore()
 const { t } = useI18n()
 const topologyOpen = ref(false)
 const activeOpsPanel = ref('alarms')
+const alarmMapOnly = ref(false)
+const alarmTableStationIds = ref<string[]>([])
+watch(activeOpsPanel, panel => {if(panel !== 'alarms') alarmMapOnly.value = false})
+const rootCauseError = ref<string | null>(null)
 const stationFocusRequest = ref<FocusStationRequest | null>(null)
 const notificationOpenSignal = ref(0)
 
@@ -194,6 +204,16 @@ function focusStationOnMap(stationId:string){
 function openNotifications(){
   activeOpsPanel.value = 'alarms'
   notificationOpenSignal.value += 1
+}
+
+async function openCorrelation(correlationId:string){
+  rootCauseError.value = null
+  try{
+    await store.openRootCause(correlationId)
+    activeOpsPanel.value = 'rootCause'
+  }catch{
+    rootCauseError.value = t('dashboard.incidentUnavailable')
+  }
 }
 
 onMounted(() => {
@@ -562,6 +582,74 @@ onMounted(() => {
 @media (max-width: 1320px){
 .ops-panel-card{
     max-height:none;
+  }
+}
+
+/* Final responsive ownership: these rules intentionally come last because the
+   NOC layout has separate fullscreen and stacked modes. */
+@media (max-width: 1320px){
+  .dashboard-page.dashboard-noc{
+    height:auto;
+    min-height:100vh;
+    overflow:auto;
+  }
+
+  .dashboard-workspace.noc-workspace{
+    grid-template-columns:minmax(0,1fr);
+    grid-template-rows:auto auto;
+    overflow:visible;
+  }
+
+  .primary-ops-column{
+    grid-template-rows:520px auto 340px;
+    overflow:visible;
+  }
+
+  .operator-kpi-row{
+    grid-template-columns:repeat(3,minmax(0,1fr));
+    padding-bottom:0;
+  }
+
+  .noc-right-rail{
+    height:auto;
+    max-height:none;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    overflow:visible;
+  }
+}
+
+@media (max-width: 820px){
+  .dashboard-page.dashboard-noc{
+    padding:8px;
+  }
+
+  .primary-ops-column{
+    grid-template-rows:460px auto 390px;
+  }
+
+  .operator-kpi-row{
+    grid-template-columns:repeat(2,minmax(0,1fr));
+  }
+
+  .noc-right-rail{
+    grid-template-columns:minmax(0,1fr);
+  }
+}
+
+@media (max-width: 520px){
+  .operator-kpi-row{
+    grid-template-columns:minmax(0,1fr);
+  }
+
+  .ops-drawer-layout{
+    grid-template-columns:minmax(0,1fr);
+    height:auto;
+  }
+
+  .ops-icon-rail{
+    height:auto;
+    flex-direction:row;
+    justify-content:center;
   }
 }
 </style>

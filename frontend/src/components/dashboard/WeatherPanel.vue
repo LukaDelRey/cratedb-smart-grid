@@ -4,6 +4,7 @@
       <div>
         <div class="section-kicker">{{ t('dashboard.weatherOverlay') }}</div>
         <div class="section-title">{{ t('dashboard.gridImpact') }}</div>
+        <div v-if="weather.estimated" class="text-caption">{{ t('dashboard.weatherEstimate') }}</div>
       </div>
 
       <q-icon name="thunderstorm" color="warning" size="28px" />
@@ -71,12 +72,13 @@
 import { computed } from 'vue'
 import type { PropType } from 'vue'
 import { useI18n } from '../../i18n'
+import type { WeatherImpact } from '../../types/dashboard'
 
 const { t, translateText, translateStatus } = useI18n()
 
 const props = defineProps({
   weather:{
-    type:Object as PropType<Record<string, any>>,
+    type:Object as PropType<WeatherImpact>,
     required:true
   }
 })

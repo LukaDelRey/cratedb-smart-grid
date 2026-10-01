@@ -1,8 +1,23 @@
-import { computed, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
+import { storeToRefs } from 'pinia'
+import { useSensorStore } from '../stores/sensorStore'
+import { stationAlarms } from '../services/stationAlarms'
 
-import type { AlarmEvent, TopRiskSubstation } from '../types/dashboard'
+import {
+  acknowledgePersistentAlarm,
+  createPersistentAlarmWorkOrder,
+  fetchPersistentAlarms
+} from '../services/gridApi'
+import type { PersistentAlarm, TopRiskSubstation } from '../types/dashboard'
 import { routeForAsset, stationIdForAsset } from '../utils/assets'
 import { formatClockTime } from '../utils/dateTime'
+
+const SEVERITY_ORDER:Record<string, number> = {
+  CRITICAL:0,
+  ERROR:0,
+  WARNING:1,
+  INFO:2
+}
 
 export type AlarmRegisterRow = {
   id: string
@@ -12,10 +27,11 @@ export type AlarmRegisterRow = {
   title: string
   value: string
   status: string
+  occurredAt: number
+  persistent?: PersistentAlarm
 }
 
 type AlarmRegisterOptions = {
-  getEvents: () => AlarmEvent[]
   getTopRiskSubstations: () => TopRiskSubstation[]
   getMaxVisible: () => number
   onFocusStation: (stationId:string) => void
@@ -25,47 +41,60 @@ export function useAlarmRegister(options:AlarmRegisterOptions){
   const viewAllOpen = ref(false)
   const acknowledgedIds = ref(new Set<string>())
   const workOrderIds = ref(new Set<string>())
+  const store = useSensorStore()
+  const { persistentAlarms } = storeToRefs(store)
+  const severitySortEnabled = ref(false)
+  let refreshTimer:ReturnType<typeof setInterval> | null = null
 
   const rows = computed<AlarmRegisterRow[]>(() => {
-    const liveRows = options.getEvents().map(event => ({
-      id:event.id,
-      time:formatClockTime(event.timestamp),
-      severity:event.severity || 'INFO',
-      asset:event.assetId || event.source || 'SYSTEM',
-      title:event.title || 'Realtime event',
-      value:event.severity === 'CRITICAL'
-        ? '104 C'
-        : event.severity === 'WARNING'
-          ? '6.2%'
-          : '-',
-      status:event.severity === 'INFO' ? 'INFO' : 'ACTIVE'
-    }))
+    // Persistent rows only supply workflow metadata. They never create current conditions.
+    const mergedRows:AlarmRegisterRow[] = store.stations.flatMap(station =>
+      stationAlarms(station).map(condition => {
+        const persistent = persistentAlarms.value.find(alarm =>
+          alarm.station_id === station.station_id && alarm.alarm_type === condition.type &&
+          ['ACTIVE','ACK','WORK_ORDER'].includes(alarm.status))
+        return {
+          id:persistent?.id ?? `live-${station.station_id}-${condition.type}`,
+          time:formatClockTime(station.timestamp), severity:condition.severity,
+          asset:station.station_id, title:condition.title,
+          value:condition.value == null ? '-' : `${condition.value}${condition.unit ? ` ${condition.unit}` : ''}`,
+          status:persistent?.status ?? 'ACTIVE',
+          occurredAt:new Date(station.timestamp ?? 0).getTime() || 0,
+          persistent
+        }
+      }))
 
-    if(liveRows.length){
-      return liveRows
+    return mergedRows.sort((left, right) => right.occurredAt - left.occurredAt)
+  })
+
+  const displayRows = computed(() => {
+    if(!severitySortEnabled.value){
+      return rows.value
     }
 
-    return options.getTopRiskSubstations().slice(0, 24).map((station, index) => ({
-      id:station.id,
-      time:`14:${String(31 - index).padStart(2, '0')}:${String(Math.max(0, 52 - index)).padStart(2, '0')}`,
-      severity:station.risk > 70 ? 'CRITICAL' : station.risk > 40 ? 'WARNING' : 'INFO',
-      asset:station.id,
-      title:station.risk > 70 ? 'Oil Temperature High' : 'Load High',
-      value:`${station.risk}%`,
-      status:'ACTIVE'
-    }))
+    return [...rows.value].sort((left, right) => {
+      const severityDifference =
+        (SEVERITY_ORDER[left.severity] ?? 3) -
+        (SEVERITY_ORDER[right.severity] ?? 3)
+
+      return severityDifference || right.occurredAt - left.occurredAt
+    })
   })
 
   const visibleRows = computed(() =>
-    rows.value.slice(0, options.getMaxVisible())
+    displayRows.value
   )
 
   const activeCount = computed(() =>
-    rows.value.filter(row => displayStatus(row) === 'ACTIVE').length
+    rows.value.filter(row => ['ACTIVE','ACK','WORK_ORDER','WORK ORDER'].includes(displayStatus(row))).length
   )
 
   function openRegister(){
     viewAllOpen.value = true
+  }
+
+  function toggleSeveritySort(){
+    severitySortEnabled.value = !severitySortEnabled.value
   }
 
   function displayStatus(row:AlarmRegisterRow):string{
@@ -80,16 +109,41 @@ export function useAlarmRegister(options:AlarmRegisterOptions){
     return row.status
   }
 
-  function statusColor(row:AlarmRegisterRow):string{
-    const status = displayStatus(row)
-
-    if(status === 'ACTIVE') return 'negative'
-    if(status === 'WORK ORDER') return 'warning'
-    if(status === 'ACK') return 'positive'
-    return 'info'
+  function statusBadgeClass(row:AlarmRegisterRow):string{
+    return displayStatus(row)
+      .toLowerCase()
+      .replace(/[_\s]+/g, '-')
   }
 
-  function acknowledge(row:AlarmRegisterRow){
+  async function refreshPersistentAlarms(){
+    try{
+      persistentAlarms.value = await fetchPersistentAlarms({
+        status:'ACTIVE,ACK,WORK_ORDER',
+        limit:1000
+      })
+
+      acknowledgedIds.value = new Set(
+        persistentAlarms.value
+          .filter(alarm => alarm.status === 'ACK' || alarm.status === 'WORK_ORDER')
+          .map(alarm => alarm.id)
+      )
+      workOrderIds.value = new Set(
+        persistentAlarms.value
+          .filter(alarm => alarm.status === 'WORK_ORDER')
+          .map(alarm => alarm.id)
+      )
+    }catch{
+      persistentAlarms.value = []
+    }
+  }
+
+  async function acknowledge(row:AlarmRegisterRow){
+    if(row.persistent){
+      await acknowledgePersistentAlarm(row.id)
+      await refreshPersistentAlarms()
+      return
+    }
+
     const nextAcknowledged = new Set(acknowledgedIds.value)
     const nextWorkOrders = new Set(workOrderIds.value)
 
@@ -105,7 +159,13 @@ export function useAlarmRegister(options:AlarmRegisterOptions){
     workOrderIds.value = nextWorkOrders
   }
 
-  function createWorkOrder(row:AlarmRegisterRow){
+  async function createWorkOrder(row:AlarmRegisterRow){
+    if(row.persistent){
+      await createPersistentAlarmWorkOrder(row.id)
+      await refreshPersistentAlarms()
+      return
+    }
+
     const nextAcknowledged = new Set(acknowledgedIds.value)
     const nextWorkOrders = new Set(workOrderIds.value)
 
@@ -152,19 +212,33 @@ export function useAlarmRegister(options:AlarmRegisterOptions){
     viewAllOpen.value = false
   }
 
+  onMounted(() => {
+    void refreshPersistentAlarms()
+    refreshTimer = setInterval(refreshPersistentAlarms, 15000)
+  })
+
+  onUnmounted(() => {
+    if(refreshTimer){
+      clearInterval(refreshTimer)
+    }
+  })
+
   return {
     acknowledge,
     acknowledgedIds,
     activeCount,
     assetRoute,
     createWorkOrder,
+    displayRows,
     displayStatus,
     mapStationId,
     openAsset,
     openRegister,
     pinStation,
     rows,
-    statusColor,
+    severitySortEnabled,
+    statusBadgeClass,
+    toggleSeveritySort,
     viewAllOpen,
     visibleRows,
     workOrderIds

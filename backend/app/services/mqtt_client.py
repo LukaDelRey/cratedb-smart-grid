@@ -4,13 +4,19 @@ import asyncio
 
 import paho.mqtt.client as mqtt
 
+from app.config import MQTT_HOST, MQTT_PORT
 from app.services.event_bus import event_queue
 
 
 main_loop = None
+mqtt_connection = None
 
 
-def on_connect(client_mqtt, userdata, flags, rc):
+def on_connect(client_mqtt, userdata, flags, rc, properties=None):
+
+    if rc != 0:
+        print("EMQX connection rejected:", rc)
+        return
 
     print("Connected to EMQX")
 
@@ -39,11 +45,11 @@ def on_message(client_mqtt, userdata, msg):
 
 def start_mqtt(loop):
 
-    global main_loop
+    global main_loop, mqtt_connection
 
     main_loop = loop
 
-    mqtt_client = mqtt.Client()
+    mqtt_client = mqtt.Client(mqtt.CallbackAPIVersion.VERSION2)
 
     mqtt_client.on_connect = on_connect
 
@@ -53,7 +59,7 @@ def start_mqtt(loop):
 
         try:
 
-            mqtt_client.connect("emqx", 1883, 60)
+            mqtt_client.connect(MQTT_HOST, MQTT_PORT, 60)
 
             print("MQTT connected!")
 
@@ -67,3 +73,37 @@ def start_mqtt(loop):
             time.sleep(5)
 
     mqtt_client.loop_start()
+
+    mqtt_connection = mqtt_client
+
+
+def stop_mqtt():
+    global mqtt_connection
+
+    if mqtt_connection is None:
+        return
+
+    mqtt_connection.loop_stop()
+    mqtt_connection.disconnect()
+    mqtt_connection = None
+
+
+def is_mqtt_connected():
+    return bool(mqtt_connection and mqtt_connection.is_connected())
+
+
+def publish_sensor_payload(payload):
+
+    if mqtt_connection is None:
+        raise RuntimeError("MQTT client is not connected")
+
+    station_id = payload.get("station_id")
+
+    if not station_id:
+        raise ValueError("Sensor payload requires station_id")
+
+    return mqtt_connection.publish(
+        f"trafostanice/{station_id}/sensors",
+        json.dumps(payload),
+        qos=1,
+    )

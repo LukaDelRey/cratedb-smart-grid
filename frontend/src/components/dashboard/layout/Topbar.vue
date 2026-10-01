@@ -39,11 +39,11 @@
         :aria-label="t('dashboard.notifications')"
       >
         <q-badge
-          v-if="store.summary.activeAlarms"
+          v-if="store.currentAlarmCount"
           floating
           color="negative"
         >
-          {{ store.summary.activeAlarms }}
+          {{ store.currentAlarmCount }}
         </q-badge>
 
         <q-menu
@@ -53,7 +53,7 @@
         >
           <div class="notification-menu-head">
             <span>{{ t('dashboard.notifications') }}</span>
-            <strong>{{ store.summary.activeAlarms || store.alarms.length }}</strong>
+            <strong>{{ store.currentAlarmCount }}</strong>
           </div>
 
           <q-list separator>

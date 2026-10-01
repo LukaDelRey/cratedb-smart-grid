@@ -1,3 +1,5 @@
+import asyncio
+
 from fastapi import WebSocket
 
 class ConnectionManager:
@@ -20,23 +22,27 @@ class ConnectionManager:
 
         print("WebSocket client disconnected")
 
+    @property
+    def connection_count(self):
+        return len(self.active_connections)
+
     async def broadcast(self, data):
+        connections = list(self.active_connections)
+        if not connections:
+            return
 
-        disconnected = []
-
-        for connection in self.active_connections:
-
+        async def send(connection):
             try:
-                await connection.send_json(data)
+                await asyncio.wait_for(connection.send_json(data), timeout=2)
+                return None
+            except Exception as exc:
+                print("Broadcast error:", exc)
+                return connection
 
-            except Exception as e:
-
-                print("Broadcast error:", e)
-
-                disconnected.append(connection)
-
-        for conn in disconnected:
-            self.disconnect(conn)
+        results = await asyncio.gather(*(send(connection) for connection in connections))
+        for connection in results:
+            if connection is not None:
+                self.disconnect(connection)
 
 
 manager = ConnectionManager()

@@ -1,7 +1,7 @@
 import asyncio
 from crate import client
 
-connection = client.connect("http://cratedb:4200")
+from app.config import CRATE_URL, TELEMETRY_RETENTION_DAYS
 
 async def cleanup_old_data():
 
@@ -9,11 +9,11 @@ async def cleanup_old_data():
 
         try:
 
-            cursor = connection.cursor()
+            cursor = client.connect(CRATE_URL).cursor()
 
-            cursor.execute("""
+            cursor.execute(f"""
                 DELETE FROM trafostanice_sensors
-                WHERE timestamp < CURRENT_TIMESTAMP - INTERVAL '7 days'
+                WHERE timestamp < CURRENT_TIMESTAMP - INTERVAL '{TELEMETRY_RETENTION_DAYS} days'
             """)
 
             print("Old data cleaned")

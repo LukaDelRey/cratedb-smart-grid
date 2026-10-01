@@ -15,9 +15,15 @@ import {
   fetchContingency,
   fetchSystemTopology,
   fetchCrateHealth,
+  fetchPersistentAlarms,
   getWebSocketUrl
 } from '../services/gridApi'
 import { t } from '../i18n'
+import { stationAlarms } from '../services/stationAlarms'
+import {
+  getHealth as calculateStationHealth,
+  getRisk as calculateStationRisk
+} from '../services/stationAnalytics'
 import { average, clamp } from '../utils/numbers'
 import type {
   AlarmCorrelation,
@@ -41,7 +47,8 @@ import type {
   Topology,
   TopRiskSubstation,
   TransformerAsset,
-  WeatherImpact
+  WeatherImpact,
+  PersistentAlarm
 } from '../types/dashboard'
 
 const DEFAULT_CENTER: Coordinates = {
@@ -50,11 +57,7 @@ const DEFAULT_CENTER: Coordinates = {
 }
 
 function alarmList(station?:Station | null){
-  const alarms = station?.alarms || {}
-
-  return Object.entries(alarms)
-    .filter(([,enabled]) => enabled)
-    .map(([key]) => key)
+  return station ? stationAlarms(station).map(alarm => alarm.type) : []
 }
 
 function assetNumber(id:unknown){
@@ -76,6 +79,7 @@ function normalizeTransformerId(id:unknown){
 export const useSensorStore = defineStore('sensorStore', () => {
 
   const stationsMap = ref<Record<string, Station>>({})
+  const persistentAlarms = ref<PersistentAlarm[]>([])
   const regions = ref<Region[]>([])
   const powerLines = ref<PowerLine[]>([])
   const forecast = ref<ForecastPoint[]>([])
@@ -113,7 +117,7 @@ export const useSensorStore = defineStore('sensorStore', () => {
   const connection = ref<ConnectionState>({
     websocketConnected:false,
     crateConnected:false,
-    mqttConnected:true,
+    mqttConnected:false,
     latencyMs:0,
     messagesPerSecond:0,
     lastEventAt:null,
@@ -138,8 +142,8 @@ export const useSensorStore = defineStore('sensorStore', () => {
   let ws:WebSocket | null = null
   let refreshTimer:ReturnType<typeof setInterval> | null = null
   let eventSequence = 0
-  const stationAlarmSignatures = new Map<string, string>()
   const HISTORY_WINDOW_MS = 60 * 60 * 1000
+  const MAX_HISTORY_POINTS = 720
 
   function pushHistoryPoint(key:MetricHistoryKey,value:number,windowMs = HISTORY_WINDOW_MS){
     if(!Number.isFinite(value)){
@@ -162,7 +166,7 @@ export const useSensorStore = defineStore('sensorStore', () => {
         : Number(item.timestamp) || timestamp
 
       return itemTimestamp >= cutoff
-    })
+    }).slice(-MAX_HISTORY_POINTS)
   }
 
   function recordMetricSnapshot(){
@@ -177,9 +181,9 @@ export const useSensorStore = defineStore('sensorStore', () => {
     const avgThd = thdValues.length
       ? Math.round((thdValues.reduce((sum,value) => sum + value, 0) / thdValues.length) * 10) / 10
       : 3.2
-    const gridHealth = Number(summary.value.gridHealth) || 0
-    const blackoutProbability = Number(blackout.value.probability) || 0
-    const activeAlarmCount = Number(summary.value.activeAlarms) || alarms.value.length
+    const gridHealth = currentGridHealth.value
+    const blackoutProbability = currentBlackoutProbability.value
+    const activeAlarmCount = currentAlarmCount.value
     const timestamp = Date.now()
     const gridPulse = Math.sin(timestamp / 47000)
     const loadPulse = Math.cos(timestamp / 73000)
@@ -209,72 +213,24 @@ export const useSensorStore = defineStore('sensorStore', () => {
   function parseLocation(station?:Station | null):Coordinates{
     const loc = station?.location
 
-    if(!loc || typeof loc !== 'string'){
-      return DEFAULT_CENTER
-    }
-
-    const match = loc.match(/\((.*),(.*)\)/)
-
-    if(!match){
-      return DEFAULT_CENTER
-    }
-
-    return {
-      lng:parseFloat(match[1]),
-      lat:parseFloat(match[2])
-    }
+    const match = typeof loc === 'string' ? loc.match(/^\s*\(([^,]+),([^,]+)\)\s*$/) : null
+    const coordinates = loc && typeof loc === 'object' ? loc.coordinates : null
+    const lng = Number(match?.[1] ?? coordinates?.[0])
+    const lat = Number(match?.[2] ?? coordinates?.[1])
+    return Number.isFinite(lng) && Number.isFinite(lat) && Math.abs(lng) <= 180 && Math.abs(lat) <= 90
+      ? {lng,lat} : DEFAULT_CENTER
   }
 
   function getStationHealth(station:Station){
-    let score = 100
-
-    score -= (station.thermal?.oil_temp_c || 0) * 0.28
-    score -= Math.max(0, (station.electrical?.current_a || 0) - 420) * 0.08
-    score -= (station.electrical?.harmonics_thd || 0) * 1.5
-
-    if(station.alarms?.overload) score -= 12
-    if(station.alarms?.overheating) score -= 14
-    if(station.alarms?.voltage_drop) score -= 8
-    if(station.alarms?.sensor_failure) score -= 10
-    if(station.alarms?.offline) score -= 30
-
-    return Math.round(clamp(score))
+    return calculateStationHealth(station)
   }
 
   function getStationRisk(station:Station){
-    let risk = 4
-
-    risk += (station.thermal?.oil_temp_c || 0) * 0.32
-    risk += (station.electrical?.current_a || 0) * 0.045
-    risk += Math.max(0, (station.electrical?.active_power_kw || 0) - 2600) * 0.012
-    risk += (station.electrical?.harmonics_thd || 0) * 1.8
-
-    if(station.alarms?.overload) risk += 18
-    if(station.alarms?.overheating) risk += 20
-    if(station.alarms?.voltage_drop) risk += 10
-    if(station.alarms?.sensor_failure) risk += 7
-    if(station.alarms?.offline) risk += 35
-
-    return Math.round(clamp(risk))
+    return calculateStationRisk(station)
   }
 
   function getStationStatus(station:Station):AssetStatus{
-    if(
-      station.alarms?.offline ||
-      station.alarms?.sensor_failure
-    ){
-      return 'offline'
-    }
-
-    if(getStationRisk(station) >= 70){
-      return 'critical'
-    }
-
-    if(getStationRisk(station) >= 38){
-      return 'warning'
-    }
-
-    return 'normal'
+    return station.status ?? 'normal'
   }
 
   function pushEvent(event:Partial<AlarmEvent>){
@@ -303,35 +259,32 @@ export const useSensorStore = defineStore('sensorStore', () => {
       return
     }
 
+    const existing = stationsMap.value[station.station_id]
+    const timestamp = (value:unknown) => typeof value === 'number'
+      ? value
+      : typeof value === 'string' ? Date.parse(value) : NaN
+    const previousTime = timestamp(existing?.timestamp)
+    const incomingTime = timestamp(station.timestamp)
+    if(Number.isFinite(previousTime) && Number.isFinite(incomingTime) && incomingTime < previousTime){
+      return
+    }
     stationsMap.value[station.station_id] = station
 
-    const alarms = alarmList(station)
-
-    if(alarms.length){
-      const risk = getStationRisk(station)
-      const signature = [
-        station.station_id,
-        alarms.join(','),
-        risk,
-        getStationStatus(station)
-      ].join('|')
-
-      if(stationAlarmSignatures.get(station.station_id) === signature){
-        return
+    const previous = stationAlarms(existing ?? {station_id:station.station_id})
+    const current = stationAlarms(station)
+    const timestampText = typeof station.timestamp === 'number'
+      ? new Date(station.timestamp).toISOString() : station.timestamp
+    for(const alarm of current){
+      if(!previous.some(condition => condition.type === alarm.type)){
+        pushEvent({severity:alarm.severity, source:'SCADA', title:alarm.title,
+          description:`Alarm raised: ${alarm.type}`, assetId:station.station_id, timestamp:timestampText})
       }
-
-      stationAlarmSignatures.set(
-        station.station_id,
-        signature
-      )
-
-      pushEvent({
-        severity:risk > 70 ? 'CRITICAL' : 'WARNING',
-        source:'SCADA',
-        title:'Alarm update',
-        description:alarms.join(', '),
-        assetId:station.station_id
-      })
+    }
+    for(const alarm of previous){
+      if(!current.some(condition => condition.type === alarm.type)){
+        pushEvent({severity:'INFO', source:'SCADA', title:`Cleared: ${alarm.title}`,
+          description:`Alarm resolved: ${alarm.type}`, assetId:station.station_id, timestamp:timestampText})
+      }
     }
   }
 
@@ -349,7 +302,8 @@ export const useSensorStore = defineStore('sensorStore', () => {
       weatherData:fetchWeatherImpact(),
       correlationData:fetchAlarmCorrelations(),
       topologyData:fetchSystemTopology(),
-      crateData:fetchCrateHealth()
+      crateData:fetchCrateHealth(),
+      alarmData:fetchPersistentAlarms({status:'ACTIVE,ACK,WORK_ORDER',limit:1000})
     }
 
     try{
@@ -383,12 +337,14 @@ export const useSensorStore = defineStore('sensorStore', () => {
       if(data.lineData) powerLines.value = data.lineData
       if(data.forecastData) forecast.value = data.forecastData
       if(data.insightData) insights.value = data.insightData
+      if(data.alarmData) persistentAlarms.value = data.alarmData
       if(data.weatherData) weather.value = data.weatherData
       if(data.correlationData) correlations.value = data.correlationData
       if(data.topologyData) topology.value = data.topologyData
 
       if(data.crateData){
         connection.value.crateConnected = Boolean(data.crateData.connected)
+        connection.value.mqttConnected = Boolean(data.crateData.mqttConnected)
         connection.value.latencyMs = data.crateData.latencyMs || 0
       }else if(failed.some(item => item.startsWith('crateData'))){
         connection.value.crateConnected = false
@@ -426,7 +382,7 @@ export const useSensorStore = defineStore('sensorStore', () => {
     }
   }
   function connectWebSocket(){
-    if(ws && ws.readyState === WebSocket.OPEN){
+    if(ws && (ws.readyState === WebSocket.OPEN || ws.readyState === WebSocket.CONNECTING)){
       return
     }
 
@@ -445,7 +401,17 @@ export const useSensorStore = defineStore('sensorStore', () => {
     }
 
     ws.onmessage = (event:MessageEvent<string>) => {
-      const payload = JSON.parse(event.data)
+      let payload
+      try{
+        payload = JSON.parse(event.data)
+        if(!payload || typeof payload !== 'object' || Array.isArray(payload)){
+          throw new Error('Expected a realtime object')
+        }
+      }catch{
+        error.value = 'Invalid realtime message received'
+        connection.value.quality = 'degraded'
+        return
+      }
 
       if(payload.station_id){
         updateStation(payload)
@@ -497,6 +463,14 @@ export const useSensorStore = defineStore('sensorStore', () => {
   const alarms = computed<Station[]>(() =>
     stations.value.filter(station => alarmList(station).length)
   )
+  const currentAlarmCount = computed(() =>
+    stations.value.reduce((sum,station) => sum + stationAlarms(station).length,0)
+  )
+  const currentGridHealth = computed(() => stations.value.length
+    ? average(stations.value.map(getStationHealth)) : summary.value.gridHealth)
+  const currentBlackoutProbability = computed(() => stations.value.length
+    ? Math.round(stations.value.filter(station => (station.thermal?.oil_temp_c ?? 0)>90 || (station.electrical?.current_a ?? 0)>500).length / stations.value.length * 1000)/10
+    : blackout.value.probability)
 
   const totalLoadMW = computed(() => {
     const totalKW = stations.value.reduce(
@@ -527,7 +501,8 @@ export const useSensorStore = defineStore('sensorStore', () => {
         healthScore:health,
         failureProbability:risk,
         rulYears:Math.max(1, Math.round((health / 100) * 20)),
-        status:getStationStatus(station)
+        status:getStationStatus(station),
+        alarmSummary:stationAlarms(station).map(alarm => alarm.title).join(', ')
       }
     })
   )
@@ -590,10 +565,12 @@ export const useSensorStore = defineStore('sensorStore', () => {
   function getSubstationById(id:unknown){
     const requestedNumber = assetNumber(id)
 
-    return stations.value.find(station =>
+    const match = stations.value.find(station =>
       station.station_id === id ||
       assetNumber(station.station_id) === requestedNumber
-    ) || stations.value[0]
+    )
+
+    return match || (id ? undefined : stations.value[0])
   }
 
   function getTransformerById(id:unknown){
@@ -608,7 +585,9 @@ export const useSensorStore = defineStore('sensorStore', () => {
   }
 
   function getRegionById(id:unknown){
-    return regions.value.find(region => region.id === id) || regions.value[0]
+    const match = regions.value.find(region => region.id === id)
+
+    return match || (id ? undefined : regions.value[0])
   }
 
   function buildTrend(seed = 50,length = 12){
@@ -619,6 +598,10 @@ export const useSensorStore = defineStore('sensorStore', () => {
   }
 
   return {
+    persistentAlarms,
+    currentAlarmCount,
+    currentGridHealth,
+    currentBlackoutProbability,
     stations,
     regions,
     powerLines,

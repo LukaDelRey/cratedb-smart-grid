@@ -1,7 +1,7 @@
 import time
 from crate import client
 
-CRATE_URL = "http://cratedb:4200"
+from app.config import CRATE_URL
 
 def wait_for_cratedb():
     while True:
@@ -129,6 +129,59 @@ def init_db():
         active_alarms INTEGER,
 
         total_stations INTEGER
+    )
+    CLUSTERED INTO 2 SHARDS
+    """)
+
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS alarm_events (
+        id TEXT PRIMARY KEY,
+        station_id TEXT,
+        alarm_type TEXT,
+        title TEXT,
+        severity TEXT,
+        status TEXT,
+        source TEXT,
+        value DOUBLE,
+        unit TEXT,
+        first_seen TIMESTAMP,
+        last_seen TIMESTAMP,
+        occurrence_count INTEGER,
+        acknowledged_at TIMESTAMP,
+        acknowledged_by TEXT,
+        work_order_id TEXT,
+        work_order_created_at TIMESTAMP,
+        resolved_at TIMESTAMP,
+        metadata OBJECT(DYNAMIC)
+    )
+    CLUSTERED INTO 2 SHARDS
+    """)
+
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS alarm_audit (
+        id TEXT PRIMARY KEY,
+        alarm_id TEXT,
+        action TEXT,
+        actor TEXT,
+        note TEXT,
+        timestamp TIMESTAMP
+    )
+    CLUSTERED INTO 2 SHARDS
+    """)
+
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS scenario_runs (
+        id TEXT PRIMARY KEY,
+        scenario_type TEXT,
+        status TEXT,
+        requested_by TEXT,
+        started_at TIMESTAMP,
+        ends_at TIMESTAMP,
+        completed_at TIMESTAMP,
+        duration_seconds INTEGER,
+        target_station_ids TEXT,
+        emitted_events INTEGER,
+        error TEXT
     )
     CLUSTERED INTO 2 SHARDS
     """)

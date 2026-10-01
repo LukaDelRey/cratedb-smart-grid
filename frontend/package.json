@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test:unit": "node --import ./tests/register-loader.mjs --experimental-test-isolation=none --test tests/*.test.mjs",
+    "test:unit:coverage": "node --import ./tests/register-loader.mjs --experimental-test-isolation=none --experimental-test-coverage --test tests/*.test.mjs"
   },
   "dependencies": {
     "@deck.gl/core": "^9.3.4",

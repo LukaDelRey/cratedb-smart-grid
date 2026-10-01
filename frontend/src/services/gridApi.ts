@@ -1,18 +1,37 @@
 import axios from 'axios'
 import type {
   AlarmCorrelation,
+  AlarmAuditEntry,
+  AlarmStats,
   BlackoutPrediction,
   ContingencyResult,
   ForecastPoint,
   GridSummary,
   Insight,
   PowerLine,
+  PersistentAlarm,
   Region,
   RootCause,
+  ScenarioDefinition,
+  ScenarioRun,
+  ScenarioRunRequest,
   Station,
+  StationHistoryPoint,
   Topology,
   WeatherImpact
 } from '../types/dashboard'
+
+export type AlarmQuery = {
+  status?: string
+  severity?: string
+  stationId?: string
+  limit?: number
+}
+
+export type AlarmAction = {
+  actor?: string
+  note?: string
+}
 
 const API_URL =
   import.meta.env.VITE_API_URL ||
@@ -26,6 +45,18 @@ const api = axios.create({
 export async function fetchLatestStations():Promise<Station[]>{
 
   const response = await api.get('/latest-stations')
+
+  return response.data.data || []
+}
+
+export async function fetchStationHistory(
+  stationId:string,
+  hours = 24,
+  limit = 500
+):Promise<StationHistoryPoint[]>{
+  const response = await api.get(`/api/stations/${encodeURIComponent(stationId)}/history`, {
+    params:{ hours, limit }
+  })
 
   return response.data.data || []
 }
@@ -58,11 +89,18 @@ export async function fetchPowerLines():Promise<PowerLine[]>{
   return response.data.data || []
 }
 
+export type GridLoadForecast = {
+  points:ForecastPoint[]; available:boolean; availableHorizons:number[]
+  historyHours:number; method:string; horizonHours:number; reason:string|null
+}
+
+export async function fetchGridLoadForecast(hours:number):Promise<GridLoadForecast>{
+  const response = await api.get('/grid/forecast', {params:{hours}})
+  return response.data
+}
+
 export async function fetchForecast():Promise<ForecastPoint[]>{
-
-  const response = await api.get('/grid/forecast')
-
-  return response.data.points || []
+  return (await fetchGridLoadForecast(12)).points || []
 }
 
 export async function fetchAIInsights():Promise<Insight[]>{
@@ -86,6 +124,82 @@ export async function fetchAlarmCorrelations():Promise<AlarmCorrelation[]>{
   return response.data.correlations || []
 }
 
+export async function fetchPersistentAlarms(query:AlarmQuery = {}):Promise<PersistentAlarm[]>{
+  const response = await api.get('/api/alarms', {
+    params:{
+      status:query.status,
+      severity:query.severity,
+      station_id:query.stationId,
+      limit:query.limit
+    }
+  })
+
+  return response.data.data || []
+}
+
+export async function fetchAlarmStats():Promise<AlarmStats>{
+  const response = await api.get('/api/alarms/stats')
+
+  return response.data
+}
+
+export async function fetchAlarmAudit(alarmId:string):Promise<AlarmAuditEntry[]>{
+  const response = await api.get(`/api/alarms/${alarmId}/audit`)
+
+  return response.data.data || []
+}
+
+export async function acknowledgePersistentAlarm(
+  alarmId:string,
+  action:AlarmAction = {}
+):Promise<PersistentAlarm>{
+  const response = await api.post(`/api/alarms/${alarmId}/acknowledge`, action)
+
+  return response.data
+}
+
+export async function createPersistentAlarmWorkOrder(
+  alarmId:string,
+  action:AlarmAction = {}
+):Promise<PersistentAlarm>{
+  const response = await api.post(`/api/alarms/${alarmId}/work-order`, action)
+
+  return response.data
+}
+
+export async function resolvePersistentAlarm(
+  alarmId:string,
+  action:AlarmAction = {}
+):Promise<PersistentAlarm>{
+  const response = await api.post(`/api/alarms/${alarmId}/resolve`, action)
+
+  return response.data
+}
+
+export async function fetchScenarioDefinitions():Promise<ScenarioDefinition[]>{
+  const response = await api.get('/api/scenarios/definitions')
+
+  return response.data.data || []
+}
+
+export async function fetchScenarioRuns(limit = 50):Promise<ScenarioRun[]>{
+  const response = await api.get('/api/scenarios', { params:{ limit } })
+
+  return response.data.data || []
+}
+
+export async function runScenario(request:ScenarioRunRequest):Promise<ScenarioRun>{
+  const response = await api.post('/api/scenarios/run', request)
+
+  return response.data
+}
+
+export async function stopScenario(scenarioId:string):Promise<ScenarioRun>{
+  const response = await api.post(`/api/scenarios/${scenarioId}/stop`)
+
+  return response.data
+}
+
 export async function fetchRootCause(correlationId:string):Promise<RootCause>{
 
   const response = await api.get(`/root-cause/${correlationId}`)
@@ -107,7 +221,12 @@ export async function fetchSystemTopology():Promise<Topology>{
   return response.data
 }
 
-export async function fetchCrateHealth():Promise<{ connected?: boolean; latencyMs?: number }>{
+export async function fetchCrateHealth():Promise<{
+  connected?: boolean
+  latencyMs?: number
+  mqttConnected?: boolean
+  telemetryPersistence?: string
+}>{
 
   const response = await api.get('/api/health/cratedb')
 

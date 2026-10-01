@@ -8,6 +8,7 @@ import type { PropType } from 'vue'
 import mapboxgl from 'mapbox-gl'
 import { useSensorStore } from '../../../../stores/sensorStore'
 import { useI18n } from '../../../../i18n'
+import { stationAlarms } from '../../../../services/stationAlarms'
 
 const props = defineProps({
   map:{ type:Object as PropType<any>, required:true },
@@ -33,6 +34,7 @@ const coreLayerId = 'substations-core'
 const iconLayerId = 'substations-icon'
 const labelLayerId = 'substations-labels'
 let activePopup = null
+let activePopupStationId = null
 let handledFocusKey = null
 let pendingFocusRequest = null
 
@@ -77,6 +79,7 @@ function stationFeature(station){
       health,
       risk,
       status,
+      alarmSummary:stationAlarms(station).map(alarm => alarm.title).join(', '),
       statusLabel:status.toUpperCase(),
       sort:
         status === 'critical' ? 4 :
@@ -147,8 +150,8 @@ function popupHtml(p){
       </div>
       <div class="popup-ai-block compact">
         <span>${t('dashboard.aiPrediction')}</span>
-        <strong>${p.risk >= 70 ? t('dashboard.overloadProbabilityIncreasing') : p.risk >= 38 ? t('dashboard.monitorVoltageAndThermalDrift') : t('dashboard.normalOperatingEnvelope')}</strong>
-        <small>${p.oilTemp >= 80 ? t('dashboard.coolingSystemStressDetected') : t('dashboard.noImmediateInterventionRequired')}</small>
+        <strong>${p.status === 'normal' ? t('dashboard.normalOperatingEnvelope') : p.alarmSummary ? t('dashboard.activeAlarmConditions') : t('dashboard.monitorVoltageAndThermalDrift')}</strong>
+        <small>${p.alarmSummary || t('dashboard.noImmediateInterventionRequired')}</small>
       </div>
       <a class="popup-link" href="/substations/${p.id}">${t('dashboard.viewDetails')}</a>
     </div>
@@ -182,10 +185,12 @@ function showPopup(feature, zoomToStation = false){
     .addTo(props.map)
 
   activePopup = popup
+  activePopupStationId = feature.properties.id
 
   popup.on('close', () => {
     if(activePopup === popup){
       activePopup = null
+      activePopupStationId = null
     }
   })
 
@@ -195,7 +200,9 @@ function showPopup(feature, zoomToStation = false){
 }
 
 function openPopup(event){
-  showPopup(event.features?.[0])
+  const id = event.features?.[0]?.properties?.id
+  const station = props.stations.find(item => item.station_id === id)
+  showPopup(station ? stationFeature(station) : null)
 }
 
 function focusStation(stationId){
@@ -377,6 +384,18 @@ function updateLayer(){
 
   if(source){
     source.setData(buildGeoJson())
+  }
+  if(activePopup && activePopupStationId){
+    const station = props.stations.find(item => item.station_id === activePopupStationId)
+    if(!station){
+      activePopup.remove()
+      activePopup = null
+      activePopupStationId = null
+      return
+    }
+    const feature = stationFeature(station)
+    activePopup.setLngLat(feature.geometry.coordinates).setHTML(popupHtml(feature.properties))
+    activePopup.getElement()?.querySelector('.popup-close')?.addEventListener('click', () => activePopup?.remove())
   }
 }
 

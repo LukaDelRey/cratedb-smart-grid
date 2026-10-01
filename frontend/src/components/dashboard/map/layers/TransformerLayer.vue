@@ -26,6 +26,8 @@ const glowLayerId = 'transformers-glow'
 const ringLayerId = 'transformers-ring'
 const coreLayerId = 'transformers-core'
 const iconLayerId = 'transformers-icon'
+let activePopup = null
+let activePopupId = null
 
 const statusColor = [
   'match',
@@ -33,7 +35,7 @@ const statusColor = [
   'critical','#ff3347',
   'warning','#ffad2f',
   'offline','#a8b6c4',
-  '#7c4dff'
+  '#71f23f'
 ]
 
 function buildGeoJson(){
@@ -41,7 +43,7 @@ function buildGeoJson(){
     type:'FeatureCollection',
     features:props.transformers.map(t => ({
       type:'Feature',
-      geometry:{ type:'Point', coordinates:[t.lng, t.lat] },
+      geometry:{ type:'Point', coordinates:[t.lng, t.lat] as [number,number] },
       properties:{
         id:t.id,
         substation:t.substation,
@@ -52,6 +54,7 @@ function buildGeoJson(){
         risk:t.failureProbability,
         rul:t.rulYears,
         status:t.status,
+        alarmSummary:t.alarmSummary || '',
         statusLabel:String(t.status || 'normal').toUpperCase()
       }
     }))
@@ -99,8 +102,8 @@ function popupHtml(p){
       </div>
       <div class="popup-ai-block compact">
         <span>${t('dashboard.digitalTwin')}</span>
-        <strong>${p.risk >= 70 ? t('dashboard.transformerOverloadContingencyRequired') : p.risk >= 38 ? t('dashboard.thermalTrendRequiresMonitoring') : t('dashboard.transformerOperatingNormally')}</strong>
-        <small>${p.oilTemp >= 80 ? t('dashboard.coolingInspectionRecommended') : t('dashboard.noImmediateActionRequired')}</small>
+        <strong>${p.status === 'normal' ? t('dashboard.transformerOperatingNormally') : p.alarmSummary ? t('dashboard.activeAlarmConditions') : t('dashboard.thermalTrendRequiresMonitoring')}</strong>
+        <small>${p.alarmSummary || t('dashboard.noImmediateActionRequired')}</small>
       </div>
       <a class="popup-link" data-transformer-link href="/transformers/${p.id}">${t('dashboard.openTransformerTwin')}</a>
     </div>
@@ -108,18 +111,27 @@ function popupHtml(p){
 }
 
 function openPopup(event){
-  const feature = event.features?.[0]
+  const id = event.features?.[0]?.properties?.id
+  const feature = buildGeoJson().features.find(feature => feature.properties.id === id)
   if(!feature) return
+  activePopup?.remove()
 
   const popup = new mapboxgl.Popup({ closeButton:false, maxWidth:'320px', offset:14 })
     .setLngLat(feature.geometry.coordinates)
     .setHTML(popupHtml(feature.properties))
     .addTo(props.map)
+  activePopup = popup
+  activePopupId = id
+  popup.on('close', () => {if(activePopup === popup){activePopup=null;activePopupId=null}})
 
+  bindPopupActions(popup,id)
+}
+
+function bindPopupActions(popup,id){
   popup.getElement()?.querySelector('.popup-close')?.addEventListener('click', () => popup.remove())
   popup.getElement()?.querySelector('[data-transformer-link]')?.addEventListener('click', clickEvent => {
     clickEvent.preventDefault()
-    router.push(`/transformers/${feature.properties.id}`)
+    router.push(`/transformers/${id}`)
     popup.remove()
   })
 }
@@ -196,7 +208,14 @@ function addLayer(){
 
 function updateLayer(){
   const source = props.map.getSource(sourceId)
-  if(source) source.setData(buildGeoJson())
+  const data = buildGeoJson()
+  if(source) source.setData(data)
+  if(activePopup){
+    const feature = data.features.find(feature => feature.properties.id === activePopupId)
+    if(!feature){activePopup.remove();return}
+    activePopup.setLngLat(feature.geometry.coordinates).setHTML(popupHtml(feature.properties))
+    bindPopupActions(activePopup,activePopupId)
+  }
 }
 
 onMounted(addLayer)
@@ -204,6 +223,7 @@ watch(() => props.transformers, updateLayer, { deep:true })
 watch(() => props.visibleStatuses, applyStatusFilter, { deep:true })
 
 onBeforeUnmount(() => {
+  activePopup?.remove()
   if(props.map.getLayer(ringLayerId)){
     props.map.off('click', ringLayerId, openPopup)
     props.map.off('mouseenter', ringLayerId, setPointer)

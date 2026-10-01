@@ -7,6 +7,7 @@
     :last-update="lastUpdate"
   >
     <main class="tt-scroll">
+      <q-banner v-if="!station" class="bg-blue-grey-10 text-white">{{ t('dashboard.noAssetTelemetry') }}</q-banner>
       <section class="tt-content" :class="`tab-${activeTab}`">
         <div class="title-row">
           <div>
@@ -17,17 +18,25 @@
             </div>
           </div>
 
-          <div class="time-controls" v-if="activeTab === 'analytics'">
-            <button type="button">May 14, 2025 - May 20, 2025</button>
-            <button type="button" class="active">Live Data</button>
-            <button type="button">Historical</button>
-          </div>
-          
-          <div class="time-controls" v-else>
-            <button type="button">Last 5 minutes</button>
-            <button type="button" aria-label="Refresh">
-              <q-icon name="refresh" size="17px" />
+          <div class="time-controls">
+            <button type="button" class="scenario-button" @click="scenarioOpen = true">
+              <q-icon name="science" size="17px" />
+              {{ t('dashboard.runScenario') }}
             </button>
+            <template v-if="activeTab === 'analytics'">
+              <button type="button">May 14, 2025 - May 20, 2025</button>
+              <button type="button" class="active">Live Data</button>
+              <button type="button">Historical</button>
+            </template>
+            <template v-else>
+              <button type="button">
+                <span class="range-long">Last 5 minutes</span>
+                <span class="range-short">5 min</span>
+              </button>
+              <button type="button" aria-label="Refresh">
+                <q-icon name="refresh" size="17px" />
+              </button>
+            </template>
           </div>
         </div>
 
@@ -274,8 +283,8 @@
           </section>
 
           <section class="analytics-chart-grid">
-            <TrendPanel title="Load & Power Trend" :seed="loadPct" legend-a="Load (%)" legend-b="Power (MW)" />
-            <TrendPanel title="Temperature Analysis" :seed="oilTemp + 16" legend-a="Top Oil (C)" legend-b="Winding H (C)" />
+            <TrendPanel title="Load & Power Trend" :seed="loadPct" :values="historyLoadSeries" legend-a="Load (%)" legend-b="Power (MW)" />
+            <TrendPanel title="Temperature Analysis" :seed="oilTemp + 16" :values="historyThermalSeries" legend-a="Top Oil (C)" legend-b="Winding H (C)" />
             <TrendPanel
               title="Load Forecast (Next 7 Days)"
               :seed="loadPct + 14"
@@ -398,12 +407,195 @@
           </section>
         </template>
 
-        <div v-else class="tt-card empty-tab-card">
-          <h2>{{ activeTabLabel }}</h2>
-          <p>This transformer section is ready for the next implementation pass.</p>
-        </div>
+        <template v-else-if="activeTab === 'schematic'">
+          <section class="schematic-grid">
+            <div class="tt-card schematic-diagram-card">
+              <div class="card-header">
+                <h2>Transformer Protection Schematic</h2>
+                <div class="legend"><span><i class="actual" />Energized</span><span><i class="forecast" />Protection zone</span></div>
+              </div>
+              <div class="single-line-diagram">
+                <svg viewBox="0 0 760 430" role="img" aria-label="Transformer single-line schematic">
+                  <defs>
+                    <filter id="schematicGlow" x="-40%" y="-40%" width="180%" height="180%">
+                      <feGaussianBlur stdDeviation="3" result="blur" />
+                      <feMerge>
+                        <feMergeNode in="blur" />
+                        <feMergeNode in="SourceGraphic" />
+                      </feMerge>
+                    </filter>
+                  </defs>
+                  <path class="diagram-grid-line" d="M80 60H700M80 140H700M80 220H700M80 300H700M80 380H700" />
+                  <path class="energized-line" d="M70 80H230V178" />
+                  <path class="energized-line" d="M530 252V350H690" />
+                  <path class="aux-line" d="M230 178H530M230 252H530" />
+                  <path class="zone-ring" d="M242 155H518V275H242Z" />
+                  <g class="breaker-symbol" transform="translate(154 80)">
+                    <rect x="-28" y="-18" width="56" height="36" rx="5" />
+                    <path d="M-16 12L18 -12" />
+                  </g>
+                  <g class="breaker-symbol" transform="translate(608 350)">
+                    <rect x="-28" y="-18" width="56" height="36" rx="5" />
+                    <path d="M-16 12L18 -12" />
+                  </g>
+                  <g class="transformer-symbol" transform="translate(380 215)">
+                    <circle cx="-38" cy="0" r="52" />
+                    <circle cx="38" cy="0" r="52" />
+                    <text x="0" y="-82">TR {{ transformer?.id || route.params.id }}</text>
+                    <text x="0" y="92">{{ loadPct }}% load / {{ healthScore }} health</text>
+                  </g>
+                  <g class="schematic-label" transform="translate(74 56)">
+                    <text>HV bus 110 kV</text>
+                    <text y="22">{{ primaryVoltage }} kV</text>
+                  </g>
+                  <g class="schematic-label" transform="translate(582 322)">
+                    <text>LV bus 20 kV</text>
+                    <text y="22">{{ secondaryVoltage }} kV</text>
+                  </g>
+                  <g class="relay-node differential" transform="translate(260 116)">
+                    <circle r="18" />
+                    <text y="5">87T</text>
+                  </g>
+                  <g class="relay-node thermal" transform="translate(502 116)">
+                    <circle r="18" />
+                    <text y="5">49</text>
+                  </g>
+                  <g class="relay-node gas" transform="translate(260 314)">
+                    <circle r="18" />
+                    <text y="5">63</text>
+                  </g>
+                  <g class="relay-node ground" transform="translate(502 314)">
+                    <circle r="18" />
+                    <text y="5">51N</text>
+                  </g>
+                </svg>
+              </div>
+            </div>
+
+            <aside class="schematic-side">
+              <MetricCard title="Protection State" :metrics="schematicMetrics" />
+              <div class="tt-card">
+                <h2>Relay & Interlock Chain</h2>
+                <div class="protection-chain">
+                  <div v-for="step in protectionStages" :key="step.code">
+                    <span>{{ step.code }}</span>
+                    <strong>{{ step.label }}</strong>
+                    <em :class="step.tone">{{ step.state }}</em>
+                  </div>
+                </div>
+              </div>
+            </aside>
+          </section>
+        </template>
+
+        <template v-else-if="activeTab === 'maintenance'">
+          <section class="maintenance-grid">
+            <div class="tt-card maintenance-hero-card">
+              <h2>Predictive Maintenance</h2>
+              <div class="maintenance-hero">
+                <strong>{{ maintenancePriority }}</strong>
+                <span>{{ Math.max(12, Math.round((100 - riskScore) / 2)) }} days to recommended service window</span>
+                <em>Driven by load, DGA, thermal stress and ageing factor</em>
+              </div>
+              <AgeingCard />
+            </div>
+
+            <div class="tt-card">
+              <h2>Maintenance Plan</h2>
+              <div class="maintenance-plan">
+                <div v-for="item in maintenancePlan" :key="item.title">
+                  <q-icon :name="item.icon" :class="item.tone" size="24px" />
+                  <span>
+                    <strong>{{ item.title }}</strong>
+                    <small>{{ item.body }}</small>
+                  </span>
+                  <em>{{ item.due }}</em>
+                </div>
+              </div>
+            </div>
+
+            <div class="tt-card">
+              <h2>Inspection Checklist</h2>
+              <div class="inspection-list">
+                <div v-for="item in inspectionChecklist" :key="item.label">
+                  <q-icon :name="item.icon" :class="item.tone" size="22px" />
+                  <span>{{ item.label }}</span>
+                  <strong :class="item.tone">{{ item.state }}</strong>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section class="maintenance-bottom-grid">
+            <TrendPanel
+              title="Degradation Projection"
+              :seed="ageingFactor + 31"
+              legend-a="Observed"
+              legend-b="Projected"
+              :side-stats="[
+                ['RUL', `${round1((healthScore / 100) * 28.7)} years`],
+                ['Failure Risk', `${riskScore}%`]
+              ]"
+            />
+            <TrendPanel
+              title="DGA Watch Trend"
+              :seed="gasRows[0].trend + gasRows[3].trend"
+              legend-a="Hydrogen"
+              legend-b="Acetylene"
+              :footer="gasRows.slice(0,4).map(gas => [gas.gas, `${gas.value} ${gas.unit}`])"
+            />
+          </section>
+        </template>
+
+        <template v-else>
+          <section class="events-grid">
+            <div class="tt-card">
+              <h2>Event Timeline</h2>
+              <div class="event-timeline">
+                <div v-for="event in eventTimeline" :key="`${event.time}-${event.title}`">
+                  <time>{{ event.time }}</time>
+                  <span :class="event.tone">{{ event.severity }}</span>
+                  <strong>{{ event.title }}</strong>
+                  <small>{{ event.detail }}</small>
+                </div>
+              </div>
+            </div>
+
+            <div class="tt-card">
+              <h2>Alarm Lifecycle</h2>
+              <div class="alarm-lifecycle">
+                <div v-for="alarm in alarms.slice(0,5)" :key="alarm.label">
+                  <q-icon :name="alarm.icon" :class="alarm.severity" size="22px" />
+                  <span>
+                    <strong>{{ alarm.label }}</strong>
+                    <small>{{ alarm.time }} - {{ alarm.severity === 'critical' ? 'requires operator action' : 'watch condition' }}</small>
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div class="tt-card insights-card">
+              <h2>Operator Notes</h2>
+              <div class="insight-list">
+                <div v-for="insight in eventInsights" :key="insight.title">
+                  <q-icon :name="insight.icon" :class="insight.tone" size="28px" />
+                  <div>
+                    <strong>{{ insight.title }}</strong>
+                    <span>{{ insight.body }}</span>
+                  </div>
+                  <small>{{ insight.time }}</small>
+                </div>
+              </div>
+            </div>
+          </section>
+        </template>
       </section>
     </main>
+    <ScenarioControlDialog
+      v-model="scenarioOpen"
+      :station-id="station?.station_id"
+      default-type="overload"
+    />
   </TransformerTwinShell>
 </template>
 
@@ -417,10 +609,15 @@ import { round1 } from '../utils/numbers'
 import TransformerTwinShell from '../components/transformer-twin/TransformerTwinShell.vue'
 import TransformerTwinDiagram from '../components/transformer-twin/TransformerTwinDiagram.vue'
 import TransformerTwinMiniChart from '../components/transformer-twin/TransformerTwinMiniChart.vue'
+import ScenarioControlDialog from '../components/scenarios/ScenarioControlDialog.vue'
+import { useI18n } from '../i18n'
+import { useStationHistory } from '../composables/useStationHistory'
 
 const route = useRoute()
 const store = useSensorStore()
 const activeTab = ref('overview')
+const scenarioOpen = ref(false)
+const { t } = useI18n()
 
 onMounted(() => {
   if(!store.stations.length){
@@ -447,6 +644,13 @@ const station = computed(() =>
     : null
 )
 
+const stationHistory = useStationHistory(() => station.value?.station_id)
+const historyLoadSeries = stationHistory.series(point => {
+  const current = point.electrical?.current_a
+  return Number.isFinite(current) ? Math.max(0,Math.min(100,Number(current) / 6)) : null
+})
+const historyThermalSeries = stationHistory.series(point => point.thermal?.oil_temp_c)
+
 const activeTabLabel = computed(() =>
   tabs.find(tab => tab.key === activeTab.value)?.label || 'Overview'
 )
@@ -472,16 +676,16 @@ const lastUpdate = computed(() =>
   })
 )
 
-const loadPct = computed(() => transformer.value?.loadPct || 72)
-const oilTemp = computed(() => round1(transformer.value?.oilTemp || 65.4))
-const windingTemp = computed(() => round1(transformer.value?.windingTemp || 78.6))
+const loadPct = computed(() => transformer.value?.loadPct ?? 0)
+const oilTemp = computed(() => round1(transformer.value?.oilTemp ?? 0))
+const windingTemp = computed(() => round1(transformer.value?.windingTemp ?? 0))
 const primaryVoltage = computed(() => round1(station.value?.electrical?.voltage_v ? station.value.electrical.voltage_v / 1000 : 110.2))
 const secondaryVoltage = computed(() => round1(primaryVoltage.value / 5.48))
 const loadCurrent = computed(() => round1(loadPct.value * 4.34))
 const activePower = computed(() => round1(loadPct.value * .303))
 const apparentPower = computed(() => round1(activePower.value / .9))
-const healthScore = computed(() => transformer.value?.healthScore || 92)
-const riskScore = computed(() => transformer.value?.failureProbability || 2.3)
+const healthScore = computed(() => transformer.value?.healthScore ?? 0)
+const riskScore = computed(() => transformer.value?.failureProbability ?? 0)
 const ageingFactor = computed(() => Math.max(8, Math.round(100 - healthScore.value + riskScore.value)))
 
 const measurementRows = computed(() => [
@@ -557,6 +761,24 @@ const simulationMetrics = computed(() => [
   { label:'Overload Capacity', value:Math.max(0, 90 - loadPct.value), unit:'%' },
   { label:'Cooling Efficiency', value:Math.min(99, Math.round(healthScore.value + 2)), unit:'%' },
   { label:'Insulation Life (Est.)', value:round1((healthScore.value / 100) * 31.2), unit:'Years' }
+])
+
+const schematicMetrics = computed(() => [
+  { label:'Differential Relay', value:'Armed', unit:'' },
+  { label:'Thermal Trip', value:round1(windingTemp.value + 5.6), unit:'C' },
+  { label:'Buchholz Gas', value:gasRows[0].value, unit:'ppm' },
+  { label:'Ground Fault', value:'0.02', unit:'pu' },
+  { label:'Tap Position', value:5, unit:'' },
+  { label:'Protection Zone', value:'HV-LV', unit:'' },
+  { label:'Trip Margin', value:Math.max(4, Math.round(100 - loadPct.value)), unit:'%' }
+])
+
+const protectionStages = computed(() => [
+  { code:'87T', label:'Transformer differential', state:'armed', tone:'green' },
+  { code:'49', label:'Thermal image overload', state:windingTemp.value > 86 ? 'warning' : 'normal', tone:windingTemp.value > 86 ? 'yellow' : 'green' },
+  { code:'63', label:'Buchholz gas relay', state:gasRows[0].value > 80 ? 'watch' : 'normal', tone:gasRows[0].value > 80 ? 'yellow' : 'green' },
+  { code:'51N', label:'Ground overcurrent', state:'normal', tone:'green' },
+  { code:'86', label:'Lockout trip circuit', state:riskScore.value > 70 ? 'ready' : 'standby', tone:riskScore.value > 70 ? 'red' : 'cyan' }
 ])
 
 const environment = computed(() => [
@@ -637,6 +859,101 @@ const insights = [
   { title:'Routine oil sampling recommended in next 15 days.', body:'Based on ageing factor and oil condition analysis.', icon:'build', tone:'white', time:'May 20, 14:25' }
 ]
 
+const maintenancePriority = computed(() =>
+  riskScore.value >= 70 || windingTemp.value >= 92
+    ? 'Immediate'
+    : riskScore.value >= 35 || windingTemp.value >= 82
+      ? 'Planned'
+      : 'Routine'
+)
+
+const maintenancePlan = computed(() => [
+  {
+    title:'Oil sampling and DGA validation',
+    body:'Confirm gas trend and insulation moisture before the next load peak.',
+    due:`${Math.max(7, Math.round((100 - riskScore.value) / 3))} days`,
+    icon:'science',
+    tone:'cyan'
+  },
+  {
+    title:'Cooling bank inspection',
+    body:`Fan stage follows ${oilTemp.value} C top-oil profile with ${Math.max(0, 90 - loadPct.value)}% overload headroom.`,
+    due:windingTemp.value > 82 ? '24 h' : '14 days',
+    icon:'mode_fan',
+    tone:windingTemp.value > 82 ? 'yellow' : 'green'
+  },
+  {
+    title:'OLTC contact resistance check',
+    body:'Tap position is stable, schedule contact scan during the next low-load window.',
+    due:'30 days',
+    icon:'tune',
+    tone:'white'
+  },
+  {
+    title:'Protection relay self-test',
+    body:'Verify 87T, 49, 63 and 51N relay chain before blackout scenario training.',
+    due:riskScore.value > 35 ? '7 days' : '45 days',
+    icon:'shield',
+    tone:riskScore.value > 35 ? 'yellow' : 'green'
+  }
+])
+
+const inspectionChecklist = computed(() => [
+  { label:'Infrared scan of HV bushings', state:oilTemp.value > 80 ? 'watch' : 'clear', icon:'thermostat', tone:oilTemp.value > 80 ? 'yellow' : 'green' },
+  { label:'Oil level and conservator bladder', state:'clear', icon:'oil_barrel', tone:'green' },
+  { label:'Cooling fan stage command', state:windingTemp.value > 82 ? 'active' : 'standby', icon:'mode_fan', tone:windingTemp.value > 82 ? 'cyan' : 'white' },
+  { label:'Grounding and neutral CT loop', state:'clear', icon:'electrical_services', tone:'green' },
+  { label:'Relay event recorder download', state:alarms.value.length ? 'pending' : 'synced', icon:'receipt_long', tone:alarms.value.length ? 'yellow' : 'green' }
+])
+
+const eventTimeline = computed(() => [
+  ...eventRows.value.map(row => ({
+    time:row.time,
+    severity:row.severity,
+    tone:row.severityClass,
+    title:row.event,
+    detail:`Transformer ${transformer.value?.id || route.params.id} event captured by alarm engine.`
+  })),
+  {
+    time:'14:22:18',
+    severity:'Info',
+    tone:'cyan',
+    title:'Forecast recalculated',
+    detail:`Next maintenance window adjusted to ${Math.max(12, Math.round((100 - riskScore.value) / 2))} days.`
+  },
+  {
+    time:'14:20:44',
+    severity:'Info',
+    tone:'green',
+    title:'Digital twin synchronized',
+    detail:`Realtime model refreshed with ${loadPct.value}% loading and ${healthScore.value}/100 health score.`
+  }
+])
+
+const eventInsights = computed(() => [
+  {
+    title:'Protection coordination is complete.',
+    body:'Relay chain has armed states for differential, gas, thermal and ground fault protection.',
+    icon:'verified',
+    tone:'green',
+    time:'Live'
+  },
+  {
+    title:'Maintenance context is available.',
+    body:`Priority is ${maintenancePriority.value.toLowerCase()} based on load, DGA, ageing and thermal stress.`,
+    icon:'engineering',
+    tone:maintenancePriority.value === 'Immediate' ? 'red' : maintenancePriority.value === 'Planned' ? 'yellow' : 'cyan',
+    time:'AI'
+  },
+  {
+    title:'Events are tied to operator action.',
+    body:'The event log shows timeline, lifecycle state and recommended follow-up for operator review.',
+    icon:'assignment_turned_in',
+    tone:'white',
+    time:'SCADA'
+  }
+])
+
 function scatterStyle(index){
   const progress = (index - 1) / 47
   const jitterX = Math.sin(index * 2.13) * 2.6
@@ -690,6 +1007,7 @@ const TrendPanel = defineComponent({
     seed:{ type:Number, default:72 },
     legendA:{ type:String, default:'Actual' },
     legendB:{ type:String, default:'Forecast' },
+    values:{ type:Array as PropType<number[]>, default:() => [] },
     footer:{ type:Array as PropType<any[]>, default:() => [] },
     sideStats:{ type:Array as PropType<any[]>, default:() => [] }
   },
@@ -703,7 +1021,7 @@ const TrendPanel = defineComponent({
         ])
       ]),
       h('div', { class:'trend-body' }, [
-        h(TransformerTwinMiniChart, { seed:props.seed }),
+        h(TransformerTwinMiniChart, { seed:props.seed, actualValues:props.values }),
         props.sideStats.length
           ? h('div', { class:'side-stats' }, props.sideStats.map(stat =>
               h('div', [h('span', stat[0]), h('strong', stat[1])])
@@ -833,6 +1151,9 @@ h1{
 }
 
 .time-controls button{
+  display:inline-flex;
+  align-items:center;
+  gap:6px;
   min-height:30px;
   padding:0 12px;
   border:1px solid rgba(64,196,255,.16);
@@ -841,9 +1162,18 @@ h1{
   background:rgba(6,17,31,.72);
 }
 
+.time-controls button.scenario-button{
+  color:#40c4ff;
+  border-color:rgba(64,196,255,.35);
+}
+
 .time-controls button.active{
   color:#fff;
   background:#1479e8;
+}
+
+.range-short{
+  display:none;
 }
 
 .tab-row{
@@ -1709,6 +2039,272 @@ h1{
   gap:10px;
 }
 
+.schematic-grid{
+  display:grid;
+  grid-template-columns:minmax(620px,1fr) 360px;
+  gap:10px;
+}
+
+.schematic-diagram-card{
+  min-height:580px;
+}
+
+.single-line-diagram{
+  min-height:520px;
+  padding:12px;
+}
+
+.single-line-diagram svg{
+  width:100%;
+  height:100%;
+  min-height:500px;
+  display:block;
+}
+
+.diagram-grid-line{
+  fill:none;
+  stroke:rgba(116,155,188,.07);
+  stroke-width:1;
+}
+
+.energized-line,
+.aux-line{
+  fill:none;
+  stroke:#40c4ff;
+  stroke-width:5;
+  stroke-linecap:round;
+  filter:url(#schematicGlow);
+}
+
+.aux-line{
+  stroke:#5bec67;
+  stroke-width:3;
+  stroke-dasharray:10 8;
+}
+
+.zone-ring{
+  fill:rgba(64,196,255,.035);
+  stroke:rgba(64,196,255,.32);
+  stroke-width:2;
+  stroke-dasharray:8 8;
+}
+
+.breaker-symbol rect{
+  fill:#07111f;
+  stroke:#d8eefb;
+  stroke-width:2;
+}
+
+.breaker-symbol path{
+  fill:none;
+  stroke:#ffb238;
+  stroke-width:3;
+  stroke-linecap:round;
+}
+
+.transformer-symbol circle{
+  fill:rgba(64,196,255,.055);
+  stroke:#40c4ff;
+  stroke-width:3;
+  filter:url(#schematicGlow);
+}
+
+.transformer-symbol text,
+.schematic-label text,
+.relay-node text{
+  fill:#f5fbff;
+  font-weight:800;
+  text-anchor:middle;
+}
+
+.transformer-symbol text{
+  font-size:17px;
+}
+
+.schematic-label text{
+  font-size:13px;
+  text-anchor:start;
+}
+
+.schematic-label text + text{
+  fill:#40c4ff;
+  font-size:18px;
+}
+
+.relay-node circle{
+  fill:#081523;
+  stroke:#5bec67;
+  stroke-width:2;
+  filter:url(#schematicGlow);
+}
+
+.relay-node.thermal circle,
+.relay-node.gas circle{
+  stroke:#ffb238;
+}
+
+.relay-node text{
+  fill:#f5fbff;
+  font-size:12px;
+}
+
+.schematic-side,
+.maintenance-hero-card{
+  display:grid;
+  gap:10px;
+  align-content:start;
+}
+
+.protection-chain,
+.maintenance-plan,
+.inspection-list,
+.event-timeline,
+.alarm-lifecycle{
+  display:grid;
+  padding:0 13px 13px;
+}
+
+.protection-chain div,
+.maintenance-plan div,
+.inspection-list div,
+.event-timeline div,
+.alarm-lifecycle div{
+  min-height:44px;
+  display:grid;
+  align-items:center;
+  gap:8px;
+  border-top:1px solid rgba(116,155,188,.095);
+}
+
+.protection-chain div{
+  grid-template-columns:42px minmax(0,1fr) 74px;
+}
+
+.protection-chain span{
+  color:#40c4ff;
+  font-weight:900;
+}
+
+.protection-chain strong,
+.maintenance-plan strong,
+.inspection-list span,
+.event-timeline strong,
+.alarm-lifecycle strong{
+  color:#f5fbff;
+  font-size:12px;
+}
+
+.protection-chain em,
+.inspection-list strong,
+.event-timeline span{
+  font-size:10px;
+  font-style:normal;
+  font-weight:900;
+  text-align:right;
+  text-transform:uppercase;
+}
+
+.maintenance-grid{
+  display:grid;
+  grid-template-columns:310px minmax(460px,1fr) minmax(360px,.85fr);
+  gap:10px;
+  margin-bottom:10px;
+}
+
+.maintenance-hero{
+  margin:0 13px 10px;
+  padding:14px;
+  border:1px solid rgba(64,196,255,.18);
+  border-radius:4px;
+  background:linear-gradient(180deg,rgba(64,196,255,.08),rgba(64,196,255,.025));
+}
+
+.maintenance-hero strong,
+.maintenance-hero span,
+.maintenance-hero em{
+  display:block;
+}
+
+.maintenance-hero strong{
+  color:#f5fbff;
+  font-size:30px;
+  line-height:1;
+}
+
+.maintenance-hero span,
+.maintenance-hero em,
+.maintenance-plan small,
+.event-timeline small,
+.alarm-lifecycle small{
+  color:#aabcca;
+  font-size:11px;
+  line-height:1.35;
+}
+
+.maintenance-hero em,
+.maintenance-plan em{
+  font-style:normal;
+}
+
+.maintenance-plan div{
+  grid-template-columns:28px minmax(0,1fr) 62px;
+  align-items:start;
+  padding:11px 0;
+}
+
+.maintenance-plan span,
+.maintenance-plan strong,
+.maintenance-plan small,
+.alarm-lifecycle span,
+.alarm-lifecycle strong,
+.alarm-lifecycle small{
+  display:block;
+  min-width:0;
+}
+
+.maintenance-plan em{
+  color:#40c4ff;
+  font-size:11px;
+  font-weight:900;
+  text-align:right;
+}
+
+.inspection-list div{
+  grid-template-columns:26px minmax(0,1fr) 68px;
+}
+
+.maintenance-bottom-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+.events-grid{
+  display:grid;
+  grid-template-columns:minmax(560px,1.2fr) minmax(360px,.75fr) minmax(420px,.9fr);
+  gap:10px;
+}
+
+.event-timeline div{
+  grid-template-columns:58px 64px minmax(0,.7fr) minmax(0,1.3fr);
+}
+
+.event-timeline time{
+  color:#91a8b8;
+  font-size:11px;
+  font-variant-numeric:tabular-nums;
+}
+
+.event-timeline span{
+  text-align:left;
+}
+
+.alarm-lifecycle div{
+  grid-template-columns:28px minmax(0,1fr);
+  align-items:start;
+  padding:10px 0;
+}
+
 .insight-list{
   display:grid;
   padding:0 14px 12px;
@@ -2009,8 +2605,14 @@ h1{
   }
 
   .overview-bottom-grid,
-  .analytics-mid-grid{
+  .analytics-mid-grid,
+  .maintenance-grid,
+  .events-grid{
     grid-template-columns:1fr 1fr;
+  }
+
+  .schematic-grid{
+    grid-template-columns:1fr;
   }
 
   .digital-grid .center-diagram{
@@ -2041,7 +2643,10 @@ h1{
   .analytics-kpi-grid,
   .analytics-chart-grid,
   .analytics-mid-grid,
-  .analytics-bottom-grid{
+  .analytics-bottom-grid,
+  .maintenance-grid,
+  .maintenance-bottom-grid,
+  .events-grid{
     grid-template-columns:1fr;
   }
 
@@ -2051,6 +2656,14 @@ h1{
 }
 
 @media (max-width: 760px){
+  .range-long{
+    display:none;
+  }
+
+  .range-short{
+    display:inline;
+  }
+
   .tt-content{
     padding:14px;
   }
@@ -2073,19 +2686,26 @@ h1{
   }
 
   .diagram-footer,
-  .measurement-list div,
   .metric-grid,
   .environment-grid{
     grid-template-columns:repeat(2,minmax(0,1fr));
   }
 
   .measurement-list div{
-    gap:5px;
+    grid-template-columns:20px minmax(0,1fr) auto 28px;
+    gap:6px;
+  }
+
+  .measurement-list .measurement-spark{
+    display:none;
   }
 
   .dga-layout,
   .loss-layout,
-  .ageing-layout{
+  .ageing-layout,
+  .event-timeline div,
+  .maintenance-plan div,
+  .inspection-list div{
     grid-template-columns:1fr;
   }
 

@@ -3,6 +3,9 @@ from contextlib import asynccontextmanager
 from datetime import datetime
 from datetime import timezone
 from statistics import mean
+from threading import Lock
+from time import monotonic
+from time import perf_counter
 
 from fastapi import FastAPI
 from fastapi import HTTPException
@@ -10,12 +13,29 @@ from fastapi import WebSocket
 from fastapi import WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from crate import client
+from pydantic import BaseModel
 
-from app.services.mqtt_client import start_mqtt
+from app.config import CRATE_URL, PERSIST_MQTT_TELEMETRY, cors_origins
+from app.services.mqtt_client import is_mqtt_connected, start_mqtt, stop_mqtt
 from app.db.init_db import init_db
 from app.services.event_bus import event_queue
 from app.services.websocket_manager import manager
 from app.services.cleanup import cleanup_old_data
+from app.services.alarm_repository import (
+    alarm_stats,
+    station_alarm_state,
+    list_alarm_audit,
+    list_alarms,
+    reconcile_alarm_payload,
+    transition_alarm,
+)
+from app.services.scenario_engine import (
+    list_scenario_runs,
+    scenario_definitions,
+    start_scenario,
+    stop_all_scenarios,
+    stop_scenario,
+)
 
 from shared.generate_stations import stations
 
@@ -32,6 +52,14 @@ from app.services.blackout_prediction import (
 from app.services.powerline_generator import (
     generate_power_lines
 )
+from app.services.load_forecast import grid_load_forecast
+from app.services.asset_intelligence import station_prediction, training_record
+from app.services.grid_physics import simulate_grid_physics
+from app.services.telemetry_repository import (
+    insert_sensor_payload,
+    recent_telemetry,
+    station_history,
+)
 
 
 @asynccontextmanager
@@ -39,35 +67,55 @@ async def lifespan(app: FastAPI):
 
     loop = asyncio.get_running_loop()
 
-    start_mqtt(loop)
+    await asyncio.to_thread(init_db)
+    await asyncio.to_thread(start_mqtt, loop)
 
-    asyncio.create_task(cleanup_old_data())
-
-    asyncio.create_task(event_loop())
+    background_tasks = [
+        asyncio.create_task(cleanup_old_data()),
+        asyncio.create_task(event_loop()),
+        asyncio.create_task(bootstrap_alarm_register()),
+    ]
 
     print("Application started")
 
-    yield
-
-    print("Shutting down...")
+    try:
+        yield
+    finally:
+        await stop_all_scenarios()
+        for task in background_tasks:
+            task.cancel()
+        await asyncio.gather(*background_tasks, return_exceptions=True)
+        stop_mqtt()
+        print("Shutting down...")
 
 
 app = FastAPI(lifespan=lifespan)
 
-init_db()
-
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=cors_origins(),
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
 
+class AlarmActionRequest(BaseModel):
+    actor: str = "operator"
+    note: str | None = None
+
+
+class ScenarioRunRequest(BaseModel):
+    scenario_type: str
+    station_id: str | None = None
+    duration_seconds: int = 30
+    target_count: int = 1
+    requested_by: str = "operator"
+
+
 def get_connection():
-    return client.connect("http://cratedb:4200")
+    return client.connect(CRATE_URL)
 
 
 def location_to_lat_lon(location):
@@ -87,15 +135,7 @@ def location_to_lat_lon(location):
 
 def has_alarm(station):
 
-    alarms = station.get("alarms") or {}
-
-    return (
-        alarms.get("overload") or
-        alarms.get("overheating") or
-        alarms.get("sensor_failure") or
-        alarms.get("voltage_drop") or
-        alarms.get("offline")
-    )
+    return bool(station_alarm_state(station)["active_alarms"])
 
 
 def station_id(station):
@@ -143,6 +183,9 @@ def station_region(station):
 
 def build_forecast_points(stations, hours=12):
 
+    if not stations:
+        return []
+
     base_load = sum([
         nested_value(
             station,
@@ -168,7 +211,8 @@ def build_forecast_points(stations, hours=12):
             "label": f"+{hour + 1}h",
             "loadMW": round(base_load * demand_shape, 1),
             "risk": min(100, round(risk_shape, 1)),
-            "confidence": max(72, 94 - hour)
+            "confidence": None,
+            "method": "heuristic"
         })
 
     return points
@@ -208,6 +252,8 @@ def build_weather_payload(stations):
 
     return {
         "temperatureC": avg_temp,
+        "estimated": True,
+        "method": "station-risk proxy; no weather-service observations",
         "windRisk": wind_risk,
         "lightningRisk": lightning_risk,
         "stormRisk": storm_risk,
@@ -235,54 +281,26 @@ def build_ai_insights(stations):
     if not stations:
         return []
 
-    ranked = sorted(
-        stations,
-        key=calculate_station_risk,
-        reverse=True
-    )
-
-    riskiest = ranked[0]
-    highest_load = max(
-        stations,
-        key=lambda station: nested_value(
-            station,
-            "electrical",
-            "active_power_kw"
-        )
-    )
-
-    return [
-        {
-            "id": "insight-overload",
-            "type": "overload",
-            "title": "Overload expected in high-load corridor",
-            "assetId": station_id(highest_load),
-            "impact": "Expected in 3h",
-            "confidence": 89,
-            "severity": "WARNING",
-            "recommendation": "Prepare load transfer and monitor line loading."
-        },
-        {
-            "id": "insight-cooling",
-            "type": "cooling",
-            "title": "Cooling degradation detected",
-            "assetId": station_id(riskiest),
-            "impact": "Transformer thermal margin is shrinking",
-            "confidence": 84,
-            "severity": "CRITICAL" if calculate_station_risk(riskiest) > 70 else "WARNING",
-            "recommendation": "Inspect cooling system and oil temperature trend."
-        },
-        {
-            "id": "insight-maintenance",
-            "type": "maintenance",
-            "title": "Maintenance recommended",
-            "assetId": station_id(riskiest),
-            "impact": "Within 14 days",
-            "confidence": 78,
-            "severity": "INFO",
-            "recommendation": "Schedule predictive maintenance window."
-        }
-    ]
+    insights = []
+    for station in stations:
+        rules = [
+            ("overload", nested_value(station, "electrical", "current_a") >= 500,
+             "High current threshold exceeded", "Review loading and available transfer capacity."),
+            ("cooling", nested_value(station, "thermal", "oil_temp_c") >= 85,
+             "Oil temperature threshold exceeded", "Inspect cooling and compare the temperature history."),
+            ("maintenance", calculate_station_risk(station) >= 70,
+             "Elevated heuristic risk score", "Review this asset before planning maintenance."),
+        ]
+        for kind, triggered, title, recommendation in rules:
+            if triggered:
+                insights.append({
+                    "id": f"insight-{station_id(station)}-{kind}",
+                    "type": kind, "title": title, "assetId": station_id(station),
+                    "impact": "Current telemetry threshold; no predicted failure time",
+                    "confidence": None, "method": "heuristic",
+                    "severity": "WARNING", "recommendation": recommendation,
+                })
+    return insights
 
 
 def build_alarm_correlations(stations):
@@ -297,8 +315,18 @@ def build_alarm_correlations(stations):
 
     cause_map = [
         ("overheating", "Cooling System Failure", "CRITICAL"),
+        ("cooling_failure", "Cooling System Failure", "CRITICAL"),
         ("overload", "Transformer Overload", "WARNING"),
         ("voltage_drop", "Grid Instability", "WARNING"),
+        ("voltage_instability", "Voltage Instability", "CRITICAL"),
+        ("frequency_instability", "Frequency Instability", "CRITICAL"),
+        ("harmonics_spike", "Power Quality Degradation", "WARNING"),
+        ("short_circuit", "Short Circuit", "CRITICAL"),
+        ("insulation_degradation", "Insulation Degradation", "WARNING"),
+        ("oil_leak", "Transformer Oil Leak", "CRITICAL"),
+        ("arc_discharge", "Internal Arc Discharge", "CRITICAL"),
+        ("feeder_failure", "Feeder Failure", "CRITICAL"),
+        ("transformer_trip", "Transformer Trip", "CRITICAL"),
         ("sensor_failure", "Telemetry Degradation", "INFO"),
         ("offline", "Asset Offline", "CRITICAL")
     ]
@@ -331,98 +359,214 @@ def build_alarm_correlations(stations):
     return grouped
 
 
-def build_topology(stations):
+def build_topology(
+    stations,
+    mqtt_connected=True,
+    database_connected=True,
+    websocket_clients=0,
+):
+
+    telemetry_active = bool(stations)
+    statuses = [
+        "online" if telemetry_active else "degraded",
+        "online" if mqtt_connected else "offline",
+        "online",
+        "online" if database_connected else "offline",
+        "online",
+        "online" if telemetry_active else "degraded",
+        "online" if telemetry_active else "degraded",
+    ]
+    health_penalty = sum(
+        20 if status == "offline" else 8 if status == "degraded" else 0
+        for status in statuses
+    )
 
     return {
         "updatedAt": datetime.now(timezone.utc).isoformat(),
-        "platformHealth": 92,
+        "platformHealth": max(0, 100 - health_penalty),
         "nodes": [
             {
                 "id": "locust",
                 "label": "Locust Simulator",
-                "status": "online",
-                "metric": "4,281 msg/s"
+                "status": statuses[0],
+                "metric": f"{len(stations)} active station states" if telemetry_active else "waiting for telemetry"
             },
             {
                 "id": "emqx",
                 "label": "EMQX MQTT",
-                "status": "online",
-                "metric": "connected"
+                "status": statuses[1],
+                "metric": "connected" if mqtt_connected else "disconnected"
             },
             {
                 "id": "fastapi",
                 "label": "FastAPI Gateway",
-                "status": "online",
-                "metric": "ws active"
+                "status": statuses[2],
+                "metric": f"{websocket_clients} websocket clients"
             },
             {
                 "id": "cratedb",
                 "label": "CrateDB",
-                "status": "online",
-                "metric": f"{len(stations)} latest states"
+                "status": statuses[3],
+                "metric": f"{len(stations)} latest states" if database_connected else "unavailable"
             },
             {
                 "id": "dashboard",
                 "label": "Vue Dashboard",
-                "status": "online",
+                "status": statuses[4],
                 "metric": "realtime"
+            },
+            {
+                "id": "ai",
+                "label": "Predictive Analytics",
+                "status": statuses[5],
+                "metric": "health, risk, anomaly and lifetime scoring"
+            },
+            {
+                "id": "physics",
+                "label": "Grid Physics",
+                "status": statuses[6],
+                "metric": "load flow, thermal loss and cascade model"
             }
         ],
         "edges": [
             ["locust", "emqx"],
             ["emqx", "fastapi"],
+            ["fastapi", "ai"],
+            ["fastapi", "physics"],
+            ["ai", "cratedb"],
+            ["physics", "cratedb"],
             ["fastapi", "dashboard"],
             ["fastapi", "cratedb"]
         ]
     }
 
 
-def fetch_latest_station_states(limit=10000):
+_latest_station_cache = []
+_latest_station_cache_at = 0.0
+_latest_station_cache_lock = Lock()
+LATEST_STATION_CACHE_SECONDS = 2
+_alarm_reconcile_lock = asyncio.Lock()
+_power_line_cache = []
+_power_line_cache_key = ()
+_power_line_cache_lock = Lock()
 
+
+def telemetry_time(payload):
+    value = payload.get("timestamp")
+    if isinstance(value, (int, float)):
+        return value / 1000 if value > 100_000_000_000 else value
+    if isinstance(value, datetime):
+        return value.replace(tzinfo=value.tzinfo or timezone.utc).timestamp()
     try:
+        parsed = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+        return parsed.replace(tzinfo=parsed.tzinfo or timezone.utc).timestamp()
+    except (ValueError, TypeError):
+        return 0
 
-        connection = get_connection()
-        cursor = connection.cursor()
 
-        cursor.execute(f"""
-            SELECT *
-            FROM trafostanice_sensors
-            ORDER BY timestamp DESC
-            LIMIT {limit}
-        """)
+def cache_latest_station_payload(payload):
+    """Replace one station atomically; delayed telemetry cannot restore old alarms."""
+    payload_id = station_id(payload)
+    if not payload_id:
+        return False
+    payload = station_alarm_state(payload)
+    with _latest_station_cache_lock:
+        for index, station in enumerate(_latest_station_cache):
+            if station_id(station) == payload_id:
+                if telemetry_time(payload) < telemetry_time(station):
+                    return False
+                _latest_station_cache[index] = payload
+                break
+        else:
+            _latest_station_cache.append(payload)
+    return True
 
-        rows = cursor.fetchall()
 
-        columns = [
-            col[0]
-            for col in cursor.description
-        ]
+def fetch_latest_station_states(limit=10000, force_refresh=False):
+    global _latest_station_cache, _latest_station_cache_at
 
-        latest = {}
+    with _latest_station_cache_lock:
+        cache_age = monotonic() - _latest_station_cache_at
+        if (
+            not force_refresh
+            and _latest_station_cache
+            and cache_age < LATEST_STATION_CACHE_SECONDS
+        ):
+            return list(_latest_station_cache)
 
-        for row in rows:
+        try:
+            connection = get_connection()
+            cursor = connection.cursor()
 
-            station = dict(
-                zip(columns, row)
-            )
+            safe_limit = max(1, min(int(limit), 50000))
+            cursor.execute(f"""
+                SELECT sensors.*
+                FROM trafostanice_sensors sensors
+                INNER JOIN (
+                    SELECT station_id, MAX(timestamp) AS latest_timestamp
+                    FROM trafostanice_sensors
+                    GROUP BY station_id
+                ) latest ON sensors.station_id = latest.station_id
+                    AND sensors.timestamp = latest.latest_timestamp
+                ORDER BY sensors.timestamp DESC
+                LIMIT {safe_limit}
+            """)
 
-            station_id = station.get("station_id")
+            rows = cursor.fetchall()
 
-            if not station_id:
-                continue
+            columns = [
+                col[0]
+                for col in cursor.description
+            ]
 
-            if station_id not in latest:
-                latest[station_id] = station
+            latest = {}
 
-        return list(
-            latest.values()
-        )
+            for row in rows:
 
-    except Exception as exc:
+                station = dict(
+                    zip(columns, row)
+                )
 
-        print(f"CrateDB latest station fetch failed: {exc}")
+                current_station_id = station.get("station_id")
 
-        return []
+                if not current_station_id:
+                    continue
+
+                if current_station_id not in latest:
+                    latest[current_station_id] = station_alarm_state(station)
+
+            # The external DB writer can lag behind MQTT. Never roll live state back.
+            for cached in _latest_station_cache:
+                cached_id = station_id(cached)
+                if cached_id not in latest or telemetry_time(cached) >= telemetry_time(latest[cached_id]):
+                    latest[cached_id] = cached
+            _latest_station_cache = list(latest.values())
+            _latest_station_cache_at = monotonic()
+            return list(_latest_station_cache)
+
+        except Exception as exc:
+
+            print(f"CrateDB latest station fetch failed: {exc}")
+
+            return list(_latest_station_cache)
+
+
+def current_power_lines(station_states):
+    global _power_line_cache, _power_line_cache_key
+
+    cache_key = tuple(sorted(
+        (str(station_id(station)), str(station.get("location") or ""),
+         str(station.get("lat")), str(station.get("lon")))
+        for station in station_states if station_id(station)
+    ))
+    with _power_line_cache_lock:
+        if _power_line_cache and cache_key == _power_line_cache_key:
+            return list(_power_line_cache)
+
+        _power_line_cache = generate_power_lines(station_states)
+        _power_line_cache_key = cache_key
+        return list(_power_line_cache)
+
 
 @app.get("/")
 def root():
@@ -444,17 +588,19 @@ def health():
 def cratedb_health():
 
     try:
-
+        started_at = perf_counter()
         connection = get_connection()
         cursor = connection.cursor()
 
         cursor.execute("SELECT 1")
+        latency_ms = round((perf_counter() - started_at) * 1000, 1)
 
         return {
             "connected": True,
-            "latencyMs": 8,
+            "latencyMs": latency_ms,
             "nodes": 1,
-            "queriesPerSecond": 1204
+            "mqttConnected": is_mqtt_connected(),
+            "telemetryPersistence": "backend" if PERSIST_MQTT_TELEMETRY else "external"
         }
 
     except Exception as exc:
@@ -465,7 +611,8 @@ def cratedb_health():
             "connected": False,
             "latencyMs": 0,
             "nodes": 0,
-            "queriesPerSecond": 0
+            "mqttConnected": is_mqtt_connected(),
+            "telemetryPersistence": "unavailable"
         }
 
 
@@ -505,6 +652,27 @@ def get_sensors():
     }
 
 
+@app.get("/api/stations/{station_id}/history")
+def get_station_history(
+    station_id: str,
+    hours: int = 24,
+    limit: int = 500,
+):
+    try:
+        rows = station_history(station_id, hours=hours, limit=limit)
+    except Exception as exc:
+        raise HTTPException(
+            status_code=503,
+            detail=f"Station history unavailable: {exc}",
+        ) from exc
+
+    return {
+        "stationId": station_id,
+        "hours": max(1, min(int(hours), 24 * 30)),
+        "data": rows,
+    }
+
+
 @app.get("/latest-stations")
 def latest_stations():
 
@@ -527,6 +695,106 @@ def get_alarms():
     return {
         "data": alarms
     }
+
+
+@app.get("/api/alarms")
+def get_alarm_register(
+    status: str | None = None,
+    severity: str | None = None,
+    station_id: str | None = None,
+    limit: int = 250,
+):
+    statuses = status.split(",") if status else None
+    try:
+        data = list_alarms(
+            statuses=statuses,
+            severity=severity,
+            station_id=station_id,
+            limit=limit,
+        )
+    except Exception as exc:
+        raise HTTPException(status_code=503, detail="Alarm register unavailable") from exc
+    return {"data": data}
+
+
+@app.get("/api/alarms/stats")
+def get_alarm_stats():
+    return alarm_stats()
+
+
+@app.get("/api/alarms/{alarm_id}/audit")
+def get_alarm_audit(alarm_id: str):
+    return {"data": list_alarm_audit(alarm_id)}
+
+
+@app.post("/api/alarms/{alarm_id}/acknowledge")
+def acknowledge_alarm(alarm_id: str, request: AlarmActionRequest):
+    try:
+        alarm = transition_alarm(alarm_id, "ACK", request.actor, request.note)
+    except ValueError as exc:
+        raise HTTPException(status_code=409, detail=str(exc)) from exc
+    if not alarm:
+        raise HTTPException(status_code=404, detail="Alarm not found")
+    return alarm
+
+
+@app.post("/api/alarms/{alarm_id}/work-order")
+def create_alarm_work_order(alarm_id: str, request: AlarmActionRequest):
+    try:
+        alarm = transition_alarm(alarm_id, "WORK_ORDER", request.actor, request.note)
+    except ValueError as exc:
+        raise HTTPException(status_code=409, detail=str(exc)) from exc
+    if not alarm:
+        raise HTTPException(status_code=404, detail="Alarm not found")
+    return alarm
+
+
+@app.post("/api/alarms/{alarm_id}/resolve")
+def resolve_alarm(alarm_id: str, request: AlarmActionRequest):
+    try:
+        alarm = transition_alarm(alarm_id, "RESOLVED", request.actor, request.note)
+    except ValueError as exc:
+        raise HTTPException(status_code=409, detail=str(exc)) from exc
+    if not alarm:
+        raise HTTPException(status_code=404, detail="Alarm not found")
+    return alarm
+
+
+@app.get("/api/scenarios/definitions")
+def get_scenario_definitions():
+    return {"data": scenario_definitions()}
+
+
+@app.get("/api/scenarios")
+async def get_scenario_runs(limit: int = 100):
+    return {"data": await list_scenario_runs(limit)}
+
+
+@app.post("/api/scenarios/run")
+async def run_scenario(request: ScenarioRunRequest):
+    latest_stations = await asyncio.to_thread(fetch_latest_station_states)
+
+    try:
+        return await start_scenario(
+            scenario_type=request.scenario_type,
+            stations=latest_stations,
+            station_id=request.station_id,
+            duration_seconds=request.duration_seconds,
+            target_count=request.target_count,
+            requested_by=request.requested_by,
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    except RuntimeError as exc:
+        raise HTTPException(status_code=409, detail=str(exc)) from exc
+
+
+@app.post("/api/scenarios/{scenario_id}/stop")
+async def stop_running_scenario(scenario_id: str):
+    scenario = await stop_scenario(scenario_id)
+    if not scenario:
+        raise HTTPException(status_code=404, detail="Running scenario not found")
+    return scenario
 
 
 @app.get("/nearby")
@@ -587,11 +855,7 @@ def grid_summary():
         for station in latest_stations
     ]
 
-    active_alarms = len([
-        station
-        for station in latest_stations
-        if has_alarm(station)
-    ])
+    active_alarms = sum(len(station["active_alarms"]) for station in latest_stations)
 
     return {
         "gridHealth": round(mean(health_scores), 1),
@@ -648,11 +912,7 @@ def get_regions():
             for station in data
         ])
 
-        active_alarms = len([
-            station
-            for station in data
-            if has_alarm(station)
-        ])
+        active_alarms = sum(len(station["active_alarms"]) for station in data)
 
         return {
             "id": region_id,
@@ -719,23 +979,13 @@ def get_power_lines():
     latest_stations = fetch_latest_station_states()
 
     return {
-        "data": generate_power_lines(
-            latest_stations
-        )
+        "data": current_power_lines(latest_stations)
     }
 
 
 @app.get("/grid/forecast")
-def get_grid_forecast():
-
-    latest_stations = fetch_latest_station_states()
-
-    return {
-        "scope": "entire-grid",
-        "points": build_forecast_points(
-            latest_stations
-        )
-    }
+def get_grid_forecast(hours: int = 12):
+    return grid_load_forecast(fetch_latest_station_states(), hours)
 
 
 @app.get("/ai/insights")
@@ -748,6 +998,53 @@ def get_ai_insights():
             latest_stations
         )
     }
+
+
+@app.get("/ai/stations/{requested_station_id}")
+def get_station_prediction(requested_station_id: str):
+    latest_stations = fetch_latest_station_states()
+    match = next(
+        (
+            station
+            for station in latest_stations
+            if station_id(station) == requested_station_id
+        ),
+        None,
+    )
+    if not match:
+        raise HTTPException(status_code=404, detail="Station not found")
+    return station_prediction(match)
+
+
+@app.get("/ai/training-dataset")
+def get_ai_training_dataset(limit: int = 500):
+    rows = recent_telemetry(limit)
+    records = [training_record(row) for row in rows]
+    state_counts = {}
+    for record in records:
+        label = record["label"]
+        state_counts[label] = state_counts.get(label, 0) + 1
+    return {
+        "featureVersion": "baseline-v1",
+        "records": records,
+        "stateCounts": state_counts,
+        "count": len(records),
+    }
+
+
+@app.get("/physics/grid")
+def get_grid_physics(details: bool = True):
+    latest_stations = fetch_latest_station_states()
+    result = simulate_grid_physics(
+        latest_stations,
+        current_power_lines(latest_stations),
+    )
+    if not details:
+        return {
+            "model": result["model"],
+            "summary": result["summary"],
+        }
+    return result
 
 
 @app.get("/weather/grid-impact")
@@ -840,22 +1137,36 @@ def get_contingency(asset_id: str):
     )
 
     if not match:
-        match = latest_stations[0] if latest_stations else {}
+        raise HTTPException(status_code=404, detail="Asset not found")
 
-    base_risk = calculate_station_risk(match) if match else 0
+    physics = simulate_grid_physics(
+        latest_stations,
+        current_power_lines(latest_stations),
+        failed_asset_id=asset_id,
+    )
+    affected_nodes = [
+        node
+        for node in physics["nodes"]
+        if node.get("cascadeDepth") is not None
+    ]
+    base_risk = calculate_station_risk(match)
 
     return {
         "assetId": asset_id,
-        "affectedCustomers": round(4200 + base_risk * 92),
-        "overloadedAssets": max(1, round(base_risk / 15)),
+        "affectedCustomers": round(len(affected_nodes) * 850 + base_risk * 42),
+        "overloadedAssets": physics["summary"]["overloadedLines"],
         "risk": (
             "High"
-            if base_risk > 70
+            if physics["summary"]["cascadeRisk"] > 70
             else "Medium"
-            if base_risk > 35
+            if physics["summary"]["cascadeRisk"] > 35
             else "Low"
         ),
-        "recommendedAction": "Transfer load and isolate the affected corridor."
+        "recommendedAction": "Transfer load and isolate the affected corridor.",
+        "cascadeRisk": physics["summary"]["cascadeRisk"],
+        "estimatedLossMW": physics["summary"]["estimatedLossMW"],
+        "affectedAssets": [node["id"] for node in affected_nodes[:25]],
+        "physicsModel": physics["model"],
     }
 
 
@@ -864,13 +1175,26 @@ def get_system_topology():
 
     latest_stations = fetch_latest_station_states()
 
+    try:
+        cursor = get_connection().cursor()
+        cursor.execute("SELECT 1")
+        database_connected = True
+    except Exception:
+        database_connected = False
+
     return build_topology(
-        latest_stations
+        latest_stations,
+        mqtt_connected=is_mqtt_connected(),
+        database_connected=database_connected,
+        websocket_clients=manager.connection_count,
     )
 
 
 @app.get("/digital-twin/{asset_type}/{asset_id}")
 def get_digital_twin(asset_type: str, asset_id: str):
+
+    if asset_type not in {"station", "substation", "transformer", "region"}:
+        raise HTTPException(status_code=404, detail="Unknown asset type")
 
     latest_stations = fetch_latest_station_states()
     match = next(
@@ -881,9 +1205,6 @@ def get_digital_twin(asset_type: str, asset_id: str):
         ),
         None
     )
-
-    if not match and latest_stations:
-        match = latest_stations[0]
 
     if not match:
         raise HTTPException(
@@ -899,6 +1220,7 @@ def get_digital_twin(asset_type: str, asset_id: str):
         "risk": calculate_station_risk(match),
         "region": station_region(match),
         "forecast": build_forecast_points([match], 8),
+        "prediction": station_prediction(match),
         "contingency": {
             "affectedCustomers": round(
                 1200 + calculate_station_risk(match) * 46
@@ -917,12 +1239,10 @@ async def websocket_endpoint(websocket: WebSocket):
     await manager.connect(websocket)
 
     try:
-
         while True:
-            await asyncio.sleep(60)
+            await websocket.receive_text()
 
     except WebSocketDisconnect:
-
         manager.disconnect(websocket)
 
 
@@ -932,4 +1252,45 @@ async def event_loop():
 
         payload = await event_queue.get()
 
-        await manager.broadcast(payload)
+        try:
+            payload = station_alarm_state(payload)
+            if not cache_latest_station_payload(payload):
+                continue
+            if PERSIST_MQTT_TELEMETRY:
+                try:
+                    await asyncio.to_thread(insert_sensor_payload, payload)
+                except Exception as exc:
+                    print(f"Telemetry persistence failed: {exc}")
+
+            try:
+                async with _alarm_reconcile_lock:
+                    await asyncio.to_thread(reconcile_alarm_payload, payload)
+            except Exception as exc:
+                print(f"Alarm persistence failed: {exc}")
+
+            await manager.broadcast(payload)
+        except Exception as exc:
+            print(f"Telemetry processing failed: {exc}")
+        finally:
+            event_queue.task_done()
+
+
+async def bootstrap_alarm_register():
+
+    await asyncio.sleep(1)
+
+    try:
+        latest_stations = await asyncio.to_thread(fetch_latest_station_states)
+
+        for station in latest_stations:
+            # Normal snapshots also resolve alarms left open before a restart.
+            async with _alarm_reconcile_lock:
+                with _latest_station_cache_lock:
+                    current = next((cached for cached in _latest_station_cache
+                                    if station_id(cached) == station_id(station)), station)
+                await asyncio.to_thread(reconcile_alarm_payload, current)
+
+        print("Alarm register initialized from latest station state")
+
+    except Exception as exc:
+        print(f"Alarm register initialization failed: {exc}")

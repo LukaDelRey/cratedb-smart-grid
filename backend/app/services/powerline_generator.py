@@ -194,7 +194,11 @@ def generate_power_lines(source_stations):
     nodes = [
         normalize_station(station)
         for station in source_stations
-        if station.get("location") or station.get("lat")
+        if station.get("location")
+        or (
+            station.get("lat") is not None
+            and station.get("lon") is not None
+        )
     ]
 
     if len(nodes) < 2:

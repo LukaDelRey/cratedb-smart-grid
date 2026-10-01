@@ -2,13 +2,25 @@ from locust import User, task, between
 import json
 import random
 import time
-import paho.mqtt.publish as publish
+import paho.mqtt.client as mqtt
 
 from shared.generate_stations import stations as stations
 
 class TrafostanicaUser(User):
 
     wait_time = between(1, 3)
+
+    def on_start(self):
+        self.mqtt_client = mqtt.Client(
+            mqtt.CallbackAPIVersion.VERSION2,
+            client_id=f"locust-{id(self)}",
+        )
+        self.mqtt_client.connect("emqx", 1883, 60)
+        self.mqtt_client.loop_start()
+
+    def on_stop(self):
+        self.mqtt_client.loop_stop()
+        self.mqtt_client.disconnect()
 
     @task
     def send_sensor_data(self):
@@ -24,6 +36,16 @@ class TrafostanicaUser(User):
 
         voltage_drop = random.random() < 0.01
 
+        short_circuit = random.random() < 0.001
+        voltage_instability = random.random() < 0.003
+        harmonics_spike = random.random() < 0.004
+        cooling_failure = random.random() < 0.002
+        insulation_degradation = random.random() < 0.003
+        oil_leak = random.random() < 0.0015
+        arc_discharge = random.random() < 0.0008
+        feeder_failure = random.random() < 0.001
+        transformer_trip = random.random() < 0.0007
+
         current = random.randint(150, 400)
         oil_temp = random.randint(45, 85)
 
@@ -38,8 +60,50 @@ class TrafostanicaUser(User):
         if voltage_drop:
             voltage = round(random.uniform(7.0, 9.0), 2)
 
-        if offline:
-            return
+        if short_circuit:
+            current = random.randint(900, 1300)
+            voltage = round(random.uniform(1.5, 4.5), 2)
+
+        frequency = round(random.uniform(49.8, 50.2), 2)
+        harmonics = round(random.uniform(1.0, 5.0), 2)
+
+        if voltage_instability:
+            voltage = round(random.choice((random.uniform(7.5, 8.8), random.uniform(11.1, 11.8))), 2)
+            frequency = round(random.choice((random.uniform(48.8, 49.4), random.uniform(50.6, 51.1))), 2)
+
+        if harmonics_spike:
+            harmonics = round(random.uniform(8.0, 15.0), 2)
+
+        winding_temp = oil_temp + random.randint(5, 15)
+        if cooling_failure:
+            oil_temp = random.randint(98, 115)
+            winding_temp = oil_temp + random.randint(25, 38)
+
+        oil_level = random.randint(70, 100)
+        oil_pressure = round(random.uniform(1.0, 2.0), 2)
+        hydrogen = random.randint(0, 25)
+        methane = random.randint(0, 10)
+        acetylene = random.randint(0, 3)
+
+        if insulation_degradation:
+            hydrogen = random.randint(45, 120)
+            methane = random.randint(18, 45)
+        if oil_leak:
+            oil_level = random.randint(35, 60)
+            oil_pressure = round(random.uniform(0.4, 0.8), 2)
+        if arc_discharge:
+            hydrogen = random.randint(90, 180)
+            acetylene = random.randint(8, 24)
+
+        active_power = random.randint(1000, 3000)
+        if feeder_failure:
+            voltage = round(random.uniform(3.5, 6.0), 2)
+            current = 0
+            active_power = 0
+        if transformer_trip:
+            voltage = 0
+            current = 0
+            active_power = 0
 
         payload = {
 
@@ -60,20 +124,20 @@ class TrafostanicaUser(User):
 
                 "current_a": current,
 
-                "frequency_hz": round( random.uniform(49.8, 50.2), 2),
+                "frequency_hz": frequency,
 
-                "active_power_kw": random.randint(1000, 3000),
+                "active_power_kw": active_power,
 
                 "reactive_power_kvar": random.randint(100, 500),
 
-                "harmonics_thd": round(random.uniform(1.0, 5.0), 2)
+                "harmonics_thd": harmonics
             },
 
             "thermal": {
 
                 "oil_temp_c": oil_temp,
 
-                "winding_temp_c": oil_temp + random.randint(5, 15),
+                "winding_temp_c": winding_temp,
 
                 "busbar_temp_c": random.randint(30, 70),
 
@@ -82,17 +146,17 @@ class TrafostanicaUser(User):
 
             "oil_gas": {
 
-                "oil_level_percent": random.randint(70, 100),
+                "oil_level_percent": oil_level,
 
-                "oil_pressure_bar": round(random.uniform(1.0, 2.0), 2),
+                "oil_pressure_bar": oil_pressure,
 
                 "humidity_ppm": random.randint(5, 40),
 
-                "hydrogen_ppm": random.randint(0, 25),
+                "hydrogen_ppm": hydrogen,
 
-                "methane_ppm": random.randint(0, 10),
+                "methane_ppm": methane,
 
-                "acetylene_ppm": random.randint(0, 3)
+                "acetylene_ppm": acetylene
             },
 
             "alarms": {
@@ -104,17 +168,24 @@ class TrafostanicaUser(User):
 
                 "offline": offline,
 
-                "voltage_drop": voltage_drop
+                "voltage_drop": voltage_drop,
+                "short_circuit": short_circuit,
+                "voltage_instability": voltage_instability,
+                "frequency_instability": voltage_instability,
+                "harmonics_spike": harmonics_spike,
+                "cooling_failure": cooling_failure,
+                "insulation_degradation": insulation_degradation,
+                "oil_leak": oil_leak,
+                "arc_discharge": arc_discharge,
+                "feeder_failure": feeder_failure,
+                "transformer_trip": transformer_trip
             }
         }
 
-        publish.single(
-
-            topic=f"trafostanice/{station['id']}/sensors",
-
-            payload=json.dumps(payload),
-
-            hostname="emqx",
-
-            port=1883
+        result = self.mqtt_client.publish(
+            f"trafostanice/{station['id']}/sensors",
+            json.dumps(payload),
+            qos=0,
         )
+        if result.rc != mqtt.MQTT_ERR_SUCCESS:
+            raise RuntimeError(f"MQTT publish failed with code {result.rc}")

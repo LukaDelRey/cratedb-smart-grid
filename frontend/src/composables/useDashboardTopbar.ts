@@ -4,7 +4,8 @@ import { useI18n } from '../i18n'
 import { useSensorStore } from '../stores/sensorStore'
 import type { MetricHistoryKey, MetricHistoryValue } from '../types/dashboard'
 import { formatClockTime } from '../utils/dateTime'
-import { createSparkSeries, metricLinePoints } from '../utils/metricSeries'
+import { metricLinePoints } from '../utils/metricSeries'
+import { gridHealthStatus } from '../utils/gridHealth'
 
 export function useDashboardTopbar(){
   const store = useSensorStore()
@@ -35,22 +36,23 @@ export function useDashboardTopbar(){
   )
 
   const systemLoadPct = computed(() => {
-    const stationCount = Math.max(store.summary.stations || 0, 1)
+    const stationCount = Math.max(store.stations.length || store.summary.stations || 0, 1)
     const nominalMW = stationCount * 3
 
     return Math.min(100, Math.round((store.totalLoadMW / nominalMW) * 100))
   })
 
   const gridStatus = computed(() => {
-    if(store.blackout.probability >= 70) return 'CRITICAL'
-    if(store.blackout.probability >= 35 || store.summary.activeAlarms > 0) return 'WATCH'
+    const health = gridHealthStatus(store.currentGridHealth)
+    if(health === 'critical') return 'CRITICAL'
+    if(health === 'warning') return 'WATCH'
     return 'STABLE'
   })
 
-  function historyValues(key:MetricHistoryKey, offset = 0):MetricHistoryValue[]{
+  function historyValues(key:MetricHistoryKey):MetricHistoryValue[]{
     const values = store.metricHistory?.[key] || []
 
-    return values.length > 1 ? values : createSparkSeries(offset)
+    return values
   }
 
   const topStatus = computed(() => [
@@ -64,19 +66,19 @@ export function useDashboardTopbar(){
       value:`${systemLoadPct.value}%`,
       detail:`${store.totalLoadMW} MW`,
       class:systemLoadPct.value > 88 ? 'text-warning' : 'text-white',
-      spark:historyValues('systemLoadPct', 6),
+      spark:historyValues('systemLoadPct'),
       chartClass:systemLoadPct.value > 88 ? 'warning' : 'normal'
     },
     {
       label:t('dashboard.blackoutRisk'),
-      value:store.blackout.probability >= 35 ? t('dashboard.medium') : t('dashboard.lowUpper'),
-      detail:`${store.blackout.probability}%`,
-      class:store.blackout.probability >= 35 ? 'text-warning' : 'text-positive'
+      value:store.currentBlackoutProbability >= 70 ? t('dashboard.high') : store.currentBlackoutProbability >= 35 ? t('dashboard.medium') : t('dashboard.lowUpper'),
+      detail:`${store.currentBlackoutProbability}%`,
+      class:store.currentBlackoutProbability >= 70 ? 'text-negative' : store.currentBlackoutProbability >= 35 ? 'text-warning' : 'text-positive'
     },
     {
       label:t('dashboard.activeAlarms'),
-      value:store.summary.activeAlarms || store.alarms.length,
-      class:(store.summary.activeAlarms || store.alarms.length) ? 'text-negative' : 'text-positive'
+      value:store.currentAlarmCount,
+      class:store.currentAlarmCount ? 'text-negative' : 'text-positive'
     }
   ])
 

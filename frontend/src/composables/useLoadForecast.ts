@@ -1,8 +1,10 @@
-import { computed, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue'
+import { fetchGridLoadForecast } from '../services/gridApi'
+import type { GridLoadForecast } from '../services/gridApi'
 
 import { useSensorStore } from '../stores/sensorStore'
-import type { ForecastPoint, MetricHistoryValue } from '../types/dashboard'
-import { average, clamp, round } from '../utils/numbers'
+import type { ForecastPoint } from '../types/dashboard'
+import { average, clamp } from '../utils/numbers'
 
 type Translate = (key:string, params?:Record<string, string | number>) => string
 type ForecastRange = '1h' | '24h' | '7d'
@@ -46,36 +48,6 @@ const RANGE_CONFIGS:Record<ForecastRange, RangeConfig> = {
   }
 }
 
-function pointValue(point?:MetricHistoryValue):number{
-  return typeof point === 'number'
-    ? point
-    : Number(point?.value) || 0
-}
-
-function pointTimestamp(
-  point:ForecastInputPoint,
-  index:number,
-  total:number,
-  durationMs:number
-):number{
-  if(point && typeof point === 'object' && point.timestamp){
-    const parsed = typeof point.timestamp === 'number'
-      ? point.timestamp
-      : Date.parse(String(point.timestamp))
-
-    if(Number.isFinite(parsed)){
-      return parsed
-    }
-  }
-
-  const start = Date.now()
-  const step = total > 1
-    ? durationMs / (total - 1)
-    : durationMs
-
-  return start + index * step
-}
-
 function pointLabel(timestamp:number, type:LabelType):string{
   const date = new Date(timestamp)
 
@@ -93,26 +65,8 @@ function pointLabel(timestamp:number, type:LabelType):string{
   })
 }
 
-function interpolateValue(
-  points:ForecastDisplayPoint[],
-  progress:number,
-  key:'loadMW' | 'risk' | 'confidence'
-):number{
-  if(!points.length) return 0
-  if(points.length === 1) return Number(points[0]?.[key]) || 0
-
-  const scaled = progress * (points.length - 1)
-  const leftIndex = Math.floor(scaled)
-  const rightIndex = Math.min(points.length - 1, leftIndex + 1)
-  const localProgress = scaled - leftIndex
-  const left = Number(points[leftIndex]?.[key]) || 0
-  const right = Number(points[rightIndex]?.[key]) || left
-
-  return left + (right - left) * localProgress
-}
-
 export function useLoadForecast(
-  getPoints:() => ForecastInputPoint[],
+  _getPoints:() => ForecastInputPoint[],
   t:Translate
 ){
   const store = useSensorStore()
@@ -120,108 +74,54 @@ export function useLoadForecast(
   const gridLines = GRID_LINES
   const rangeOptions = computed(() => [
     { label:t('dashboard.oneH'), value:'1h' },
-    { label:t('dashboard.twentyFourH'), value:'24h' },
-    { label:t('dashboard.sevenD'), value:'7d' }
+    { label:t('dashboard.twentyFourH'), value:'24h', disable:result.value ? !result.value.availableHorizons.includes(24) : false },
+    { label:t('dashboard.sevenD'), value:'7d', disable:result.value ? !result.value.availableHorizons.includes(168) : false }
   ])
   const activeRange = computed(() => RANGE_CONFIGS[mode.value])
 
-  const historyPoints = computed<ForecastDisplayPoint[]>(() => {
-    const loads = store.metricHistory?.totalLoadMW || []
-
-    if(loads.length < 2){
-      return []
+  const result = ref<GridLoadForecast|null>(null)
+  const loading = ref(false)
+  const failed = ref(false)
+  let requestVersion = 0
+  let refreshTimer:ReturnType<typeof setInterval>|null = null
+  async function refresh(){
+    const version = ++requestVersion
+    loading.value = true
+    failed.value = false
+    try{
+      const hours = mode.value === '1h' ? 1 : mode.value === '24h' ? 24 : 168
+      const response = await fetchGridLoadForecast(hours)
+      if(version === requestVersion) result.value = response
+    }catch{
+      if(version === requestVersion){ result.value = null; failed.value = true }
+    }finally{
+      if(version === requestVersion) loading.value = false
     }
-
-    const risks = store.metricHistory?.blackoutRisk || []
-    const slice = loads.slice(-activeRange.value.maxPoints)
-    const riskSlice = risks.slice(-slice.length)
-
-    return slice.map((loadPoint, index) => ({
-      timestamp:typeof loadPoint === 'object' ? Number(loadPoint.timestamp) || Date.now() : Date.now(),
-      loadMW:pointValue(loadPoint),
-      risk:pointValue(riskSlice[index]),
-      confidence:Math.max(72, 94 - Math.abs(slice.length - index - 1) * 2)
-    }))
-  })
-
-  const forecastPoints = computed<ForecastDisplayPoint[]>(() => {
-    const points = getPoints()
-
-    return points.map((point, index) => ({
-      timestamp:pointTimestamp(point, index, points.length, activeRange.value.durationMs),
-      loadMW:typeof point === 'object' ? Number(point.loadMW) || 0 : Number(point) || 0,
-      risk:typeof point === 'object' ? Number(point.risk) || 0 : 0,
-      confidence:typeof point === 'object' ? Number(point.confidence) || 0 : 0
-    }))
-  })
-
-  const currentLoadMW = computed(() => {
-    const latestHistory = historyPoints.value.at(-1)?.loadMW
-
-    if(Number.isFinite(latestHistory) && latestHistory! > 0){
-      return latestHistory!
-    }
-
-    const latestForecast = forecastPoints.value.at(0)?.loadMW
-
-    if(Number.isFinite(latestForecast) && latestForecast! > 0){
-      return latestForecast!
-    }
-
-    return store.totalLoadMW || 0
-  })
-
-  const fallbackRisk = computed(() =>
-    Number(store.blackout?.probability) ||
-    average(forecastPoints.value.map(point => point.risk)) ||
-    12
-  )
-
-  function projectedPoints(config:RangeConfig):ForecastDisplayPoint[]{
-    const count = config.maxPoints
-    const durationMs = config.durationMs
-    const now = Date.now()
-    const source = forecastPoints.value
-    const baseLoad = currentLoadMW.value || average(source.map(point => point.loadMW)) || 1
-
-    return Array.from({ length:count }, (_, index) => {
-      const progress = count > 1 ? index / (count - 1) : 0
-      const timestamp = now + progress * durationMs
-      const forecastLoad = interpolateValue(source, progress, 'loadMW')
-      const forecastRisk = interpolateValue(source, progress, 'risk')
-      const forecastConfidence = interpolateValue(source, progress, 'confidence')
-      const cycleCount = mode.value === '7d' ? 7 : mode.value === '24h' ? 1 : 0.25
-      const cycle = Math.sin(progress * Math.PI * 2 * cycleCount - Math.PI / 3)
-      const shoulder = Math.sin(progress * Math.PI * 4 * cycleCount + Math.PI / 5) * 0.35
-      const trend = mode.value === '7d' ? progress * 0.04 : progress * 0.02
-      const shapedLoad = baseLoad * (1 + cycle * 0.08 + shoulder * 0.04 + trend)
-
-      return {
-        timestamp,
-        loadMW:Math.max(0, round(forecastLoad || shapedLoad, 1)),
-        risk:clamp(round(forecastRisk || fallbackRisk.value, 1)),
-        confidence:Math.max(62, Math.round((forecastConfidence || 94) - progress * (mode.value === '7d' ? 18 : 8)))
-      }
-    })
   }
+  watch(mode, () => { result.value = null; void refresh() })
+  onMounted(() => { void refresh(); refreshTimer = setInterval(refresh, 60000) })
+  onUnmounted(() => { requestVersion++; if(refreshTimer) clearInterval(refreshTimer) })
 
-  const displayPoints = computed<ForecastDisplayPoint[]>(() => {
-    if(mode.value === '1h' && historyPoints.value.length){
-      return historyPoints.value
-    }
-
-    return projectedPoints(activeRange.value)
-  })
-
+  const displayPoints = computed<ForecastDisplayPoint[]>(() =>
+    (result.value?.points ?? []).map(point => ({
+      timestamp:typeof point.timestamp === 'number' ? point.timestamp : Date.parse(String(point.timestamp)),
+      loadMW:point.loadMW, risk:point.risk, confidence:point.confidence ?? 0
+    })))
+  const dataAvailable = computed(() => !loading.value && Boolean(result.value?.available && displayPoints.value.length))
+  const forecastNote = computed(() => loading.value ? t('dashboard.forecastLoading')
+    : failed.value ? t('dashboard.forecastUnavailable')
+    : !result.value?.available ? t('dashboard.forecastHistoryRequired', {hours:mode.value === '7d' ? 168 : 24})
+    : result.value.method === 'current-load-persistence' ? `${t('dashboard.forecastLiveBaseline')} · ${t('dashboard.forecastHistoryRequired', {hours:24})}`
+    : t('dashboard.forecastHistoricalBaseline', {hours:result.value.historyHours}) +
+      (!result.value.availableHorizons.includes(168) ? ` · ${t('dashboard.forecastHistoryRequired', {hours:168})} (7D)` : ''))
   const peakLoad = computed(() =>
     Math.round(Math.max(0, ...displayPoints.value.map(point => point.loadMW || 0)))
   )
 
   const capacityMW = computed(() => {
     const stationNominal = (store.summary?.stations || store.stations.length || 0) * 3
-    const observedMax = Math.max(peakLoad.value, currentLoadMW.value, store.totalLoadMW || 0)
 
-    return Math.max(1, stationNominal, Math.ceil(observedMax / 0.92))
+    return Math.max(1, stationNominal)
   })
 
   const avgRisk = computed(() =>
@@ -230,6 +130,10 @@ export function useLoadForecast(
 
   const avgConfidence = computed(() =>
     average(displayPoints.value.map(point => point.confidence || 0))
+  )
+  const confidenceAvailable = computed(() =>
+    dataAvailable.value && (result.value?.points ?? []).some(point =>
+      typeof point === 'object' && point.confidence != null)
   )
 
   const timelineBounds = computed(() => {
@@ -244,14 +148,6 @@ export function useLoadForecast(
 
     const first = timestamps[0]
     const latest = timestamps.at(-1)!
-
-    if(mode.value === '1h' && historyPoints.value.length){
-      const elapsedMs = latest - first
-
-      return elapsedMs >= durationMs
-        ? { start:latest - durationMs, end:latest }
-        : { start:first, end:Math.max(first + 1, latest) }
-    }
 
     return { start:first, end:Math.max(first + 1, latest) }
   })
@@ -326,6 +222,9 @@ export function useLoadForecast(
   })
 
   return {
+    dataAvailable,
+    forecastNote,
+    confidenceAvailable,
     areaPath,
     avgConfidence,
     avgRisk,

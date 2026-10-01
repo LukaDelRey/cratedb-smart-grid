@@ -1,25 +1,29 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import DashboardPage from '../pages/DashboardPage.vue'
-import RegionTwin from '../pages/RegionTwin.vue'
-import SubstationTwin from '../pages/SubstationTwin.vue'
-import TransformerTwin from '../pages/TransformerTwin.vue'
 
 const routes = [
   {
     path: '/',
-    component: DashboardPage
+    component:() => import('../pages/DashboardPage.vue')
   },
   {
     path: '/regions/:id',
-    component: RegionTwin
+    component:() => import('../pages/RegionTwin.vue')
   },
   {
     path: '/substations/:id',
-    component: SubstationTwin
+    component:() => import('../pages/SubstationTwin.vue')
   },
   {
     path: '/transformers/:id',
-    component: TransformerTwin
+    component:() => import('../pages/TransformerTwin.vue')
+  },
+  {
+    path: '/alarms',
+    component:() => import('../pages/AlarmCenterPage.vue')
+  },
+  {
+    path: '/forecasting',
+    component:() => import('../pages/AIForecastingPage.vue')
   }
 ]
 

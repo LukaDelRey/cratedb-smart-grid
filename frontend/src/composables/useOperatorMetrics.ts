@@ -12,6 +12,7 @@ type SensorStoreLike = {
   }
   stations: Station[]
   totalLoadMW: number
+  currentAlarmCount?: number
   alarms: Station[]
 }
 
@@ -85,7 +86,7 @@ export function useOperatorMetrics(store:SensorStoreLike, t:Translate){
     },
     {
       label:t('dashboard.frequency'),
-      value:(metricPointValue(store.metricHistory?.frequency?.at(-1)) || 50.02).toFixed(2),
+      value:metricPointValue(store.metricHistory?.frequency?.at(-1)).toFixed(2),
       unit:' Hz',
       trend:trendText('frequency', ' Hz', t('dashboard.live')),
       trendClass:'text-positive',
@@ -112,7 +113,7 @@ export function useOperatorMetrics(store:SensorStoreLike, t:Translate){
     },
     {
       label:t('dashboard.activeAlarms'),
-      value:store.summary.activeAlarms || store.alarms.length,
+      value:store.currentAlarmCount ?? store.summary.activeAlarms,
       unit:'',
       trend:trendText('activeAlarms', '', t('dashboard.live')),
       trendClass:'text-negative',

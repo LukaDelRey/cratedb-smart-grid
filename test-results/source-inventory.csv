@@ -1,0 +1,102 @@
+﻿file,status,suite,coveredLines,executableLines
+backend/app/config.py,runtime unit / isolated API; partial line coverage,backend/tests,16,16
+backend/app/db/init_db.py,runtime unit / isolated API; partial line coverage,backend/tests,27,27
+backend/app/main.py,runtime unit / isolated API; partial line coverage,backend/tests,796,813
+backend/app/services/alarm_repository.py,runtime unit / isolated API; partial line coverage,backend/tests,312,333
+backend/app/services/asset_intelligence.py,runtime unit / isolated API; partial line coverage,backend/tests,73,75
+backend/app/services/blackout_prediction.py,runtime unit / isolated API; partial line coverage,backend/tests,13,13
+backend/app/services/cleanup.py,runtime unit / isolated API; partial line coverage,backend/tests,13,13
+backend/app/services/event_bus.py,runtime unit / isolated API; partial line coverage,backend/tests,2,2
+backend/app/services/grid_analytics.py,runtime unit / isolated API; partial line coverage,backend/tests,117,120
+backend/app/services/grid_physics.py,runtime unit / isolated API; partial line coverage,backend/tests,128,130
+backend/app/services/mqtt_client.py,runtime unit / isolated API; partial line coverage,backend/tests,58,58
+backend/app/services/powerline_generator.py,runtime unit / isolated API; partial line coverage,backend/tests,107,119
+backend/app/services/scenario_engine.py,runtime unit / isolated API; partial line coverage,backend/tests,342,375
+backend/app/services/telemetry_repository.py,runtime unit / isolated API; partial line coverage,backend/tests,67,70
+backend/app/services/websocket_manager.py,runtime unit / isolated API; partial line coverage,backend/tests,32,32
+shared/__init__.py,no executable statements,backend/tests,0,0
+shared/alarm_rule_fixtures.json,asset / configuration: outside runtime unit tests,,,
+shared/generate_stations.py,runtime unit / isolated API; partial line coverage,backend/tests,31,34
+shared/stations.json,asset / configuration: outside runtime unit tests,,,
+locust-simulator/__init__.py,no executable statements,backend/tests,0,0
+locust-simulator/Dockerfile,asset / configuration: outside runtime unit tests,,,
+locust-simulator/generate_stations.py,runtime unit / isolated API; partial line coverage,backend/tests,17,17
+locust-simulator/locustfile.py,runtime unit / isolated API; partial line coverage,backend/tests,123,128
+locust-simulator/requirements.txt,asset / configuration: outside runtime unit tests,,,
+frontend/src/App.vue,setup: empty + fixture; template: empty; visual boundaries mocked,frontend/tests/components.test.mjs,,
+frontend/src/assets/hero.png,asset / configuration: outside runtime unit tests,,,
+frontend/src/assets/transformer-twin/power-transformer.png,asset / configuration: outside runtime unit tests,,,
+frontend/src/assets/vite.svg,asset / configuration: outside runtime unit tests,,,
+frontend/src/assets/vue.svg,asset / configuration: outside runtime unit tests,,,
+frontend/src/components/AlarmPanel.vue,setup: empty + fixture; template: empty; visual boundaries mocked,frontend/tests/components.test.mjs,,
+frontend/src/components/dashboard/layout/GridHealthPanel.vue,setup: empty + fixture; template: empty; visual boundaries mocked,frontend/tests/components.test.mjs,,
+frontend/src/components/dashboard/layout/Sidebar.vue,setup: empty + fixture; template: empty; visual boundaries mocked,frontend/tests/components.test.mjs,,
+frontend/src/components/dashboard/layout/Topbar.vue,setup: empty + fixture; template: empty; visual boundaries mocked,frontend/tests/components.test.mjs,,
+frontend/src/components/dashboard/map/controls/LayerPanel.vue,setup: empty + fixture; template: empty; visual boundaries mocked,frontend/tests/components.test.mjs,,
+frontend/src/components/dashboard/map/DashboardMap.vue,setup: empty + fixture; template: empty; visual boundaries mocked,frontend/tests/components.test.mjs,,
+frontend/src/components/dashboard/map/layers/ContingencyLayer.vue,setup: empty + fixture; template: empty; visual boundaries mocked,frontend/tests/components.test.mjs,,
+frontend/src/components/dashboard/map/layers/CustomerLayer.vue,setup: empty + fixture; template: empty; visual boundaries mocked,frontend/tests/components.test.mjs,,
+frontend/src/components/dashboard/map/layers/HeatmapLayer.vue,setup: empty + fixture; template: empty; visual boundaries mocked,frontend/tests/components.test.mjs,,
+frontend/src/components/dashboard/map/layers/PowerLineLayer.vue,setup: empty + fixture; template: empty; visual boundaries mocked,frontend/tests/components.test.mjs,,
+frontend/src/components/dashboard/map/layers/RegionLayer.vue,setup: empty + fixture; template: empty; visual boundaries mocked,frontend/tests/components.test.mjs,,
+frontend/src/components/dashboard/map/layers/RiskLayer.vue,setup: empty + fixture; template: empty; visual boundaries mocked,frontend/tests/components.test.mjs,,
+frontend/src/components/dashboard/map/layers/SubstationLayer.vue,setup: empty + fixture; template: empty; visual boundaries mocked,frontend/tests/components.test.mjs,,
+frontend/src/components/dashboard/map/layers/TransformerLayer.vue,setup: empty + fixture; template: empty; visual boundaries mocked,frontend/tests/components.test.mjs,,
+frontend/src/components/dashboard/map/layers/WeatherLayer.vue,setup: empty + fixture; template: empty; visual boundaries mocked,frontend/tests/components.test.mjs,,
+frontend/src/components/dashboard/operations/alarms/ActiveAlarmsEventsPanel.vue,setup: empty + fixture; template: empty; visual boundaries mocked,frontend/tests/components.test.mjs,,
+frontend/src/components/dashboard/operations/alarms/AlarmCorrelationPanel.vue,setup: empty + fixture; template: empty; visual boundaries mocked,frontend/tests/components.test.mjs,,
+frontend/src/components/dashboard/operations/alarms/AlarmRootCausePanel.vue,setup: empty + fixture; template: empty; visual boundaries mocked,frontend/tests/components.test.mjs,,
+frontend/src/components/dashboard/operations/alarms/RootCauseGraph.vue,setup: empty + fixture; template: empty; visual boundaries mocked,frontend/tests/components.test.mjs,,
+frontend/src/components/dashboard/operations/RealtimeConnectionStatus.vue,setup: empty + fixture; template: empty; visual boundaries mocked,frontend/tests/components.test.mjs,,
+frontend/src/components/dashboard/operations/RealtimeEventStream.vue,setup: empty + fixture; template: empty; visual boundaries mocked,frontend/tests/components.test.mjs,,
+frontend/src/components/dashboard/operations/RealtimeMetricsTicker.vue,setup: empty + fixture; template: empty; visual boundaries mocked,frontend/tests/components.test.mjs,,
+frontend/src/components/dashboard/right-sidebar/AIInsightsPanel.vue,setup: empty + fixture; template: empty; visual boundaries mocked,frontend/tests/components.test.mjs,,
+frontend/src/components/dashboard/right-sidebar/BlackoutPredictionCard.vue,setup: empty + fixture; template: empty; visual boundaries mocked,frontend/tests/components.test.mjs,,
+frontend/src/components/dashboard/right-sidebar/LoadForecastCard.vue,setup: empty + fixture; template: empty; visual boundaries mocked,frontend/tests/components.test.mjs,,
+frontend/src/components/dashboard/right-sidebar/OutageRiskMapCard.vue,setup: empty + fixture; template: empty; visual boundaries mocked,frontend/tests/components.test.mjs,,
+frontend/src/components/dashboard/right-sidebar/TopRiskSubstationsCard.vue,setup: empty + fixture; template: empty; visual boundaries mocked,frontend/tests/components.test.mjs,,
+frontend/src/components/dashboard/system/SystemTopologyDialog.vue,setup: empty + fixture; template: empty; visual boundaries mocked,frontend/tests/components.test.mjs,,
+frontend/src/components/dashboard/WeatherPanel.vue,setup: empty + fixture; template: empty; visual boundaries mocked,frontend/tests/components.test.mjs,,
+frontend/src/components/map/GridMap.vue,SKIPPED: inactive malformed legacy SFC; not imported,frontend/tests/components.test.mjs,,
+frontend/src/components/MapView.vue,setup: empty + fixture; template: empty; visual boundaries mocked,frontend/tests/components.test.mjs,,
+frontend/src/components/scenarios/ScenarioControlDialog.vue,setup: empty + fixture; template: empty; visual boundaries mocked,frontend/tests/components.test.mjs,,
+frontend/src/components/SensorChart.vue,setup: empty + fixture; template: empty; visual boundaries mocked,frontend/tests/components.test.mjs,,
+frontend/src/components/transformer-twin/TransformerTwinDiagram.vue,setup: empty + fixture; template: empty; visual boundaries mocked,frontend/tests/components.test.mjs,,
+frontend/src/components/transformer-twin/TransformerTwinMiniChart.vue,setup: empty + fixture; template: empty; visual boundaries mocked,frontend/tests/components.test.mjs,,
+frontend/src/components/transformer-twin/TransformerTwinShell.vue,setup: empty + fixture; template: empty; visual boundaries mocked,frontend/tests/components.test.mjs,,
+frontend/src/components/transformer-twin/TransformerTwinTopbar.vue,setup: empty + fixture; template: empty; visual boundaries mocked,frontend/tests/components.test.mjs,,
+frontend/src/components/VoltageChart.vue,setup: empty + fixture; template: empty; visual boundaries mocked,frontend/tests/components.test.mjs,,
+frontend/src/composables/useAlarmCenter.ts,runtime unit; not all branches asserted,frontend/tests/application.test.mjs; coreLogic.test.mjs; contracts.test.mjs,,
+frontend/src/composables/useAlarmRegister.ts,runtime unit; not all branches asserted,frontend/tests/application.test.mjs; coreLogic.test.mjs; contracts.test.mjs,,
+frontend/src/composables/useDashboardMapPreferences.ts,runtime unit; not all branches asserted,frontend/tests/application.test.mjs; coreLogic.test.mjs; contracts.test.mjs,,
+frontend/src/composables/useDashboardTopbar.ts,runtime unit; not all branches asserted,frontend/tests/application.test.mjs; coreLogic.test.mjs; contracts.test.mjs,,
+frontend/src/composables/useForecastWorkspace.ts,runtime unit; not all branches asserted,frontend/tests/application.test.mjs; coreLogic.test.mjs; contracts.test.mjs,,
+frontend/src/composables/useLoadForecast.ts,runtime unit; not all branches asserted,frontend/tests/application.test.mjs; coreLogic.test.mjs; contracts.test.mjs,,
+frontend/src/composables/useOperatorMetrics.ts,runtime unit; not all branches asserted,frontend/tests/application.test.mjs; coreLogic.test.mjs; contracts.test.mjs,,
+frontend/src/composables/useScenarioControl.ts,runtime unit; not all branches asserted,frontend/tests/application.test.mjs; coreLogic.test.mjs; contracts.test.mjs,,
+frontend/src/composables/useStationHistory.ts,runtime unit; not all branches asserted,frontend/tests/application.test.mjs; coreLogic.test.mjs; contracts.test.mjs,,
+frontend/src/echarts.ts,NOT UNIT EXECUTED: browser bootstrap / chart registration,,,
+frontend/src/env.d.ts,TypeScript static check; no runtime logic,,,
+frontend/src/i18n/en.ts,runtime unit; not all branches asserted,frontend/tests/application.test.mjs; coreLogic.test.mjs; contracts.test.mjs,,
+frontend/src/i18n/hr.ts,runtime unit; not all branches asserted,frontend/tests/application.test.mjs; coreLogic.test.mjs; contracts.test.mjs,,
+frontend/src/i18n/index.ts,runtime unit; not all branches asserted,frontend/tests/application.test.mjs; coreLogic.test.mjs; contracts.test.mjs,,
+frontend/src/main.ts,NOT UNIT EXECUTED: browser bootstrap / chart registration,,,
+frontend/src/pages/AIForecastingPage.vue,setup: empty + fixture; template: empty; visual boundaries mocked,frontend/tests/components.test.mjs,,
+frontend/src/pages/AlarmCenterPage.vue,setup: empty + fixture; template: empty; visual boundaries mocked,frontend/tests/components.test.mjs,,
+frontend/src/pages/DashboardPage.vue,setup: empty + fixture; template: empty; visual boundaries mocked,frontend/tests/components.test.mjs,,
+frontend/src/pages/RegionTwin.vue,setup: empty + fixture; template: empty; visual boundaries mocked,frontend/tests/components.test.mjs,,
+frontend/src/pages/SubstationTwin.vue,setup: empty + fixture; template: empty; visual boundaries mocked,frontend/tests/components.test.mjs,,
+frontend/src/pages/TransformerTwin.vue,setup: empty + fixture; template: empty; visual boundaries mocked,frontend/tests/components.test.mjs,,
+frontend/src/pages/TwinHeader.vue,setup: empty + fixture; template: empty; visual boundaries mocked,frontend/tests/components.test.mjs,,
+frontend/src/router/index.ts,runtime unit; not all branches asserted,frontend/tests/application.test.mjs; coreLogic.test.mjs; contracts.test.mjs,,
+frontend/src/services/gridApi.ts,runtime unit; not all branches asserted,frontend/tests/application.test.mjs; coreLogic.test.mjs; contracts.test.mjs,,
+frontend/src/services/stationAlarms.ts,runtime unit; not all branches asserted,frontend/tests/application.test.mjs; coreLogic.test.mjs; contracts.test.mjs,,
+frontend/src/services/stationAnalytics.ts,runtime unit; not all branches asserted,frontend/tests/application.test.mjs; coreLogic.test.mjs; contracts.test.mjs,,
+frontend/src/stores/sensorStore.ts,runtime unit; not all branches asserted,frontend/tests/application.test.mjs; coreLogic.test.mjs; contracts.test.mjs,,
+frontend/src/style.css,asset / configuration: outside runtime unit tests,,,
+frontend/src/styles/global.css,asset / configuration: outside runtime unit tests,,,
+frontend/src/types/dashboard.ts,TypeScript static check; no runtime logic,,,
+frontend/src/utils/assets.ts,runtime unit; not all branches asserted,frontend/tests/application.test.mjs; coreLogic.test.mjs; contracts.test.mjs,,
+frontend/src/utils/dateTime.ts,runtime unit; not all branches asserted,frontend/tests/application.test.mjs; coreLogic.test.mjs; contracts.test.mjs,,
+frontend/src/utils/metricSeries.ts,runtime unit; not all branches asserted,frontend/tests/application.test.mjs; coreLogic.test.mjs; contracts.test.mjs,,
+frontend/src/utils/numbers.ts,runtime unit; not all branches asserted,frontend/tests/application.test.mjs; coreLogic.test.mjs; contracts.test.mjs,,

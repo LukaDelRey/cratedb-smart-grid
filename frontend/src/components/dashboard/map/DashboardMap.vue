@@ -18,67 +18,67 @@
     />
 
     <RegionLayer
-      v-if="mapLoaded && layers.regions"
+      v-if="mapLoaded && !tableFilterActive && layers.regions"
       :map="map"
       :regions="store.regions"
     />
 
     <RiskLayer
-      v-if="mapLoaded && layers.risk"
+      v-if="mapLoaded && !tableFilterActive && layers.risk"
       :map="map"
       :stations="store.stations"
     />
 
     <HeatmapLayer
-      v-if="mapLoaded && layers.heatmap"
+      v-if="mapLoaded && !tableFilterActive && layers.heatmap"
       :map="map"
       :stations="store.stations"
     />
 
     <WeatherLayer
-      v-if="mapLoaded && layers.weather"
+      v-if="mapLoaded && !tableFilterActive && layers.weather"
       :map="map"
       :regions="store.regions"
       :weather="store.weather"
     />
 
     <ContingencyLayer
-      v-if="mapLoaded && layers.contingency"
+      v-if="mapLoaded && !tableFilterActive && layers.contingency"
       :map="map"
       :stations="store.stations"
       :top-risk="store.topRiskSubstations"
     />
 
     <PowerLineLayer
-      v-if="mapLoaded && layers.lines"
+      v-if="mapLoaded && !tableFilterActive && layers.lines"
       :map="map"
       :lines="store.powerLines"
       :stations="store.stations"
     />
 
     <CustomerLayer
-      v-if="mapLoaded && layers.customers"
+      v-if="mapLoaded && !tableFilterActive && layers.customers"
       :map="map"
       :customers="store.customers"
     />
 
     <TransformerLayer
-      v-if="mapLoaded && layers.transformers"
+      v-if="mapLoaded && !tableFilterActive && layers.transformers"
       :map="map"
       :transformers="store.transformers"
       :visible-statuses="visibleStatuses"
     />
 
     <SubstationLayer
-      v-if="mapLoaded && layers.substations"
+      v-if="mapLoaded && (tableFilterActive || layers.substations)"
       :map="map"
-      :stations="store.stations"
-      :visible-statuses="visibleStatuses"
+      :stations="displayedStations"
+      :visible-statuses="tableFilterActive ? ['normal','warning','critical','offline'] : visibleStatuses"
       :focus-station="props.focusStation"
     />
 
     <q-card
-      v-if="layers.contingency"
+      v-if="!tableFilterActive && layers.contingency"
       flat
       bordered
       class="contingency-panel absolute text-white"
@@ -144,6 +144,7 @@ const DEFAULT_MARKER_FILTERS:MarkerFilters = {
 
 const props = defineProps<{
   focusStation?:FocusStationRequest | null
+  stationFilterIds?:string[] | null
 }>()
 
 const store = useSensorStore()
@@ -151,6 +152,12 @@ const { t } = useI18n()
 const mapContainer = ref(null)
 const map = ref(null)
 const mapLoaded = ref(false)
+const tableFilterActive = computed(() => props.stationFilterIds != null)
+const displayedStations = computed(() => {
+  if(!tableFilterActive.value) return store.stations
+  const ids = new Set(props.stationFilterIds)
+  return store.stations.filter(station => ids.has(station.station_id))
+})
 
 const { layers, markerFilters } = useDashboardMapPreferences(DEFAULT_LAYERS, DEFAULT_MARKER_FILTERS)
 

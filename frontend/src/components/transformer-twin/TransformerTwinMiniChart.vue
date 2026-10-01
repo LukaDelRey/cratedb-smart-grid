@@ -39,35 +39,33 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import type { PropType } from 'vue'
 
 const props = defineProps({
   seed:{
     type:Number,
     default:72
+  },
+  actualValues:{
+    type:Array as PropType<number[]>,
+    default:() => []
   }
 })
 
 const areaId = `tt-chart-area-${Math.round(Math.random() * 100000)}`
 
-function buildPoints(offset = 0){
-  return Array.from({ length:18 },(_,index) => {
-    const x = 28 + (index / 17) * 278
-    const wave = Math.sin(index * .84 + offset) * 14
-    const secondary = Math.cos(index * .47 + offset) * 6
-    const eventBump = index > 5 && index < 11 ? 12 - Math.abs(8 - index) * 2 : 0
-    const value = Math.max(8, Math.min(98, props.seed + wave + secondary + eventBump - 18))
-    const y = 110 - (value / 100) * 96
+function measuredPoints(){
+  const values = props.actualValues.filter(Number.isFinite).slice(-48)
 
-    return {
-      key:index,
-      x:Number(x.toFixed(1)),
-      y:Number(y.toFixed(1))
-    }
-  })
+  return values.map((value,index) => ({
+    key:index,
+    x:Number((28 + (index / Math.max(1, values.length - 1)) * 278).toFixed(1)),
+    y:Number((110 - (Math.max(0,Math.min(100,value)) / 100) * 96).toFixed(1))
+  }))
 }
 
-const actualPointList = computed(() => buildPoints(0))
-const forecastPointList = computed(() => buildPoints(1.35))
+const actualPointList = computed(measuredPoints)
+const forecastPointList = computed(() => [])
 const displayPoints = computed(() =>
   actualPointList.value.filter((_,index) => index % 4 === 0 || index === actualPointList.value.length - 1)
 )

@@ -80,8 +80,8 @@ const navItems = computed(() => [
   { label:t('dashboard.regionTwin'), icon:'public', to:`/regions/${firstRegion.value}`, active:route.path.startsWith('/regions/') },
   { label:t('dashboard.substationTwin'), icon:'hub', to:`/substations/${firstSubstation.value}`, active:route.path.startsWith('/substations/') },
   { label:t('dashboard.transformerTwin'), icon:'memory', to:transformerTarget.value, active:route.path.startsWith('/transformers/') },
-  { label:t('dashboard.alarmCenter'), icon:'warning', to:'/', active:false },
-  { label:t('dashboard.aiForecasting'), icon:'psychology', to:'/', active:false }
+  { label:t('dashboard.alarmCenter'), icon:'warning', to:'/alarms', active:route.path === '/alarms' },
+  { label:t('dashboard.aiForecasting'), icon:'psychology', to:'/forecasting', active:route.path === '/forecasting' }
 ])
 </script>
 

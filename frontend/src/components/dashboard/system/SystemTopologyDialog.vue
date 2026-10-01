@@ -64,7 +64,7 @@
               <strong>{{ translateText(node.label) }}</strong>
               <span>{{ translateText(node.metric) }}</span>
             </div>
-            <q-badge :color="node.status === 'online' ? 'positive' : 'negative'">
+            <q-badge :color="nodeStatusColor(node.status)">
               {{ translateStatus(node.status) }}
             </q-badge>
           </div>
@@ -163,7 +163,15 @@ function nodeIcon(id){
   if(id === 'emqx') return 'router'
   if(id === 'fastapi') return 'api'
   if(id === 'dashboard') return 'dashboard'
+  if(id === 'ai') return 'psychology'
+  if(id === 'physics') return 'hub'
   return 'memory'
+}
+
+function nodeStatusColor(status:string){
+  if(status === 'online') return 'positive'
+  if(status === 'degraded') return 'warning'
+  return 'negative'
 }
 </script>
 

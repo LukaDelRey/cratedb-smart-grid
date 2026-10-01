@@ -2,7 +2,9 @@
   <div class="grid-health-stack">
     <q-card flat bordered class="health-card grid-health-card text-white">
       <q-card-section class="grid-health-section">
-        <div class="section-kicker-light">{{ t('dashboard.gridHealth') }}</div>
+        <div class="section-kicker-light">{{ t('dashboard.gridHealth') }}
+          <q-icon name="info_outline" size="12px"><q-tooltip>{{ t('dashboard.gridHealthScoreInfo') }}</q-tooltip></q-icon>
+        </div>
 
         <div class="grid-health-gauge">
           <q-circular-progress
@@ -49,10 +51,13 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import { gridHealthStatus } from '../../../utils/gridHealth'
 import type { PropType } from 'vue'
+import { useSensorStore } from '../../../stores/sensorStore'
 import { useI18n } from '../../../i18n'
 
 const { t } = useI18n()
+const store = useSensorStore()
 
 const props = defineProps({
   summary:{
@@ -70,54 +75,27 @@ const props = defineProps({
 })
 
 const healthScore = computed(() =>
-  Math.max(0, Math.min(100, Math.round(Number(props.summary.gridHealth) || 0)))
+  Math.max(0, Math.min(100, Math.round(Number(store.currentGridHealth) || 0)))
 )
 
 const totalStations = computed(() =>
   Number(props.summary.stations) || props.stations.length
 )
 
-const offlineCount = computed(() => {
-  const fromStations = props.stations.filter(station =>
-    station.alarms?.offline ||
-    station.alarms?.sensor_failure
-  ).length
-
-  if(fromStations){
-    return fromStations
-  }
-
-  return Math.max(0, Math.round(totalStations.value * ((100 - healthScore.value) / 100) * 0.45))
-})
-
-const maintenanceCount = computed(() => {
-  const warningStations = props.stations.filter(station =>
-    station.alarms?.overload ||
-    station.alarms?.overheating ||
-    station.alarms?.voltage_drop
-  ).length
-
-  if(warningStations){
-    return warningStations
-  }
-
-  return Math.max(0, Number(props.summary.activeAlarms) || Math.round(totalStations.value * 0.015))
-})
-
+const offlineCount = computed(() => props.stations.filter(station => station.alarms?.offline).length)
+const alarmedCount = computed(() => props.stations.filter(station =>
+  store.getStationStatus(station) !== 'normal').length)
 const onlineCount = computed(() =>
-  Math.max(0, totalStations.value - offlineCount.value - maintenanceCount.value)
-)
+  Math.max(0, totalStations.value - offlineCount.value))
 
 const healthColor = computed(() => {
-  if(healthScore.value >= 80) return 'positive'
-  if(healthScore.value >= 60) return 'warning'
-  return 'negative'
+  const status = gridHealthStatus(healthScore.value)
+  return status === 'normal' ? 'positive' : status === 'warning' ? 'warning' : 'negative'
 })
-
 const healthLabel = computed(() => {
-  if(healthScore.value >= 80) return t('dashboard.good')
-  if(healthScore.value >= 60) return t('dashboard.watch')
-  return t('dashboard.critical')
+  if(healthColor.value === 'negative') return t('dashboard.critical')
+  if(healthColor.value === 'warning') return t('dashboard.watch')
+  return t('dashboard.normal')
 })
 
 const statusRows = computed(() => [
@@ -137,8 +115,8 @@ const statusRows = computed(() => [
     color:'deep-orange'
   },
   {
-    label:t('dashboard.maintenance'),
-    value:formatNumber(maintenanceCount.value),
+    label:t('dashboard.alarmedStations'),
+    value:formatNumber(alarmedCount.value),
     color:'warning'
   }
 ])
