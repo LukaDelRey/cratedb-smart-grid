@@ -6,6 +6,7 @@ import type { MetricHistoryKey, MetricHistoryValue } from '../types/dashboard'
 import { formatClockTime } from '../utils/dateTime'
 import { metricLinePoints } from '../utils/metricSeries'
 import { gridHealthStatus } from '../utils/gridHealth'
+import { workspacePreferences } from '../stores/workspacePreferences'
 
 export function useDashboardTopbar(){
   const store = useSensorStore()
@@ -83,7 +84,11 @@ export function useDashboardTopbar(){
   ])
 
   const notificationItems = computed(() =>
-    store.eventStream.slice(0, 5).map(event => ({
+    store.eventStream.filter(event => {
+      if (event.severity === 'CRITICAL') return true
+      if (event.severity === 'WARNING') return workspacePreferences.notificationWarnings
+      return workspacePreferences.notificationInfo
+    }).slice(0, workspacePreferences.notificationLimit).map(event => ({
       id:event.id,
       title:event.title || 'Realtime event',
       detail:[

@@ -1,9 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import DashboardPage from '../pages/DashboardPage.vue'
 
 const routes = [
   {
     path: '/',
-    component:() => import('../pages/DashboardPage.vue')
+    component:DashboardPage
   },
   {
     path: '/regions/:id',
@@ -20,6 +21,10 @@ const routes = [
   {
     path: '/alarms',
     component:() => import('../pages/AlarmCenterPage.vue')
+  },
+  {
+    path: '/settings',
+    component:() => import('../pages/SettingsPage.vue')
   },
   {
     path: '/forecasting',

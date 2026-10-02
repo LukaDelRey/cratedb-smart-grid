@@ -8,7 +8,7 @@
     class="map-layer-panel absolute text-white q-pa-sm"
   >
     <q-card-section class="q-pa-sm">
-      <div class="text-subtitle2 text-weight-bold text-uppercase">
+      <div class="map-panel-heading text-weight-bold text-uppercase">
         {{ t('dashboard.mapLayers') }}
       </div>
     </q-card-section>
@@ -60,7 +60,7 @@
     <q-separator dark class="q-my-xs" />
 
     <q-card-section class="q-pa-sm">
-      <div class="text-caption text-blue-grey-3 text-uppercase q-mb-xs">
+      <div class="map-panel-heading text-blue-grey-3 text-uppercase q-mb-xs">
         {{ t('dashboard.legend') }}
       </div>
 
@@ -87,6 +87,25 @@
       </div>
     </q-card-section>
 
+    <q-separator dark class="q-my-xs" />
+    <q-card-section class="q-pa-sm marker-summary">
+      <div class="marker-summary-heading">
+        <span>{{ t('dashboard.mapMarkerCounts') }}</span>
+        <span class="marker-live"><span />{{ t('dashboard.markerLive') }}</span>
+      </div>
+      <div class="marker-count-grid">
+        <div v-for="item in legendItems" :key="item.key" class="marker-count-tile">
+          <span :class="['legend-dot', item.key]" />
+          <strong>{{ markerCounts[item.key].toLocaleString() }}</strong>
+          <span class="marker-count-label">{{ item.label }}</span>
+        </div>
+      </div>
+      <div class="marker-count-total">
+        <span>{{ t('dashboard.totalMapMarkers') }}</span>
+        <strong>{{ markerTotal.toLocaleString() }}</strong>
+      </div>
+    </q-card-section>
+
   </q-card>
 </div>
 
@@ -100,6 +119,10 @@ import { useI18n } from '../../../../i18n'
 const { t } = useI18n()
 
 const props = defineProps({
+  markerCounts:{
+    type:Object as PropType<Record<string, number>>,
+    required:true
+  },
   modelValue:{
     type:Object as PropType<Record<string, any>>,
     required:true
@@ -181,6 +204,7 @@ const legendItems = computed(() => [
   { key:'critical', label:t('dashboard.critical') },
   { key:'offline', label:t('dashboard.offlineLabel') }
 ])
+const markerTotal = computed(() => Object.values(props.markerCounts).reduce((total, count) => total + count, 0))
 
 function setLayer(key,value){
 
@@ -304,4 +328,16 @@ function toggleMarker(key){
   background:#42c8ff;
   box-shadow:0 0 7px rgba(66,200,255,.8);
 }
+
+.map-panel-heading{font-size:12px; line-height:1.5}
+.marker-summary-heading{display:flex; align-items:center; justify-content:space-between; gap:8px; color:#b0c6d4; font-size:12px; line-height:1.5; text-transform:uppercase; margin-bottom:10px}
+.marker-live{display:flex; align-items:center; gap:4px; font-size:inherit; color:#6cddb3}
+.marker-live > span{width:5px; height:5px; border-radius:50%; background:#6cddb3; box-shadow:0 0 6px #6cddb355}
+.marker-count-grid{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:7px}
+.marker-count-tile{display:grid; grid-template-columns:14px 1fr; align-items:center; gap:6px 8px; padding:10px; border:1px solid rgba(148,190,214,.12); border-radius:8px; background:linear-gradient(135deg,rgba(148,190,214,.07),rgba(148,190,214,.02))}
+.marker-count-tile .legend-dot{width:11px; height:11px}
+.marker-count-tile strong{font-size:20px; line-height:1.1; font-weight:600; color:#edf7ff; font-variant-numeric:tabular-nums}
+.marker-count-label{grid-column:1 / -1; font-size:10px; color:#96adbd}
+.marker-count-total{display:flex; justify-content:space-between; align-items:center; margin-top:9px; font-size:10px; color:#96adbd}
+.marker-count-total strong{color:#dcecf4; font-size:12px; font-variant-numeric:tabular-nums}
 </style>

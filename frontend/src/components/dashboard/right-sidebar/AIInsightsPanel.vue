@@ -9,7 +9,7 @@
         :disable="!hasHiddenInsights" class="insights-action" @click.stop="expanded = !expanded" />
     </q-card-section>
 
-    <q-list dense class="q-px-sm q-pb-sm panel-scroll-list" :class="{ 'panel-scroll-list--expanded': expanded }">
+    <q-list class="panel-scroll-list">
       <q-item
         v-for="item in displayInsights"
         :key="item.id"
@@ -34,20 +34,19 @@
         </q-item-section>
 
         <q-item-section side>
-          <q-circular-progress
-            v-if="item.confidence != null"
-            show-value
-            size="42px"
-            :value="item.confidence"
+          <q-btn
+            flat
+            round
+            dense
+            size="13px"
+            icon="push_pin"
             color="cyan"
-            track-color="blue-grey-10"
-            class="text-cyan text-caption"
+            :aria-label="t('dashboard.showStationOnMap')"
+            :disable="!item.assetId"
+            @click.stop="emit('focus-station', item.assetId)"
           >
-            {{ item.confidence }}%
-          </q-circular-progress>
-          <span v-else class="insight-confidence">{{ t('dashboard.confidenceUnavailable') }}
-            <q-tooltip>{{ t('dashboard.heuristicEstimate') }}</q-tooltip>
-          </span>
+            <q-tooltip>{{ t('dashboard.showStationOnMap') }}</q-tooltip>
+          </q-btn>
         </q-item-section>
       </q-item>
       <div v-if="!insights.length" class="insights-empty">{{ t('dashboard.noThresholdInsights') }}</div>
@@ -61,6 +60,9 @@ import type { PropType } from 'vue'
 import { useI18n } from '../../../i18n'
 
 const { t, translateText } = useI18n()
+const emit = defineEmits<{
+  'focus-station': [stationId:string]
+}>()
 
 const props = defineProps({
   insights:{
@@ -77,27 +79,36 @@ const displayInsights = computed(() => expanded.value ? props.insights : props.i
 function insightTone(type:string){
   if(type === 'cooling') return 'thermal'
   if(type === 'maintenance') return 'maintenance'
+  if(['voltage', 'frequency', 'harmonics', 'insulation', 'oil', 'discharge'].includes(type)) return type
   return 'electrical'
 }
 
-function severityIcon(type){
-  if(type === 'cooling') return 'device_thermostat'
-  if(type === 'maintenance') return 'build'
-  return 'bolt'
+function severityIcon(type:string){
+  const icons:Record<string, string> = {
+    overload:'bolt', cooling:'device_thermostat', maintenance:'build',
+    voltage:'electric_meter', frequency:'speed', harmonics:'waves',
+    insulation:'shield', oil:'water_drop', discharge:'flash_on'
+  }
+  return icons[type] || 'bolt'
 }
 </script>
 
 <style scoped>
 .insights-panel{
-  height:385px; min-width:0; display:flex; flex-direction:column; overflow:hidden;
+  height:412px; min-width:0; display:flex; flex-direction:column; overflow:hidden;
   background:linear-gradient(180deg,rgba(9,20,32,.96),rgba(5,12,22,.98));
 }
 .insights-panel > .q-card__section{flex:0 0 auto; padding:10px 12px 8px; min-height:44px; gap:8px}
 .insights-action{min-height:24px; padding:2px 6px; font-size:10px; flex-shrink:0}
-.panel-scroll-list{flex:1 1 auto; min-height:0; overflow:hidden; scrollbar-width:thin}
-.panel-scroll-list--expanded{overflow:auto; overscroll-behavior:contain}
-.scada-list-item{padding:10px 6px; align-items:center; min-height:0; border-bottom:1px solid rgba(255,255,255,.065)}
-.scada-list-item:last-of-type{border-bottom:0}
+.panel-scroll-list{
+  flex:1 1 auto; min-height:0; padding:8px 8px 12px;
+  display:grid; grid-auto-rows:min-content; align-content:start; gap:8px;
+  overflow:auto; scrollbar-width:thin; scrollbar-gutter:stable; overscroll-behavior:contain;
+}
+.insights-panel .scada-list-item{
+  padding:12px 6px; margin:0; align-items:center; min-height:0;
+  border:1px solid rgba(255,255,255,.07);
+}
 .insight-main{min-width:0}
 .insight-main .q-item__label{overflow-wrap:anywhere; line-height:1.35 !important; font-size:11px}
 .insight-main .text-weight-bold{font-size:12px; color:#edf7ff}
@@ -114,9 +125,14 @@ function severityIcon(type){
 .insight-icon.thermal{color:#ffb238}
 .insight-icon.maintenance{color:#bd91ff}
 .insight-icon.electrical{color:#41c9ff}
+.insight-icon.voltage{color:#54e7ff}
+.insight-icon.frequency{color:#6cddb3}
+.insight-icon.harmonics{color:#91a7ff}
+.insight-icon.insulation{color:#d39bef}
+.insight-icon.oil{color:#f2cb78}
+.insight-icon.discharge{color:#ff6b74}
 .insights-panel :deep(.q-item__section--side:not(.insight-icon-section)){
-  flex:0 0 0px; min-width:36px; padding-left:8px; align-self:top;
+  flex:0 0 auto; min-width:0; padding-left:8px; align-self:center;
 }
-.insight-confidence{font-size:11px; white-space:nowrap; color:#8fa9b8}
 .insights-empty{padding:12px; color:#8fa9b8; font-size:12px}
 </style>

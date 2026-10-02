@@ -1,3 +1,4 @@
+import { thresholdValue } from '../stores/thresholdSettings'
 import { computed } from 'vue'
 import type { MetricHistory, MetricHistoryKey, MetricHistoryValue, Station } from '../types/dashboard'
 import { createSparkSeries, metricLinePoints, metricPointValue } from '../utils/metricSeries'
@@ -106,9 +107,9 @@ export function useOperatorMetrics(store:SensorStoreLike, t:Translate){
       label:t('dashboard.powerQuality'),
       value:avgThd.value,
       unit:'% THD',
-      trend:avgThd.value > 5 ? t('dashboard.watch') : t('dashboard.good'),
-      trendClass:avgThd.value > 5 ? 'text-warning' : 'text-positive',
-      chartClass:avgThd.value > 5 ? 'warning' : 'normal',
+      trend:avgThd.value > thresholdValue('harmonics_spike', 5) ? t('dashboard.watch') : t('dashboard.good'),
+      trendClass:avgThd.value > thresholdValue('harmonics_spike', 5) ? 'text-warning' : 'text-positive',
+      chartClass:avgThd.value > thresholdValue('harmonics_spike', 5) ? 'warning' : 'normal',
       spark:historyValues('powerQuality', 1)
     },
     {

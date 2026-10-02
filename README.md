@@ -120,6 +120,5 @@ CrateDB, EMQX podaci i EMQX logovi koriste named volumene, pa podaci prezivljava
 cd frontend
 npm run build
 
-cd ../backend
-python -m unittest discover -s tests -v
+& "$env:USERPROFILE\Documents\CrateDB-unit-tests\2026-10-01\run-unit-tests.ps1" -Coverage
 ```

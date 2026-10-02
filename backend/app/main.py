@@ -14,10 +14,12 @@ from fastapi import WebSocketDisconnect
 from fastapi.middleware.cors import CORSMiddleware
 from crate import client
 from pydantic import BaseModel
+from pydantic import StrictFloat
 
 from app.config import CRATE_URL, PERSIST_MQTT_TELEMETRY, cors_origins
 from app.services.mqtt_client import is_mqtt_connected, start_mqtt, stop_mqtt
 from app.db.init_db import init_db
+from app.services.threshold_settings import load_settings, save_settings, settings_snapshot, DEFAULTS, threshold
 from app.services.event_bus import event_queue
 from app.services.websocket_manager import manager
 from app.services.cleanup import cleanup_old_data
@@ -68,6 +70,7 @@ async def lifespan(app: FastAPI):
     loop = asyncio.get_running_loop()
 
     await asyncio.to_thread(init_db)
+    await asyncio.to_thread(load_settings)
     await asyncio.to_thread(start_mqtt, loop)
 
     background_tasks = [
@@ -284,19 +287,40 @@ def build_ai_insights(stations):
     insights = []
     for station in stations:
         rules = [
-            ("overload", nested_value(station, "electrical", "current_a") >= 500,
+            ("overload", nested_value(station, "electrical", "current_a") >= threshold("overload"),
              "High current threshold exceeded", "Review loading and available transfer capacity."),
             ("cooling", nested_value(station, "thermal", "oil_temp_c") >= 85,
              "Oil temperature threshold exceeded", "Inspect cooling and compare the temperature history."),
             ("maintenance", calculate_station_risk(station) >= 70,
              "Elevated heuristic risk score", "Review this asset before planning maintenance."),
         ]
+        alarms = station.get("alarms") or {}
+        alarm_insights = [
+            ("voltage", ("voltage_drop", "overvoltage", "voltage_instability"),
+             "Voltage quality alarm active", "Check voltage regulation, tap settings and feeder conditions."),
+            ("frequency", ("frequency_instability",),
+             "Frequency instability alarm active", "Compare frequency across nearby stations and review grid balance."),
+            ("harmonics", ("harmonics_spike",),
+             "Harmonic distortion alarm active", "Review nonlinear loads and inspect harmonic filtering."),
+            ("insulation", ("insulation_degradation",),
+             "Insulation degradation alarm active", "Review dissolved gas trends and schedule insulation diagnostics."),
+            ("oil", ("oil_leak",),
+             "Low oil level alarm active", "Inspect for oil leakage and verify the oil level sensor."),
+            ("discharge", ("arc_discharge",),
+             "Arc discharge alarm active", "Urgently review protection signals and dissolved gas measurements."),
+        ]
+        rules.extend(
+            (kind, any(bool(alarms.get(flag)) for flag in flags), title, recommendation)
+            for kind, flags, title, recommendation in alarm_insights
+        )
         for kind, triggered, title, recommendation in rules:
             if triggered:
                 insights.append({
                     "id": f"insight-{station_id(station)}-{kind}",
                     "type": kind, "title": title, "assetId": station_id(station),
-                    "impact": "Current telemetry threshold; no predicted failure time",
+                    "impact": ("Active telemetry alarm; no predicted failure time"
+                               if kind in {entry[0] for entry in alarm_insights}
+                               else "Current telemetry threshold; no predicted failure time"),
                     "confidence": None, "method": "heuristic",
                     "severity": "WARNING", "recommendation": recommendation,
                 })
@@ -492,7 +516,7 @@ def fetch_latest_station_states(limit=10000, force_refresh=False):
             and _latest_station_cache
             and cache_age < LATEST_STATION_CACHE_SECONDS
         ):
-            return list(_latest_station_cache)
+            return [station_alarm_state(station) for station in _latest_station_cache]
 
         try:
             connection = get_connection()
@@ -542,13 +566,13 @@ def fetch_latest_station_states(limit=10000, force_refresh=False):
                     latest[cached_id] = cached
             _latest_station_cache = list(latest.values())
             _latest_station_cache_at = monotonic()
-            return list(_latest_station_cache)
+            return [station_alarm_state(station) for station in _latest_station_cache]
 
         except Exception as exc:
 
             print(f"CrateDB latest station fetch failed: {exc}")
 
-            return list(_latest_station_cache)
+            return [station_alarm_state(station) for station in _latest_station_cache]
 
 
 def current_power_lines(station_states):
@@ -952,8 +976,8 @@ def blackout_prediction():
         station
         for station in latest_stations
         if (
-            station.get("thermal", {}).get("oil_temp_c", 0) > 90 or
-            station.get("electrical", {}).get("current_a", 0) > 500 or
+            station.get("thermal", {}).get("oil_temp_c", 0) > threshold("overheating") or
+            station.get("electrical", {}).get("current_a", 0) > threshold("overload") or
             has_alarm(station)
         )
     ]
@@ -1294,3 +1318,29 @@ async def bootstrap_alarm_register():
 
     except Exception as exc:
         print(f"Alarm register initialization failed: {exc}")
+
+
+class ThresholdSettingsRequest(BaseModel):
+    values: dict[str, StrictFloat]
+
+
+@app.get("/api/settings/thresholds")
+def get_threshold_settings():
+    return load_settings()
+
+
+@app.put("/api/settings/thresholds")
+async def update_threshold_settings(request: ThresholdSettingsRequest):
+    try:
+        result = await asyncio.to_thread(save_settings, request.values)
+    except ValueError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc
+    await manager.broadcast({"type": "threshold_settings", "settings": result})
+    return result
+
+
+@app.post("/api/settings/thresholds/reset")
+async def reset_threshold_settings():
+    result = await asyncio.to_thread(save_settings, DEFAULTS)
+    await manager.broadcast({"type": "threshold_settings", "settings": result})
+    return result

@@ -239,3 +239,18 @@ export function getWebSocketUrl():string{
     .replace('http://', 'ws://')
     .replace('https://', 'wss://') + '/ws'
 }
+
+export type ThresholdSettings = {
+  values:Record<string, number>
+  defaults:Record<string, number>
+  fields:{ key:string; label:string; unit:string; default:number; min:number; max:number; comparison:string }[]
+}
+export async function fetchThresholdSettings():Promise<ThresholdSettings>{
+  return (await api.get('/api/settings/thresholds')).data
+}
+export async function saveThresholdSettings(values:Record<string, number>):Promise<ThresholdSettings>{
+  return (await api.put('/api/settings/thresholds', {values})).data
+}
+export async function resetThresholdSettings():Promise<ThresholdSettings>{
+  return (await api.post('/api/settings/thresholds/reset')).data
+}

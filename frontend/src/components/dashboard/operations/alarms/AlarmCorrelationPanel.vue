@@ -37,6 +37,7 @@
           :key="incident.id"
           type="button"
           class="correlation-incident"
+          :disabled="!allowRootCause"
           @click="$emit('select', incident.id)"
         >
           <span :class="['incident-severity-dot', incident.severity.toLowerCase()]" />
@@ -64,7 +65,7 @@
             {{ incident.confidence }}%
           </q-circular-progress>
 
-          <q-icon name="chevron_right" class="incident-open-icon" />
+          <q-icon v-if="allowRootCause" name="chevron_right" class="incident-open-icon" />
         </button>
 
         <div
@@ -91,6 +92,7 @@ defineEmits(['select'])
 const { t, translateText, translateStatus } = useI18n()
 
 const props = defineProps({
+  allowRootCause:{ type:Boolean, default:true },
   correlations:{
     type:Array as PropType<any[]>,
     default:() => []

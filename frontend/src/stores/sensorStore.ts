@@ -1,3 +1,4 @@
+import { refreshThresholdSettings, thresholdSettings } from './thresholdSettings'
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 
@@ -292,6 +293,7 @@ export const useSensorStore = defineStore('sensorStore', () => {
     loading.value = true
 
     const requests = {
+      thresholdData:refreshThresholdSettings(),
       stationData:fetchLatestStations(),
       summaryData:fetchGridSummary(),
       regionData:fetchRegions(),
@@ -410,6 +412,12 @@ export const useSensorStore = defineStore('sensorStore', () => {
       }catch{
         error.value = 'Invalid realtime message received'
         connection.value.quality = 'degraded'
+        return
+      }
+
+      if(payload.type === 'threshold_settings' && payload.settings){
+        thresholdSettings.value = payload.settings
+        void refreshAll()
         return
       }
 

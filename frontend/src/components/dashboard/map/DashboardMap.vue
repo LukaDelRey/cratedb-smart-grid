@@ -10,11 +10,13 @@
     />
 
     <LayerPanel
+      v-if="props.showControls"
       v-model="layers"
       v-model:marker-filters="markerFilters"
       :summary="store.summary"
       :blackout="store.blackout"
       :total-load="store.totalLoadMW"
+      :marker-counts="markerCounts"
     />
 
     <RegionLayer
@@ -73,7 +75,7 @@
       v-if="mapLoaded && (tableFilterActive || layers.substations)"
       :map="map"
       :stations="displayedStations"
-      :visible-statuses="tableFilterActive ? ['normal','warning','critical','offline'] : visibleStatuses"
+      :visible-statuses="visibleStatuses"
       :focus-station="props.focusStation"
     />
 
@@ -142,16 +144,18 @@ const DEFAULT_MARKER_FILTERS:MarkerFilters = {
   offline:true
 }
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
+  showControls?:boolean
   focusStation?:FocusStationRequest | null
   stationFilterIds?:string[] | null
-}>()
+}>(), { showControls:true })
 
 const store = useSensorStore()
 const { t } = useI18n()
 const mapContainer = ref(null)
 const map = ref(null)
 const mapLoaded = ref(false)
+let mapResizeObserver:ResizeObserver | null = null
 const tableFilterActive = computed(() => props.stationFilterIds != null)
 const displayedStations = computed(() => {
   if(!tableFilterActive.value) return store.stations
@@ -166,6 +170,24 @@ const visibleStatuses = computed(() =>
     .filter(([,visible]) => visible)
     .map(([status]) => status)
 )
+
+const markerCounts = computed(() => {
+  const counts = { normal:0, warning:0, critical:0, offline:0 }
+  if(!mapLoaded.value) return counts
+  const add = (status:string) => {
+    if(Object.prototype.hasOwnProperty.call(counts, status)
+      && visibleStatuses.value.includes(status)){
+      counts[status as keyof typeof counts] += 1
+    }
+  }
+  if(tableFilterActive.value || layers.value.substations){
+    displayedStations.value.forEach(station => add(store.getStationStatus(station)))
+  }
+  if(!tableFilterActive.value && layers.value.transformers){
+    store.transformers.forEach(transformer => add(transformer.status))
+  }
+  return counts
+})
 
 const primaryContingencyAsset = computed(() =>
   store.topRiskSubstations[0]?.id || store.stations[0]?.station_id
@@ -216,6 +238,8 @@ onMounted(() => {
     new mapboxgl.NavigationControl(),
     'bottom-right'
   )
+  mapResizeObserver = new ResizeObserver(() => map.value?.resize())
+  mapResizeObserver.observe(mapContainer.value)
   map.value.on('load', () => {
     mapLoaded.value = true
   })
@@ -251,6 +275,7 @@ watch(
 )
 
 onUnmounted(() => {
+  mapResizeObserver?.disconnect()
   if(map.value){
     map.value.remove()
   }

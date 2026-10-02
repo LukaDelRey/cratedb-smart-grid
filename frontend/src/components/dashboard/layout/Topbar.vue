@@ -1,6 +1,7 @@
 <template>
-  <div class="command-topbar q-px-sm q-py-xs">
-    <div class="command-status-grid">
+  <div class="command-topbar q-px-sm q-py-xs" :class="{ 'compact-topbar': compact }">
+    <div v-if="compact" class="compact-title"><slot name="breadcrumbs">{{ title }}</slot></div>
+    <div v-else class="command-status-grid">
       <div
         v-for="item in topStatus"
         :key="item.label"
@@ -152,6 +153,8 @@
 <script setup lang="ts">
 import { useDashboardTopbar } from '../../../composables/useDashboardTopbar'
 
+defineProps<{ compact?: boolean; title?: string }>()
+
 const emit = defineEmits(['openTopology', 'openNotifications'])
 const {
   clock,
@@ -184,6 +187,19 @@ const {
   grid-template-columns:repeat(4,minmax(0,1fr));
   gap:8px;
   min-width:0;
+}
+
+.command-topbar.compact-topbar{
+  padding:0 24px;
+  border-bottom:1px solid rgba(91,136,174,.18);
+  background:linear-gradient(180deg,rgba(5,13,24,.92),rgba(5,13,24,.78));
+  box-shadow:0 10px 28px rgba(0,0,0,.22);
+}
+
+.compact-title{
+  color:#f5fbff;
+  font-size:16px;
+  font-weight:800;
 }
 
 .command-status-card{

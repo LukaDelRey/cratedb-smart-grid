@@ -19,6 +19,7 @@
           :key="item.label"
           clickable
           :to="item.to"
+          exact
           :active="item.active"
           class="nav-item rounded-borders q-mb-sm"
           active-class="nav-active"
@@ -81,7 +82,8 @@ const navItems = computed(() => [
   { label:t('dashboard.substationTwin'), icon:'hub', to:`/substations/${firstSubstation.value}`, active:route.path.startsWith('/substations/') },
   { label:t('dashboard.transformerTwin'), icon:'memory', to:transformerTarget.value, active:route.path.startsWith('/transformers/') },
   { label:t('dashboard.alarmCenter'), icon:'warning', to:'/alarms', active:route.path === '/alarms' },
-  { label:t('dashboard.aiForecasting'), icon:'psychology', to:'/forecasting', active:route.path === '/forecasting' }
+  { label:t('dashboard.aiForecasting'), icon:'psychology', to:'/forecasting', active:route.path === '/forecasting' },
+  { label:t('settings.title'), icon:'tune', to:'/settings', active:route.path === '/settings' }
 ])
 </script>
 
@@ -174,8 +176,8 @@ const navItems = computed(() => [
   font-size:20px;
 }
 
-.nav-active{
-  color:#f5fbff;
+.sidebar-shell .nav-item.nav-active{
+  color:#fff;
   background:linear-gradient(90deg,rgba(28,128,225,.68),rgba(23,92,153,.5));
   border-color:rgba(64,196,255,.28);
   box-shadow:inset 3px 0 0 #40c4ff, 0 8px 22px rgba(0,0,0,.2);

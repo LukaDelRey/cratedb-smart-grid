@@ -4,6 +4,7 @@ from uuid import uuid4
 from crate import client
 
 from app.config import CRATE_URL
+from app.services.threshold_settings import threshold
 
 OPEN_STATUSES = ("ACTIVE", "ACK", "WORK_ORDER")
 VALID_TRANSITIONS = {
@@ -21,7 +22,7 @@ ALARM_DEFINITIONS = {
         "value_path": ("electrical", "current_a"),
         "unit": "A",
         "threshold": 500,
-        "condition": lambda payload: _flag(payload, "overload") or _number(payload, "electrical", "current_a") >= 500,
+        "condition": lambda payload: _flag(payload, "overload") or _number(payload, "electrical", "current_a") >= threshold("overload"),
     },
     "overheating": {
         "title": "Oil temperature high",
@@ -30,7 +31,7 @@ ALARM_DEFINITIONS = {
         "value_path": ("thermal", "oil_temp_c"),
         "unit": "C",
         "threshold": 90,
-        "condition": lambda payload: _flag(payload, "overheating") or _number(payload, "thermal", "oil_temp_c") >= 90,
+        "condition": lambda payload: _flag(payload, "overheating") or _number(payload, "thermal", "oil_temp_c") >= threshold("overheating"),
     },
     "sensor_failure": {
         "title": "Sensor failure",
@@ -55,7 +56,7 @@ ALARM_DEFINITIONS = {
         "value_path": ("electrical", "voltage_kv"),
         "unit": "kV",
         "threshold": 9.2,
-        "condition": lambda payload: _flag(payload, "voltage_drop") or 0 < _number(payload, "electrical", "voltage_kv") < 9.2,
+        "condition": lambda payload: _flag(payload, "voltage_drop") or 0 < _number(payload, "electrical", "voltage_kv") < threshold("voltage_drop"),
     },
     "overvoltage": {
         "title": "Overvoltage detected",
@@ -64,7 +65,7 @@ ALARM_DEFINITIONS = {
         "value_path": ("electrical", "voltage_kv"),
         "unit": "kV",
         "threshold": 10.8,
-        "condition": lambda payload: _flag(payload, "overvoltage") or _number(payload, "electrical", "voltage_kv") >= 10.8,
+        "condition": lambda payload: _flag(payload, "overvoltage") or _number(payload, "electrical", "voltage_kv") >= threshold("overvoltage"),
     },
     "frequency_instability": {
         "title": "Frequency instability",
@@ -73,7 +74,7 @@ ALARM_DEFINITIONS = {
         "value_path": ("electrical", "frequency_hz"),
         "unit": "Hz",
         "threshold": 0.25,
-        "condition": lambda payload: _flag(payload, "frequency_instability") or abs(_number(payload, "electrical", "frequency_hz", 50) - 50) >= 0.25,
+        "condition": lambda payload: _flag(payload, "frequency_instability") or abs(_number(payload, "electrical", "frequency_hz", 50) - 50) >= threshold("frequency_instability"),
     },
     "harmonics_spike": {
         "title": "Harmonics THD critical",
@@ -82,7 +83,7 @@ ALARM_DEFINITIONS = {
         "value_path": ("electrical", "harmonics_thd"),
         "unit": "%",
         "threshold": 5,
-        "condition": lambda payload: _flag(payload, "harmonics_spike") or _number(payload, "electrical", "harmonics_thd") >= 5,
+        "condition": lambda payload: _flag(payload, "harmonics_spike") or _number(payload, "electrical", "harmonics_thd") >= threshold("harmonics_spike"),
     },
     "short_circuit": {
         "title": "Short circuit signature",
@@ -92,8 +93,8 @@ ALARM_DEFINITIONS = {
         "unit": "A",
         "threshold": 800,
         "condition": lambda payload: _flag(payload, "short_circuit") or (
-            _number(payload, "electrical", "current_a") >= 800
-            and _number(payload, "electrical", "voltage_kv") < 6
+            _number(payload, "electrical", "current_a") >= threshold("short_circuit")
+            and _number(payload, "electrical", "voltage_kv") < threshold("short_circuit_voltage")
         ),
     },
     "cooling_failure": {
@@ -104,9 +105,9 @@ ALARM_DEFINITIONS = {
         "unit": "C",
         "threshold": 22,
         "condition": lambda payload: _flag(payload, "cooling_failure") or (
-            _number(payload, "thermal", "winding_temp_c") >= 95
+            _number(payload, "thermal", "winding_temp_c") >= threshold("cooling_winding")
             and _number(payload, "thermal", "winding_temp_c")
-            - _number(payload, "thermal", "oil_temp_c") >= 22
+            - _number(payload, "thermal", "oil_temp_c") >= threshold("cooling_failure")
         ),
     },
     "insulation_degradation": {
@@ -117,8 +118,8 @@ ALARM_DEFINITIONS = {
         "unit": "ppm",
         "threshold": 20,
         "condition": lambda payload: _flag(payload, "insulation_degradation") or (
-            _number(payload, "oil_gas", "hydrogen_ppm") >= 20
-            and _number(payload, "oil_gas", "methane_ppm") >= 8
+            _number(payload, "oil_gas", "hydrogen_ppm") >= threshold("insulation_degradation")
+            and _number(payload, "oil_gas", "methane_ppm") >= threshold("insulation_methane")
         ),
     },
     "oil_leak": {
@@ -128,7 +129,7 @@ ALARM_DEFINITIONS = {
         "value_path": ("oil_gas", "oil_level_percent"),
         "unit": "%",
         "threshold": 65,
-        "condition": lambda payload: _flag(payload, "oil_leak") or _number(payload, "oil_gas", "oil_level_percent", 100) <= 65,
+        "condition": lambda payload: _flag(payload, "oil_leak") or _number(payload, "oil_gas", "oil_level_percent", 100) <= threshold("oil_leak"),
     },
     "arc_discharge": {
         "title": "Arc discharge detected",
@@ -137,7 +138,7 @@ ALARM_DEFINITIONS = {
         "value_path": ("oil_gas", "acetylene_ppm"),
         "unit": "ppm",
         "threshold": 4,
-        "condition": lambda payload: _flag(payload, "arc_discharge") or _number(payload, "oil_gas", "acetylene_ppm") >= 4,
+        "condition": lambda payload: _flag(payload, "arc_discharge") or _number(payload, "oil_gas", "acetylene_ppm") >= threshold("arc_discharge"),
     },
     "feeder_failure": {
         "title": "Feeder failure",
@@ -193,7 +194,7 @@ def _number(payload, group, key, default=0):
 
 
 def _flag(payload, alarm_type):
-    alarms = payload.get("alarms")
+    alarms = payload.get("source_alarms", payload.get("alarms"))
     return bool(alarms.get(alarm_type)) if isinstance(alarms, dict) else False
 
 
@@ -208,6 +209,7 @@ def evaluate_alarm_conditions(payload):
 def station_alarm_state(payload):
     """The authoritative current conditions shared by REST and WebSocket clients."""
     payload = dict(payload)
+    payload["source_alarms"] = dict(payload.get("source_alarms", payload.get("alarms")) or {})
     # Locust sends a UTC string without an offset; browsers otherwise read local time.
     timestamp = payload.get("timestamp")
     try:
@@ -323,7 +325,7 @@ def reconcile_alarm_payload(payload):
                     {
                         "station_name": payload.get("station_name"),
                         "category": definition.get("category"),
-                        "threshold": definition.get("threshold"),
+                        "threshold": threshold(alarm_type) if "threshold" in definition else None,
                         "detection": "flag-or-dynamic-threshold",
                     },
                 ),

@@ -24,46 +24,19 @@
           :blackout="store.blackout"
         /> -->
 
-        <div class="dashboard-workspace noc-workspace">
-          <main class="primary-ops-column">
-            <section class="map-zone">
+        <div class="dashboard-workspace noc-workspace" :class="{ 'workspace-no-rail': !showRightRail, 'workspace-no-primary': !showPrimary }">
+          <main v-if="showPrimary" class="primary-ops-column" :class="{ 'metrics-hidden': !workspacePreferences.showMetrics }" :style="{ gridTemplateRows: primaryRows }">
+            <section v-if="workspacePreferences.showMap" class="map-zone">
               <DashboardMap
+                :show-controls="workspacePreferences.showMapControls"
                 :focus-station="stationFocusRequest"
                 :station-filter-ids="alarmMapOnly ? alarmTableStationIds : null"
               />
             </section>
 
-            <section class="operator-kpi-row">
-              <q-card
-                v-for="metric in operatorMetrics"
-                :key="metric.label"
-                flat
-                bordered
-                class="operator-kpi-card"
-              >
-                <q-card-section class="q-pa-sm">
-                  <div class="section-kicker">{{ metric.label }}</div>
-                  <div class="operator-kpi-value">
-                    {{ metric.value }}<small>{{ metric.unit }}</small>
-                  </div>
-                  <div :class="['operator-kpi-trend', metric.trendClass]">
-                    {{ metric.trend }}
-                  </div>
-                  <svg
-                    class="mini-line-chart q-mt-xs"
-                    viewBox="0 0 140 42"
-                    preserveAspectRatio="none"
-                  >
-                    <polyline
-                      :points="linePoints(metric.spark, 140, 42)"
-                      :class="['glow-line', metric.chartClass]"
-                    />
-                  </svg>
-                </q-card-section>
-              </q-card>
-            </section>
+            <OperatorMetricsRow v-if="workspacePreferences.showMetrics" :metrics="operatorMetrics" />
 
-            <section class="ops-drawer-layout">
+            <section v-if="opsPanels.length" class="ops-drawer-layout" :class="{ 'ops-single-panel': opsPanels.length === 1 }">
               <div class="ops-drawer-content">
                 <q-banner v-if="rootCauseError" dense class="bg-blue-grey-10 text-warning">{{ rootCauseError }}</q-banner>
                 <transition name="ops-expand" mode="out-in">
@@ -83,6 +56,7 @@
                     v-else-if="activeOpsPanel === 'correlation'"
                     key="correlation"
                     :correlations="store.correlations"
+                    :allow-root-cause="workspacePreferences.showRootCause"
                     class="ops-panel-card"
                     @select="openCorrelation"
                   />
@@ -95,7 +69,7 @@
                   />
 
                   <RealtimeEventStream
-                    v-else
+                    v-else-if="activeOpsPanel === 'events'"
                     key="events"
                     :events="store.eventStream"
                     class="ops-panel-card"
@@ -103,7 +77,7 @@
                 </transition>
               </div>
 
-              <div class="ops-icon-rail">
+              <div v-if="opsPanels.length > 1" class="ops-icon-rail">
                 <q-btn
                   v-for="panel in opsPanels"
                   :key="panel.key"
@@ -112,6 +86,7 @@
                   flat
                   size="11px"
                   :icon="panel.icon"
+                  :aria-label="panel.label"
                   :color="activeOpsPanel === panel.key ? 'cyan' : 'blue-grey-3'"
                   :class="['ops-rail-btn', { active: activeOpsPanel === panel.key }]"
                   @click="activeOpsPanel = panel.key"
@@ -124,23 +99,30 @@
             </section>
           </main>
 
-          <aside class="right-rail noc-right-rail">
-            <LoadForecastCard :points="store.forecast" />
+          <aside v-if="showRightRail" class="right-rail noc-right-rail">
+            <LoadForecastCard v-if="workspacePreferences.showForecast" :points="store.forecast" />
 
             <BlackoutPredictionCard
+              v-if="workspacePreferences.showBlackout"
               :prediction="store.blackout"
               :top-risk="store.topRiskSubstations"
             />
 
             <TopRiskSubstationsCard
+              v-if="workspacePreferences.showTopRisk"
               :stations="store.topRiskSubstations"
               @select-station="focusStationOnMap"
             />
 
-            <AIInsightsPanel :insights="store.insights" />
+            <AIInsightsPanel v-if="workspacePreferences.showInsights" :insights="store.insights" @focus-station="focusStationOnMap" />
 
-            <OutageRiskMapCard :stations="store.topRiskSubstations" />
+            <OutageRiskMapCard v-if="workspacePreferences.showRiskMap" :stations="store.topRiskSubstations" />
           </aside>
+          <div v-if="!showPrimary && !showRightRail" class="dashboard-empty">
+            <q-icon name="dashboard_customize" size="36px" color="cyan" />
+            <p>{{ t('dashboard.noVisibleComponents') }}</p>
+            <q-btn flat color="cyan" to="/settings" :label="t('settings.title')" />
+          </div>
         </div>
 
         <SystemTopologyDialog
@@ -157,6 +139,7 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, watch } from 'vue'
 import { useSensorStore } from '../stores/sensorStore'
+import { workspacePreferences } from '../stores/workspacePreferences'
 import Sidebar from '../components/dashboard/layout/Sidebar.vue'
 import Topbar from '../components/dashboard/layout/Topbar.vue'
 import DashboardMap from '../components/dashboard/map/DashboardMap.vue'
@@ -170,6 +153,7 @@ import AlarmCorrelationPanel from '../components/dashboard/operations/alarms/Ala
 import AlarmRootCausePanel from '../components/dashboard/operations/alarms/AlarmRootCausePanel.vue'
 import RealtimeEventStream from '../components/dashboard/operations/RealtimeEventStream.vue'
 import SystemTopologyDialog from '../components/dashboard/system/SystemTopologyDialog.vue'
+import OperatorMetricsRow from '../components/dashboard/operations/OperatorMetricsRow.vue'
 import { useOperatorMetrics } from '../composables/useOperatorMetrics'
 import { useI18n } from '../i18n'
 import type { FocusStationRequest } from '../types/dashboard'
@@ -185,16 +169,32 @@ const rootCauseError = ref<string | null>(null)
 const stationFocusRequest = ref<FocusStationRequest | null>(null)
 const notificationOpenSignal = ref(0)
 
-const { linePoints, operatorMetrics } = useOperatorMetrics(store, t)
+const { operatorMetrics } = useOperatorMetrics(store, t)
 
 const opsPanels = computed(() => [
-  { key:'alarms', label:t('dashboard.activeAlarmsEvents'), icon:'table_rows' },
-  { key:'correlation', label:t('dashboard.alarmCorrelation'), icon:'hub' },
-  { key:'rootCause', label:t('dashboard.rootCauseAnalysis'), icon:'account_tree' },
-  { key:'events', label:t('dashboard.realtimeEventStream'), icon:'stream' }
-])
+  { key:'alarms', label:t('dashboard.activeAlarmsEvents'), icon:'table_rows', enabled:workspacePreferences.showAlarms },
+  { key:'correlation', label:t('dashboard.alarmCorrelation'), icon:'hub', enabled:workspacePreferences.showCorrelation },
+  { key:'rootCause', label:t('dashboard.rootCauseAnalysis'), icon:'account_tree', enabled:workspacePreferences.showRootCause },
+  { key:'events', label:t('dashboard.realtimeEventStream'), icon:'stream', enabled:workspacePreferences.showEvents }
+].filter(panel => panel.enabled))
+
+const showRightRail = computed(() => [workspacePreferences.showForecast, workspacePreferences.showBlackout, workspacePreferences.showTopRisk, workspacePreferences.showInsights, workspacePreferences.showRiskMap].some(Boolean))
+const showPrimary = computed(() => workspacePreferences.showMap || workspacePreferences.showMetrics || opsPanels.value.length > 0)
+const primaryRows = computed(() => {
+  const rows:string[] = []
+  const hasMap = workspacePreferences.showMap
+  const hasOps = opsPanels.value.length > 0
+  if(hasMap) rows.push('var(--dashboard-map-row, minmax(0, 2fr))')
+  if(workspacePreferences.showMetrics) rows.push('auto')
+  if(hasOps) rows.push('var(--dashboard-ops-row, minmax(230px, 1fr))')
+  return rows.join(' ') || 'minmax(0,1fr)'
+})
+watch(opsPanels, panels => {
+  if(!panels.some(panel => panel.key === activeOpsPanel.value)) activeOpsPanel.value = panels[0]?.key || ''
+}, { immediate:true })
 
 function focusStationOnMap(stationId:string){
+  workspacePreferences.showMap = true
   stationFocusRequest.value = {
     id:stationId,
     requestedAt:Date.now()
@@ -202,15 +202,17 @@ function focusStationOnMap(stationId:string){
 }
 
 function openNotifications(){
+  workspacePreferences.showAlarms = true
   activeOpsPanel.value = 'alarms'
   notificationOpenSignal.value += 1
 }
 
 async function openCorrelation(correlationId:string){
+  if(!workspacePreferences.showRootCause) return
   rootCauseError.value = null
   try{
     await store.openRootCause(correlationId)
-    activeOpsPanel.value = 'rootCause'
+    if(workspacePreferences.showRootCause) activeOpsPanel.value = 'rootCause'
   }catch{
     rootCauseError.value = t('dashboard.incidentUnavailable')
   }
@@ -338,55 +340,7 @@ onMounted(() => {
   padding-right:2px;
 }
 
-.operator-kpi-row{
-  display:grid;
-  grid-template-columns:repeat(6,minmax(0,1fr));
-  gap: 10px;
-  padding-bottom: 20px;
-}
 
-.operator-kpi-card{
-  min-width:0;
-  color:#f5fbff;
-  border-color:rgba(64,196,255,.14);
-  border-radius:8px;
-  background:linear-gradient(180deg,rgba(9,20,32,.94),rgba(5,12,22,.96));
-}
-
-.operator-kpi-card .q-card__section{
-  padding:10px;
-}
-
-.operator-kpi-value{
-  margin-top:4px;
-  font-size:23px;
-  line-height:1.05;
-  font-weight:900;
-  font-variant-numeric:tabular-nums;
-}
-
-.operator-kpi-value small{
-  margin-left:4px;
-  color:#c1d5df;
-  font-size:12px;
-  font-weight:600;
-}
-
-.operator-kpi-trend{
-  min-height:16px;
-  margin-top:8px;
-  font-size:11px;
-}
-
-.operator-kpi-card{
-  box-shadow:0 16px 42px rgba(0,0,0,.22), inset 0 1px 0 rgba(255,255,255,.025);
-}
-
-@media (max-width: 1320px){
-.operator-kpi-row{
-    grid-template-columns:repeat(2,minmax(0,1fr));
-  }
-}
 
 @media (max-width: 1320px){
 .noc-workspace{
@@ -409,12 +363,7 @@ onMounted(() => {
   }
 }
 
-@media (max-width: 820px){
-.operator-kpi-row,
-.noc-right-rail{
-    grid-template-columns:1fr;
-  }
-}
+
 
 .dashboard-noc{
   grid-template-rows:auto minmax(0,1fr);
@@ -466,23 +415,6 @@ onMounted(() => {
 .noc-right-rail{
     grid-template-columns:1fr;
   }
-}
-
-.operator-kpi-card .q-card__section{
-  padding:8px;
-}
-
-.operator-kpi-value{
-  font-size:21px;
-}
-
-.operator-kpi-trend{
-  margin-top:5px;
-}
-
-.mini-line-chart{
-  width:100%;
-  height:34px;
 }
 
 .ops-drawer-layout{
@@ -567,11 +499,7 @@ onMounted(() => {
   transform:translateX(12px) scale(.99);
 }
 
-@media (max-width: 1320px){
-.operator-kpi-row{
-    grid-template-columns:repeat(6,minmax(0,1fr));
-  }
-}
+
 
 @media (max-width: 1320px){
 .primary-ops-column{
@@ -605,12 +533,7 @@ onMounted(() => {
     overflow:visible;
   }
 
-  .operator-kpi-row{
-    grid-template-columns:repeat(3,minmax(0,1fr));
-    padding-bottom:0;
-  }
-
-  .noc-right-rail{
+.noc-right-rail{
     height:auto;
     max-height:none;
     grid-template-columns:repeat(2,minmax(0,1fr));
@@ -627,21 +550,13 @@ onMounted(() => {
     grid-template-rows:460px auto 390px;
   }
 
-  .operator-kpi-row{
-    grid-template-columns:repeat(2,minmax(0,1fr));
-  }
-
-  .noc-right-rail{
+.noc-right-rail{
     grid-template-columns:minmax(0,1fr);
   }
 }
 
 @media (max-width: 520px){
-  .operator-kpi-row{
-    grid-template-columns:minmax(0,1fr);
-  }
-
-  .ops-drawer-layout{
+.ops-drawer-layout{
     grid-template-columns:minmax(0,1fr);
     height:auto;
   }
@@ -651,5 +566,24 @@ onMounted(() => {
     flex-direction:row;
     justify-content:center;
   }
+}
+/* Rows follow the enabled sections; hidden cards leave no empty tracks. */
+.dashboard-workspace.noc-workspace.workspace-no-rail{grid-template-columns:minmax(0,1fr)}
+.dashboard-workspace.noc-workspace.workspace-no-primary{grid-template-columns:minmax(0,1fr)}
+.workspace-no-primary .noc-right-rail{grid-template-columns:repeat(auto-fit,minmax(300px,1fr));align-items:start}
+.dashboard-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;color:#92aabd}
+.ops-drawer-layout{padding-top:0}
+.ops-drawer-layout.ops-single-panel{grid-template-columns:minmax(0,1fr)}
+.ops-panel-card{display:flex;flex-direction:column}
+.ops-panel-card > .q-card__section:first-child{flex:0 0 auto}
+.ops-panel-card .event-scroll,.ops-panel-card .panel-scroll-list,.ops-panel-card .root-cause-body,.ops-panel-card .q-list{height:auto;max-height:none;min-height:0;flex:1 1 auto;overflow:auto}
+@media(max-width:1320px){
+  .primary-ops-column{--dashboard-map-row:520px;--dashboard-ops-row:340px}
+  .primary-ops-column.metrics-hidden{--dashboard-map-row:580px;--dashboard-ops-row:400px}
+  .map-zone{height:100%}
+}
+@media(max-width:820px){
+  .primary-ops-column{--dashboard-map-row:460px;--dashboard-ops-row:390px}
+  .primary-ops-column.metrics-hidden{--dashboard-map-row:520px;--dashboard-ops-row:450px}
 }
 </style>

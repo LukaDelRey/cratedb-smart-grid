@@ -336,6 +336,7 @@
 </template>
 
 <script setup lang="ts">
+import { healthThreshold } from '../stores/thresholdSettings'
 import { computed, defineComponent, h, onMounted, ref } from 'vue'
 import type { PropType } from 'vue'
 import { useRoute } from 'vue-router'
@@ -670,7 +671,7 @@ const maintenance = computed(() => ({
 }))
 
 const assetHealthRows = computed(() => [
-  { asset:'T1 Power Transformer', health:Math.max(54, health.value - 2), stress:Math.round(clamp(oilTemp.value, 22, 96)), tone:health.value < 70 ? 'yellow' : 'green' },
+  { asset:'T1 Power Transformer', health:Math.max(54, health.value - 2), stress:Math.round(clamp(oilTemp.value, 22, 96)), tone:health.value < healthThreshold('health_warning') ? 'yellow' : 'green' },
   { asset:'T2 Power Transformer', health:Math.max(58, health.value + 3), stress:Math.round(clamp(windingTemp.value - 6, 22, 96)), tone:'green' },
   { asset:'20 kV Busbar A', health:voltageStability.value, stress:Math.round(clamp(busbarTemp.value, 18, 92)), tone:busbarTemp.value > 70 ? 'yellow' : 'green' },
   { asset:'Protection IED Group', health:Math.round(clamp(97 - activeAlarmCount.value * 4, 72, 99)), stress:activeAlarmCount.value ? 41 : 18, tone:activeAlarmCount.value ? 'yellow' : 'green' },

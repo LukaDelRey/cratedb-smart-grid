@@ -186,4 +186,6 @@ def init_db():
     CLUSTERED INTO 2 SHARDS
     """)
 
+    cursor.execute("CREATE TABLE IF NOT EXISTS application_settings (id TEXT PRIMARY KEY, config_json TEXT) CLUSTERED INTO 1 SHARDS")
+
     print("Database initialized!")

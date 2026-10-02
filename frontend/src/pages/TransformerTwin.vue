@@ -600,6 +600,7 @@
 </template>
 
 <script setup lang="ts">
+import { thresholdValue } from '../stores/thresholdSettings'
 import { computed, defineComponent, h, onMounted, ref } from 'vue'
 import type { PropType } from 'vue'
 import { useRoute } from 'vue-router'
@@ -846,8 +847,8 @@ const eventRows = computed(() =>
 )
 
 const anomalyRows = computed(() => [
-  { parameter:'Top Oil Temperature', value:`${oilTemp.value} C`, range:'40 - 90 C', deviation:'-24.6 C' },
-  { parameter:'Winding Temperature (H)', value:`${windingTemp.value} C`, range:'50 - 95 C', deviation:'-16.4 C' },
+  { parameter:'Top Oil Temperature', value:`${oilTemp.value} C`, range:`40 - ${thresholdValue('overheating', 90)} C`, deviation:'-24.6 C' },
+  { parameter:'Winding Temperature (H)', value:`${windingTemp.value} C`, range:`50 - ${thresholdValue('cooling_winding', 95)} C`, deviation:'-16.4 C' },
   { parameter:'Load Current', value:`${loadCurrent.value} A`, range:'0 - 600 A', deviation:'-287.5 A' },
   { parameter:'Oil Pressure', value:'0.25 bar', range:'0.1 - 0.6 bar', deviation:'-0.35 bar' },
   { parameter:'Vibration (Tank)', value:'1.8 mm/s', range:'0 - 5 mm/s', deviation:'-3.2 mm/s' }
