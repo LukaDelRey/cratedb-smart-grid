@@ -1,7 +1,7 @@
 <template>
   <q-card
     bordered
-    class="scada-card"
+    class="scada-card column no-wrap"
     flat
     style="height: 165px"
   >
@@ -13,6 +13,7 @@
       </div>
 
       <div
+        v-if="store.stations.length"
         class="text-subtitle1 text-weight-bold"
         :class="riskColor"
       >
@@ -20,7 +21,15 @@
       </div>
     </q-card-section>
 
-    <q-card-section class="no-padding q-pb-md q-px-lg row items-center">
+    <SidebarEmptyState
+      v-if="!store.stations.length"
+      :loading="store.loading"
+      :message="t(store.loading ? 'dashboard.forecastLoading' : 'regions.noCountryStations')"
+    />
+    <q-card-section
+      v-else
+      class="no-padding q-pb-md q-px-lg row items-center"
+    >
       <div class="col-5 q-pl-lg q-pb-md">
         <div class="row items-center">
           <q-circular-progress
@@ -79,11 +88,14 @@
 </template>
 
 <script setup lang="ts">
+import SidebarEmptyState from './SidebarEmptyState.vue';
+import { useSensorStore } from '../../../stores/sensorStore';
 import { computed } from 'vue';
 import type { PropType } from 'vue';
 import { useI18n } from '../../../i18n';
 
 const { t } = useI18n();
+const store = useSensorStore();
 
 const props = defineProps({
   prediction: {

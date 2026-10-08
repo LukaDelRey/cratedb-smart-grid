@@ -27,7 +27,23 @@
       />
     </q-card-section>
 
+    <SidebarEmptyState
+      v-if="!insights.length"
+      :loading="store.loading"
+      :icon="store.stations.length ? 'check_circle_outline' : 'sensors_off'"
+      :color="store.stations.length ? 'positive' : 'blue-grey-4'"
+      :message="
+        t(
+          store.loading
+            ? 'dashboard.forecastLoading'
+            : store.stations.length
+              ? 'dashboard.noThresholdInsights'
+              : 'regions.noCountryStations',
+        )
+      "
+    />
     <q-list
+      v-else
       class="panel-scroll-list q-pt-sm q-pb-none q-px-sm overflow-auto content-start"
       style="min-height: 0; gap: 8px"
     >
@@ -91,13 +107,6 @@
           </q-btn>
         </q-item-section>
       </q-item>
-
-      <div
-        v-if="!insights.length"
-        class="insights-empty scada-text-muted q-pa-md text-caption"
-      >
-        {{ t('dashboard.noThresholdInsights') }}
-      </div>
     </q-list>
   </q-card>
 </template>
@@ -106,6 +115,8 @@
 // Keep component selector isolation for the shared stylesheet.
 defineOptions({ __scopeId: 'data-v-ui-5d448f9e' });
 
+import SidebarEmptyState from './SidebarEmptyState.vue';
+import { useSensorStore } from '../../../stores/sensorStore';
 import { computed, ref } from 'vue';
 import type { PropType } from 'vue';
 import { useI18n } from '../../../i18n';
@@ -123,6 +134,7 @@ const props = defineProps({
   },
 });
 
+const store = useSensorStore();
 const expanded = ref(false);
 
 const collapsedLimit = 3;

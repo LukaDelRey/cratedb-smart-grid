@@ -53,7 +53,8 @@ def grid_load_forecast(stations, hours=12):
         else 0
     )
     try:
-        rows = load_history()
+        station_ids = {station.get("station_id") for station in stations}
+        rows = [row for row in load_history() if row[1] in station_ids]
     except Exception:
         rows = []
     span = (

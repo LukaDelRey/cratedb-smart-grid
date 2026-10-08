@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div class="map-layer-panel-container absolute-full">
     <q-card
       bordered
       class="map-layer-panel absolute text-white q-pa-sm overflow-auto"
       flat
-      style="max-height: calc(100% - 28px)"
+      style="max-height: calc(100% - 108px); pointer-events: auto"
     >
       <q-card-section class="q-pa-sm">
         <div
@@ -127,8 +127,8 @@
           <span>{{ t('dashboard.mapMarkerCounts') }}</span>
 
           <span
-            class="marker-live row no-wrap items-center q-gutter-x-xs q-ml-none"
-            style="font-size: 9px; color: #6cddb3"
+            class="marker-live row no-wrap items-center"
+            style="font-size: 9px; color: #6cddb3; gap: 5px"
           >
             <span style="width: 5px; height: 5px" />
             {{ t('dashboard.markerLive') }}
@@ -293,3 +293,9 @@ function toggleMarker(key) {
   });
 }
 </script>
+
+<style scoped>
+.map-layer-panel-container {
+  pointer-events: none;
+}
+</style>

@@ -1,7 +1,7 @@
 <template>
   <q-card
     bordered
-    class="scada-card outage-risk-card"
+    class="scada-card outage-risk-card column no-wrap"
     flat
     style="height: 280px"
   >
@@ -16,6 +16,7 @@
       </div>
 
       <q-badge
+        v-if="mapStations.length"
         class="outage-risk-badge"
         outline
         style="font-size: 10px"
@@ -25,7 +26,15 @@
       </q-badge>
     </q-card-section>
 
-    <q-card-section class="outage-risk-body q-pt-none q-pb-md q-px-md q-pa-md">
+    <SidebarEmptyState
+      v-if="!mapStations.length"
+      :loading="store.loading"
+      :message="t(store.loading ? 'dashboard.forecastLoading' : 'regions.noCountryStations')"
+    />
+    <q-card-section
+      v-else
+      class="outage-risk-body q-pt-none q-pb-md q-px-md q-pa-md"
+    >
       <div
         class="outage-risk-summary scada-gap-6"
         style="grid-template-columns: repeat(3, minmax(0, 1fr))"
@@ -80,14 +89,6 @@
       </div>
 
       <div class="outage-risk-map">
-        <div
-          v-if="!mapStations.length"
-          class="outage-empty-state scada-text-muted column no-wrap items-center justify-center absolute-full"
-          style="font-size: 11px; z-index: 2"
-        >
-          {{ t('dashboard.waitingForLiveStationRisk') }}
-        </div>
-
         <span
           v-for="zone in heatZones"
           class="absolute no-pointer-events"
@@ -146,11 +147,14 @@
 // Keep component selector isolation for the shared stylesheet.
 defineOptions({ __scopeId: 'data-v-ui-e2ed7772' });
 
+import SidebarEmptyState from './SidebarEmptyState.vue';
+import { useSensorStore } from '../../../stores/sensorStore';
 import { computed } from 'vue';
 import type { PropType } from 'vue';
 import { useI18n } from '../../../i18n';
 
 const { t } = useI18n();
+const store = useSensorStore();
 
 const props = defineProps({
   stations: {

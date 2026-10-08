@@ -120,6 +120,8 @@
               />
             </q-tab-panel>
 
+            <q-tab-panel name="regions"><RegionPreferencesPanel /></q-tab-panel>
+
             <q-tab-panel name="notifications">
               <NotificationsPreferencesPanel
                 :preferences="workspacePreferences"
@@ -146,7 +148,6 @@
       </q-page>
     </q-page-container>
   </q-layout>
-  
 </template>
 <script setup lang="ts">
 defineOptions({ __scopeId: 'data-v-ui-e649836e' });
@@ -160,6 +161,7 @@ import ThresholdValuesPanel from '../components/settings/ThresholdValuesPanel.vu
 import WorkspacePreferencesPanel from '../components/settings/WorkspacePreferencesPanel.vue';
 import GeneralPreferencesPanel from '../components/settings/GeneralPreferencesPanel.vue';
 import NotificationsPreferencesPanel from '../components/settings/NotificationsPreferencesPanel.vue';
+import RegionPreferencesPanel from '../components/settings/RegionPreferencesPanel.vue';
 import { workspacePreferences, resetWorkspacePreferences } from '../stores/workspacePreferences';
 import { useSensorStore } from '../stores/sensorStore';
 import { useI18n } from '../i18n';
@@ -170,15 +172,16 @@ const router = useRouter();
 
 const { t, language, languageOptions, setLanguage } = useI18n();
 
-const tab = ref('values');
+const tab = ref(router.currentRoute.value.query.tab === 'regions' ? 'regions' : 'general');
 
 const topologyOpen = ref(false);
 
 const tabs = computed(() => [
+  { name: 'general', icon: 'language', label: t('settings.general') },
   { name: 'values', icon: 'tune', label: t('settings.values') },
+  { name: 'regions', icon: 'public', label: t('regions.title') },
   { name: 'display', icon: 'dashboard_customize', label: t('workspaceCopy.dashboardDisplay') },
   { name: 'notifications', icon: 'notifications', label: t('dashboard.notifications') },
-  { name: 'general', icon: 'language', label: t('settings.general') },
 ]);
 
 const activeTabLabel = computed(

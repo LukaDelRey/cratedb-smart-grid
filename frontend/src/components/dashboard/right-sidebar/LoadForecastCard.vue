@@ -30,7 +30,13 @@
       />
     </q-card-section>
 
+    <SidebarEmptyState
+      v-if="!dataAvailable"
+      :message="forecastNote"
+      :loading="loading"
+    />
     <q-card-section
+      v-else
       class="forecast-card-body q-pa-sm q-pt-none no-wrap column"
       style="min-height: 0"
     >
@@ -59,6 +65,23 @@
           style="overflow: visible"
           viewBox="0 0 320 132"
         >
+          <defs>
+            <linearGradient
+              :id="gradientId"
+              gradientUnits="userSpaceOnUse"
+              x1="0"
+              y1="0"
+              x2="0"
+              y2="132"
+            >
+              <stop
+                v-for="(stop, index) in colorStops"
+                :key="index"
+                :offset="stop.offset"
+                :stop-color="stop.color"
+              />
+            </linearGradient>
+          </defs>
           <path
             v-for="line in gridLines"
             class="chart-grid-line"
@@ -72,7 +95,8 @@
           />
 
           <path
-            class="chart-area-fill forecast-blue-fill"
+            class="chart-area-fill"
+            :style="{ fill: `url(#${gradientId})`, opacity: 0.18 }"
             :d="areaPath"
           />
 
@@ -81,25 +105,29 @@
             class="forecast-current-guide"
             style="
               fill: none;
-              stroke: rgba(56, 191, 255, 0.38);
+              opacity: 0.38;
               stroke-width: 1;
               stroke-dasharray: 3 3;
               vector-effect: non-scaling-stroke;
             "
+            :style="{ stroke: currentColor }"
             :d="currentGuidePath"
           />
 
           <polyline
             class="glow-line forecast-main-line"
-            style="stroke: #38bfff; filter: drop-shadow(0 0 4px rgba(56, 191, 255, 0.78))"
+            :style="{
+              stroke: `url(#${gradientId})`,
+              filter: 'drop-shadow(0 0 3px rgba(143, 169, 184, 0.35))',
+            }"
             :points="linePath"
           />
         </svg>
 
         <div
-          class="forecast-current-value text-blue-3 absolute"
+          class="forecast-current-value absolute"
           style="line-height: 1"
-          :style="currentValueStyle"
+          :style="{ ...currentValueStyle, color: currentColor }"
         >
           {{ dataAvailable ? `${currentPercent}%` : t('dashboard.confidenceUnavailable') }}
         </div>
@@ -134,7 +162,10 @@
               {{ t('dashboard.peak') }}
             </span>
 
-            <strong class="block q-mt-xs text-caption">
+            <strong
+              class="block q-mt-xs text-caption"
+              :style="{ color: dataAvailable ? peakColor : undefined }"
+            >
               {{ dataAvailable ? `${peakLoad} MW` : t('dashboard.confidenceUnavailable') }}
             </strong>
           </div>
@@ -184,10 +215,13 @@
 </template>
 
 <script setup lang="ts">
-import type { PropType } from 'vue';
+import SidebarEmptyState from './SidebarEmptyState.vue';
+import { useId, type PropType } from 'vue';
 import { useLoadForecast } from '../../../composables/useLoadForecast';
 import { useI18n } from '../../../i18n';
 import type { ForecastPoint } from '../../../types/dashboard';
+
+const gradientId = `forecast-severity-${useId().replace(/:/g, '')}`;
 
 const props = defineProps({
   points: {
@@ -199,7 +233,11 @@ const props = defineProps({
 const { t } = useI18n();
 
 const {
+  colorStops,
+  currentColor,
+  peakColor,
   dataAvailable,
+  loading,
   forecastNote,
   areaPath,
   avgConfidence,

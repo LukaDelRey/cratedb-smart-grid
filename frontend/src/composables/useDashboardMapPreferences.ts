@@ -48,6 +48,8 @@ export function useDashboardMapPreferences(
   defaultMarkerFilters: MarkerFilters,
 ) {
   const layers = ref(loadStoredObject('cratedb-dashboard-map-layers', defaultLayers));
+  const stationDisplay = ref(loadStoredObject('cratedb-dashboard-station-display', { clustering: false }));
+  watch(stationDisplay, (value) => storeObject('cratedb-dashboard-station-display', value), { deep: true });
 
   const markerFilters = ref(
     loadStoredObject('cratedb-dashboard-map-marker-filters', defaultMarkerFilters),
@@ -70,6 +72,7 @@ export function useDashboardMapPreferences(
   );
 
   return {
+    stationDisplay,
     layers,
     markerFilters,
   };

@@ -7,9 +7,11 @@ import { onMounted, onBeforeUnmount, watch } from 'vue';
 import type { PropType } from 'vue';
 import { useRouter } from 'vue-router';
 import mapboxgl from 'mapbox-gl';
+import { addMarkerClusters } from '../markerClusters';
 import { useI18n } from '../../../../i18n';
 
 const props = defineProps({
+  clustering: { type: Boolean, default: false },
   map: { type: Object as PropType<any>, required: true },
   transformers: { type: Array as PropType<any[]>, default: () => [] },
   visibleStatuses: {
@@ -32,6 +34,8 @@ const coreLayerId = 'transformers-core';
 
 const iconLayerId = 'transformers-icon';
 
+let removeClusters = () => {};
+
 let activePopup = null;
 
 let activePopupId = null;
@@ -51,7 +55,7 @@ const statusColor = [
 function buildGeoJson() {
   return {
     type: 'FeatureCollection',
-    features: props.transformers.map((t) => ({
+    features: props.transformers.filter((t) => props.visibleStatuses.includes(t.status)).map((t) => ({
       type: 'Feature',
       geometry: { type: 'Point', coordinates: [t.lng, t.lat] as [number, number] },
       properties: {
@@ -72,7 +76,7 @@ function buildGeoJson() {
 }
 
 function statusFilter() {
-  return ['in', ['get', 'status'], ['literal', props.visibleStatuses]];
+  return ['all', ['!', ['has', 'point_count']], ['in', ['get', 'status'], ['literal', props.visibleStatuses]]];
 }
 
 function applyStatusFilter() {
@@ -167,7 +171,10 @@ function clearPointer() {
 function addLayer() {
   if (props.map.getSource(sourceId)) return;
 
-  props.map.addSource(sourceId, { type: 'geojson', data: buildGeoJson() });
+  props.map.addSource(sourceId, {
+    type: 'geojson', data: buildGeoJson(),
+    cluster: props.clustering, clusterMaxZoom: 11, clusterRadius: 50,
+  });
 
   props.map.addLayer({
     id: glowLayerId,
@@ -225,6 +232,8 @@ function addLayer() {
     },
   });
 
+  if (props.clustering) removeClusters = addMarkerClusters(props.map, sourceId);
+
   applyStatusFilter();
   props.map.on('click', ringLayerId, openPopup);
   props.map.on('mouseenter', ringLayerId, setPointer);
@@ -256,10 +265,14 @@ onMounted(addLayer);
 
 watch(() => props.transformers, updateLayer, { deep: true });
 
-watch(() => props.visibleStatuses, applyStatusFilter, { deep: true });
+watch(() => props.visibleStatuses, () => {
+  updateLayer();
+  applyStatusFilter();
+}, { deep: true });
 
 onBeforeUnmount(() => {
   activePopup?.remove();
+  removeClusters();
 
   if (props.map.getLayer(ringLayerId)) {
     props.map.off('click', ringLayerId, openPopup);

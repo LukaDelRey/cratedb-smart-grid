@@ -7,6 +7,20 @@ from threading import Lock
 from time import monotonic
 from time import perf_counter
 
+from fastapi import Request
+from fastapi.responses import JSONResponse
+from app.services.region_scope import (
+    EU_COUNTRIES,
+    request_custom_scope,
+    register_custom_scope,
+    get_custom_scope,
+    point_in_shape,
+    request_country,
+    scope_stations,
+    boundaries,
+    station_point,
+    point_in_region,
+)
 from fastapi import FastAPI
 from fastapi import HTTPException
 from fastapi import WebSocket
@@ -104,6 +118,44 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+@app.middleware("http")
+async def country_scope_middleware(request: Request, call_next):
+    scope_id = request.headers.get("X-System-Scope")
+    custom = get_custom_scope(scope_id) if scope_id else None
+    if scope_id and not custom:
+        return JSONResponse(
+            status_code=409, content={"detail": "Custom scope must be registered again"}
+        )
+    country = request.headers.get("X-System-Country")
+    if country and country not in EU_COUNTRIES:
+        return JSONResponse(
+            status_code=400, content={"detail": "Unsupported EU country"}
+        )
+    token = request_country.set("custom:" + scope_id if custom else country)
+    custom_token = request_custom_scope.set(custom)
+    try:
+        return await call_next(request)
+    finally:
+        request_country.reset(token)
+        request_custom_scope.reset(custom_token)
+
+
+@app.post("/api/region-scopes")
+async def register_region_scope(request: Request):
+    body = await request.body()
+    if len(body) > 2097152:
+        raise HTTPException(status_code=413, detail="Region file exceeds 2 MB")
+    try:
+        import json
+
+        scope_id = register_custom_scope(json.loads(body))
+        return {"id": scope_id}
+    except (ValueError, TypeError, KeyError, OverflowError) as error:
+        raise HTTPException(
+            status_code=422, detail="Invalid region geometry"
+        ) from error
 
 
 class AlarmActionRequest(BaseModel):
@@ -534,7 +586,9 @@ def fetch_latest_station_states(limit=10000, force_refresh=False):
             and _latest_station_cache
             and cache_age < LATEST_STATION_CACHE_SECONDS
         ):
-            return [station_alarm_state(station) for station in _latest_station_cache]
+            return scope_stations(
+                [station_alarm_state(station) for station in _latest_station_cache]
+            )
 
         try:
             connection = get_connection()
@@ -581,13 +635,17 @@ def fetch_latest_station_states(limit=10000, force_refresh=False):
                     latest[cached_id] = cached
             _latest_station_cache = list(latest.values())
             _latest_station_cache_at = monotonic()
-            return [station_alarm_state(station) for station in _latest_station_cache]
+            return scope_stations(
+                [station_alarm_state(station) for station in _latest_station_cache]
+            )
 
         except Exception as exc:
 
             print(f"CrateDB latest station fetch failed: {exc}")
 
-            return [station_alarm_state(station) for station in _latest_station_cache]
+            return scope_stations(
+                [station_alarm_state(station) for station in _latest_station_cache]
+            )
 
 
 def current_power_lines(station_states):
@@ -737,6 +795,11 @@ def get_alarm_register(
             severity=severity,
             station_id=station_id,
             limit=limit,
+            station_ids=(
+                [station.get("station_id") for station in fetch_latest_station_states()]
+                if request_country.get()
+                else None
+            ),
         )
     except Exception as exc:
         raise HTTPException(
@@ -747,7 +810,13 @@ def get_alarm_register(
 
 @app.get("/api/alarms/stats")
 def get_alarm_stats():
-    return alarm_stats()
+    return alarm_stats(
+        station_ids=(
+            [station_id(station) for station in fetch_latest_station_states()]
+            if request_country.get()
+            else None
+        )
+    )
 
 
 @app.get("/api/alarms/{alarm_id}/audit")
@@ -885,57 +954,55 @@ def get_regions():
 
     latest_stations = fetch_latest_station_states()
 
-    north = []
-    south = []
-
-    for station in latest_stations:
-
-        try:
-
-            lat, lon = location_to_lat_lon(station["location"])
-
-            if lat >= 46.38:
-                north.append(station)
-            else:
-                south.append(station)
-
-        except Exception:
-            pass
-
-    def build_region(region_id, name, data):
-
-        if not data:
-
-            return {
-                "id": region_id,
-                "name": name,
-                "stations": 0,
-                "healthScore": 100,
-                "blackoutRisk": 0,
-                "activeAlarms": 0,
-            }
-
-        health = mean([calculate_station_health(station) for station in data])
-
-        risk = mean([calculate_station_risk(station) for station in data])
-
-        active_alarms = sum(len(station["active_alarms"]) for station in data)
-
-        return {
-            "id": region_id,
-            "name": name,
-            "stations": len(data),
-            "healthScore": round(health, 1),
-            "blackoutRisk": round(risk, 1),
-            "activeAlarms": active_alarms,
-        }
-
-    return {
-        "regions": [
-            build_region("REGION-NORTH", "North Grid", north),
-            build_region("REGION-SOUTH", "South Grid", south),
+    country = request_country.get() or "HR"
+    result = []
+    custom = request_custom_scope.get()
+    for feature in custom.features if custom else boundaries():
+        properties = feature["properties"]
+        if not custom and properties["country"] != country:
+            continue
+        members = [
+            station
+            for station in latest_stations
+            if (point := station_point(station))
+            and (
+                point_in_shape(custom.shapes[properties["id"]], point)
+                if custom
+                else point_in_region(properties["id"], point)
+            )
         ]
-    }
+        alarms = [
+            alarm for station in members for alarm in station.get("active_alarms", [])
+        ]
+        result.append(
+            {
+                "id": properties["id"],
+                "name": properties["name"],
+                "country": country,
+                "stations": len(members),
+                "healthScore": (
+                    round(
+                        mean(calculate_station_health(station) for station in members),
+                        1,
+                    )
+                    if members
+                    else 100
+                ),
+                "blackoutRisk": (
+                    round(
+                        mean(calculate_station_risk(station) for station in members), 1
+                    )
+                    if members
+                    else 0
+                ),
+                "activeAlarms": len(alarms),
+                "criticalAlarms": sum(
+                    alarm.get("severity") == "CRITICAL" for alarm in alarms
+                ),
+                "warnings": sum(alarm.get("severity") == "WARNING" for alarm in alarms),
+            }
+        )
+    return {"country": country, "regions": result}
 
 
 @app.get("/blackout")

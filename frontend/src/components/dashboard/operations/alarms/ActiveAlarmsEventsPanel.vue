@@ -9,21 +9,16 @@
       class="alarm-events-header row items-center justify-between q-pb-xs col-auto"
       style="min-height: 42px"
     >
-      <div>
+      <div class="row items-center q-gutter-x-sm">
         <div class="section-kicker-light text-caption text-weight-bold text-uppercase">
           {{ t('dashboard.activeAlarmsEvents') }}
         </div>
+        <q-badge class="severity-badge status-badge active">
+          {{ activeCount }} {{ t('dashboard.activeLower') }}
+        </q-badge>
       </div>
 
       <div class="row items-center q-gutter-xs">
-        <q-badge
-          class="alarm-count-badge"
-          color="negative"
-          style="min-height: 20px"
-        >
-          {{ activeCount }} {{ t('dashboard.activeLower') }}
-        </q-badge>
-
         <q-btn
           dense
           flat

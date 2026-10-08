@@ -1,0 +1,14 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "north-operations",
+      "properties": { "name": "Sjeverna operativna regija" },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [[[16.2, 46.1], [16.6, 46.1], [16.6, 46.4], [16.2, 46.4], [16.2, 46.1]]]
+      }
+    }
+  ]
+}

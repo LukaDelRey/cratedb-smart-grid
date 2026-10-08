@@ -64,6 +64,9 @@ _SPECS = [
         "≥",
     ),
     ("oil_leak", "Oil level · critical below or equal", "%", 65, 0, 100, "≤"),
+    ("compact_pin_zoom", "Compact pin zoom threshold", "", 11, 0, 22, "<"),
+    ("forecast_load_warning", "Forecast load · warning", "%", 80, 0, 100, "≥"),
+    ("forecast_load_critical", "Forecast load · critical", "%", 95, 0, 100, "≥"),
     ("arc_discharge", "Acetylene · critical", "ppm", 4, 0.01, 100000, "≥"),
 ]
 DEFAULTS = {key: value for key, _, _, value, _, _, _ in _SPECS}
@@ -101,6 +104,8 @@ def validate(values):
         raise ValueError("Low voltage must be below high voltage.")
     if values["short_circuit"] < values["overload"]:
         raise ValueError("Short circuit current must be at least the overload current.")
+    if values["forecast_load_warning"] >= values["forecast_load_critical"]:
+        raise ValueError("Forecast warning load must be below critical load.")
     return dict(values)
 
 

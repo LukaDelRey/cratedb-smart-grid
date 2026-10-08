@@ -22,7 +22,7 @@
         dense
         flat
         style="min-height: 24px; font-size: 10px"
-        :disable="!hasHiddenStations"
+        :disable="!hasHiddenStations || !store.currentAlarmCount"
         :label="actionLabel"
         @click.stop="expanded = !expanded"
       />
@@ -33,8 +33,24 @@
       style="min-height: 0"
       :class="{ 'top-risk-body--expanded': expanded }"
     >
+      <SidebarEmptyState
+        v-if="!store.currentAlarmCount"
+        :loading="store.loading"
+        :icon="store.stations.length ? 'check_circle_outline' : 'sensors_off'"
+        :color="store.stations.length ? 'positive' : 'blue-grey-4'"
+        :message="
+          t(
+            store.loading
+              ? 'dashboard.forecastLoading'
+              : store.stations.length
+                ? 'dashboard.noRegionAlarms'
+                : 'regions.noCountryStations',
+          )
+        "
+        style="min-height: 180px"
+      />
       <div
-        v-for="station in displayStations"
+        v-for="station in store.currentAlarmCount ? displayStations : []"
         class="top-risk-row cursor-pointer items-center scada-gap-8 q-py-xs q-px-none no-outline"
         role="button"
         style="
@@ -97,9 +113,11 @@
 // Keep component selector isolation for the shared stylesheet.
 defineOptions({ __scopeId: 'data-v-ui-ec93d302' });
 
+import SidebarEmptyState from './SidebarEmptyState.vue';
 import { computed, ref } from 'vue';
 import type { PropType } from 'vue';
 import { useI18n } from '../../../i18n';
+import { useSensorStore } from '../../../stores/sensorStore';
 
 const emit = defineEmits(['select-station']);
 
@@ -111,6 +129,8 @@ const props = defineProps({
     default: () => [],
   },
 });
+
+const store = useSensorStore();
 
 const expanded = ref(false);
 

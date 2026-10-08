@@ -105,6 +105,18 @@
                 {{ fieldLabel(field.key, field.label) }}
               </strong>
 
+              <span
+                v-if="field.key === 'compact_pin_zoom'"
+                class="text-caption text-blue-grey-3"
+              >
+                {{ t('settings.compactPinZoomHelp') }}
+              </span>
+              <span
+                v-if="field.key.startsWith('forecast_load_')"
+                class="text-caption text-blue-grey-3"
+              >
+                {{ t('settings.forecastLoadHelp') }}
+              </span>
               <span style="font-size: 11px">
                 {{ t('settings.default') }}: {{ field.comparison }} {{ field.default }}
                 {{ field.unit }}
@@ -117,7 +129,7 @@
               dark
               dense
               outlined
-              step="any"
+              :step="field.key === 'compact_pin_zoom' ? 0.1 : 'any'"
               type="number"
               :aria-label="fieldLabel(field.key, field.label)"
               :disable="busy"
@@ -128,7 +140,9 @@
             />
           </div>
         </section>
+      </template>
 
+      <template v-if="snapshot">
         <p
           v-if="!valid"
           class="validation-error q-py-none q-px-lg"
@@ -146,7 +160,10 @@
             class="save-state row no-wrap items-center q-gutter-x-sm q-ml-none"
             style="font-size: 11px; color: #8da8bb"
           >
-            <span class="q-mr-sm" :class="dirty ? 'unsaved-dot' : 'saved-dot'" />
+            <span
+              class="q-mr-sm"
+              :class="dirty ? 'unsaved-dot' : 'saved-dot'"
+            />
             {{ t(dirty ? 'settings.changed' : 'settings.unchanged') }}
           </div>
 
@@ -271,6 +288,11 @@ const groups = [
     icon: 'water_drop',
     keys: ['insulation_degradation', 'insulation_methane', 'oil_leak', 'arc_discharge'],
   },
+  {
+    key: 'miscellaneous',
+    icon: 'tune',
+    keys: ['compact_pin_zoom', 'forecast_load_warning', 'forecast_load_critical'],
+  },
 ];
 
 const visibleGroups = computed(() =>
@@ -303,7 +325,8 @@ const valid = computed(() => {
     ) &&
     v.health_critical! < v.health_warning! &&
     v.voltage_drop! < v.overvoltage! &&
-    v.short_circuit! >= v.overload!
+    v.short_circuit! >= v.overload! &&
+    v.forecast_load_warning! < v.forecast_load_critical!
   );
 });
 

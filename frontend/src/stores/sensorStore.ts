@@ -1,11 +1,13 @@
 import { refreshThresholdSettings, thresholdSettings } from './thresholdSettings';
 import { defineStore } from 'pinia';
-import { ref, computed } from 'vue';
+import { ref, computed, watch } from 'vue';
+import { selectedCountry, loadRegionBoundaries, pointInSelectedCountry } from './regionPreferences';
+import { stationCoordinates } from '../services/regionGeometry';
+import { useRegionStatistics } from '../composables/useRegionStatistics';
 
 import {
   fetchLatestStations,
   fetchGridSummary,
-  fetchRegions,
   fetchBlackout,
   fetchPowerLines,
   fetchForecast,
@@ -79,8 +81,6 @@ export const useSensorStore = defineStore('sensorStore', () => {
   const stationsMap = ref<Record<string, Station>>({});
 
   const persistentAlarms = ref<PersistentAlarm[]>([]);
-
-  const regions = ref<Region[]>([]);
 
   const powerLines = ref<PowerLine[]>([]);
 
@@ -314,6 +314,9 @@ export const useSensorStore = defineStore('sensorStore', () => {
 
     stationsMap.value[station.station_id] = station;
 
+    const point = stationCoordinates(station);
+    if (!point || !pointInSelectedCountry(point)) return;
+
     const previous = stationAlarms(existing ?? { station_id: station.station_id });
 
     const current = stationAlarms(station);
@@ -352,12 +355,14 @@ export const useSensorStore = defineStore('sensorStore', () => {
 
   async function refreshAll() {
     loading.value = true;
+    const requestedCountry = selectedCountry.value;
+    await loadRegionBoundaries();
+    if (requestedCountry !== selectedCountry.value) return;
 
     const requests = {
       thresholdData: refreshThresholdSettings(),
       stationData: fetchLatestStations(),
       summaryData: fetchGridSummary(),
-      regionData: fetchRegions(),
       blackoutData: fetchBlackout(),
       lineData: fetchPowerLines(),
       forecastData: fetchForecast(),
@@ -375,6 +380,8 @@ export const useSensorStore = defineStore('sensorStore', () => {
       const settled = await Promise.allSettled(
         entries.map(async ([key, promise]) => [key, await promise]),
       );
+
+      if (requestedCountry !== selectedCountry.value) return;
 
       const data: Record<string, any> = {};
 
@@ -400,7 +407,7 @@ export const useSensorStore = defineStore('sensorStore', () => {
 
       if (data.summaryData) summary.value = data.summaryData;
 
-      if (data.regionData) regions.value = data.regionData;
+      // Regional membership is recomputed from live telemetry and the active geometry.
 
       if (data.blackoutData) blackout.value = data.blackoutData;
 
@@ -541,10 +548,52 @@ export const useSensorStore = defineStore('sensorStore', () => {
   }
 
   const stations = computed<Station[]>(() =>
-    Object.values(stationsMap.value).sort(
-      (a, b) => assetNumber(a.station_id) - assetNumber(b.station_id),
-    ),
+    Object.values(stationsMap.value)
+      .filter((station) => {
+        const point = stationCoordinates(station);
+        return point && pointInSelectedCountry(point);
+      })
+      .sort((a, b) => assetNumber(a.station_id) - assetNumber(b.station_id)),
   );
+
+  const regionStatistics = useRegionStatistics(() => stations.value);
+  const regions = computed<Region[]>(() =>
+    regionStatistics.value.map((region) => ({
+      id: region.id,
+      name: region.name,
+      stations: region.stations.length,
+      stationIds: region.stations.map((station) => station.station_id),
+      healthScore: region.stations.length ? average(region.stations.map(getStationHealth)) : 100,
+      blackoutRisk: region.stations.length ? average(region.stations.map(getStationRisk)) : 0,
+      activeAlarms: region.alarms + region.warnings,
+    })),
+  );
+
+  watch(selectedCountry, () => {
+    stationsMap.value = {};
+    persistentAlarms.value = [];
+    powerLines.value = [];
+    forecast.value = [];
+    insights.value = [];
+    correlations.value = [];
+    selectedRootCause.value = null;
+    contingency.value = null;
+    eventStream.value = [];
+    summary.value = { gridHealth: 100, blackoutRisk: 0, activeAlarms: 0, stations: 0 };
+    blackout.value = { probability: 0, affectedStations: 0, estimatedMinutes: 0 };
+    weather.value = {
+      temperatureC: 0,
+      windRisk: 0,
+      lightningRisk: 0,
+      stormRisk: 0,
+      gridImpact: 0,
+      alerts: [],
+    };
+    topology.value = { platformHealth: 0, nodes: [], edges: [] };
+    for (const key of Object.keys(metricHistory.value) as MetricHistoryKey[])
+      metricHistory.value[key] = [];
+    void refreshAll();
+  });
 
   const alarms = computed<Station[]>(() =>
     stations.value.filter((station) => alarmList(station).length),
@@ -710,6 +759,7 @@ export const useSensorStore = defineStore('sensorStore', () => {
   }
 
   return {
+    regionStatistics,
     persistentAlarms,
     currentAlarmCount,
     currentGridHealth,

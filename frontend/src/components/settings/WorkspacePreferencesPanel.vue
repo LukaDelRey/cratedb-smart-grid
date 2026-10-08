@@ -206,6 +206,12 @@ const groups = computed(() =>
               t('workspaceCopy.showTheControlPanelOverTheMap'),
             ),
             field(
+              'showSubstationGrouping',
+              t('dashboard.stationGrouping'),
+              t('dashboard.stationGroupingHint'),
+            ),
+            field('showMapExpand', t('dashboard.expandMap'), t('dashboard.expandMapHint')),
+            field(
               'showMetrics',
               t('workspaceCopy.operationalMetricsAndCharts'),
               t('workspaceCopy.showTheSixCardsAboveTheOperations'),

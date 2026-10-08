@@ -4,6 +4,8 @@ import type { GridLoadForecast } from '../services/gridApi';
 
 import { useSensorStore } from '../stores/sensorStore';
 import type { ForecastPoint } from '../types/dashboard';
+import { thresholdValue } from '../stores/thresholdSettings';
+import { forecastColor, forecastColorStops } from '../utils/forecastSeverity';
 import { average, clamp } from '../utils/numbers';
 
 type Translate = (key: string, params?: Record<string, string | number>) => string;
@@ -156,14 +158,16 @@ export function useLoadForecast(_getPoints: () => ForecastInputPoint[], t: Trans
       ? t('dashboard.forecastLoading')
       : failed.value
         ? t('dashboard.forecastUnavailable')
-        : !result.value?.available
-          ? t('dashboard.forecastHistoryRequired', { hours: mode.value === '7d' ? 168 : 24 })
-          : result.value.method === 'current-load-persistence'
-            ? `${t('dashboard.forecastLiveBaseline')} · ${t('dashboard.forecastHistoryRequired', { hours: 24 })}`
-            : t('dashboard.forecastHistoricalBaseline', { hours: result.value.historyHours }) +
-              (!result.value.availableHorizons.includes(168)
-                ? ` · ${t('dashboard.forecastHistoryRequired', { hours: 168 })} (7D)`
-                : ''),
+        : !store.loading && !store.stations.length
+          ? t('regions.noCountryStations')
+          : !result.value?.available
+            ? t('dashboard.forecastHistoryRequired', { hours: mode.value === '7d' ? 168 : 24 })
+            : result.value.method === 'current-load-persistence'
+              ? `${t('dashboard.forecastLiveBaseline')} · ${t('dashboard.forecastHistoryRequired', { hours: 24 })}`
+              : t('dashboard.forecastHistoricalBaseline', { hours: result.value.historyHours }) +
+                (!result.value.availableHorizons.includes(168)
+                  ? ` · ${t('dashboard.forecastHistoryRequired', { hours: 168 })} (7D)`
+                  : ''),
   );
 
   const peakLoad = computed(() =>
@@ -215,6 +219,25 @@ export function useLoadForecast(_getPoints: () => ForecastInputPoint[], t: Trans
 
     return clamp(Math.round((latest / capacityMW.value) * 100));
   });
+
+  const warningLoad = computed(() => thresholdValue('forecast_load_warning', 80));
+  const criticalLoad = computed(() => thresholdValue('forecast_load_critical', 95));
+  const colorStops = computed(() => forecastColorStops(warningLoad.value, criticalLoad.value));
+  const currentColor = computed(() =>
+    forecastColor(
+      ((displayPoints.value.at(-1)?.loadMW || 0) / capacityMW.value) * 100,
+      warningLoad.value,
+      criticalLoad.value,
+    ),
+  );
+  const peakColor = computed(() =>
+    forecastColor(
+      (Math.max(0, ...displayPoints.value.map((point) => point.loadMW || 0)) / capacityMW.value) *
+        100,
+      warningLoad.value,
+      criticalLoad.value,
+    ),
+  );
 
   const chartPoints = computed(() => {
     const width = 320;
@@ -287,7 +310,11 @@ export function useLoadForecast(_getPoints: () => ForecastInputPoint[], t: Trans
   });
 
   return {
+    colorStops,
+    currentColor,
+    peakColor,
     dataAvailable,
+    loading,
     forecastNote,
     confidenceAvailable,
     areaPath,

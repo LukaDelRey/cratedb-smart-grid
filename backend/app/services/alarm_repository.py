@@ -388,7 +388,9 @@ def reconcile_alarm_payload(payload):
     return changed
 
 
-def list_alarms(statuses=None, severity=None, station_id=None, limit=250):
+def list_alarms(
+    statuses=None, severity=None, station_id=None, limit=250, station_ids=None
+):
     cursor = _connection().cursor()
     clauses = []
     params = []
@@ -407,6 +409,13 @@ def list_alarms(statuses=None, severity=None, station_id=None, limit=250):
     if station_id:
         clauses.append("station_id = ?")
         params.append(station_id)
+
+    if station_ids is not None:
+        if not station_ids:
+            return []
+        placeholders = ", ".join("?" for _ in station_ids)
+        clauses.append(f"station_id IN ({placeholders})")
+        params.extend(station_ids)
 
     where_clause = f"WHERE {' AND '.join(clauses)}" if clauses else ""
     safe_limit = max(1, min(int(limit), 1000))
@@ -495,13 +504,25 @@ def transition_alarm(alarm_id, status, actor="operator", note=None):
     return get_alarm(alarm_id)
 
 
-def alarm_stats():
+def alarm_stats(station_ids=None):
     cursor = _connection().cursor()
-    cursor.execute("""
+    where = ""
+    params = ()
+    if station_ids is not None:
+        placeholders = ", ".join("?" for _ in station_ids)
+        where = (
+            f"WHERE station_id IN ({placeholders})" if station_ids else "WHERE 1 = 0"
+        )
+        params = tuple(station_ids)
+    cursor.execute(
+        f"""
         SELECT status, severity, COUNT(*) AS count
         FROM alarm_events
+        {where}
         GROUP BY status, severity
-        """)
+        """,
+        params,
+    )
 
     totals = {
         "active": 0,

@@ -1,5 +1,80 @@
 export default {
+  regions: {
+    nameRequired: 'Unesi naziv regije.',
+    remove: 'Obriši konfiguraciju',
+    activate: 'Odaberi regiju',
+    manage: 'Upravljanje',
+    profileName: 'Naziv vlastite regije',
+    close: 'Zatvori',
+    popupLegend: 'Zeleno: normalne trafostanice · žuto/crveno: aktivni alarmi',
+    twinScope: 'Telemetrija trafostanica unutar granice ove regije.',
+    unavailable: 'Ova regija nije dostupna u trenutačnoj konfiguraciji države ili regija.',
+    statusMix: 'Statusi trafostanica',
+    activeConditions: 'Aktivni alarmi',
+    members: 'Trafostanice u regiji',
+    noAlarms: 'Nema aktivnih alarma u ovoj regiji.',
+    searchStations: 'Pretraži trafostanice',
+    telemetry: 'Telemetrija uživo',
+    averageOil: 'Prosječna temperatura ulja',
+    averageVoltage: 'Prosječni napon',
+    configure: 'Postavke regija',
+
+    title: 'Regije',
+    description: 'Postavi geografsko područje prema kojem se računaju i prikazuju podaci sustava.',
+    country: 'Regija sustava',
+    countryScope:
+      'Odaberi državu ili spremljenu vlastitu regiju. Njezine granice određuju koje se trafostanice, alarmi i analitika uključuju u sustav.',
+    regionsCount: 'regija',
+    administrative: 'Regije iz izvora',
+    custom: 'Vlastite regije',
+    load: 'Aktivna snaga',
+    criticalAlarms: 'Kritični alarmi',
+    warningAlarms: 'Upozorenja',
+    liveCounts: 'Aktivne alarmne uvjete brojimo zasebno od broja trafostanica po statusu.',
+    noStations: 'U ovoj regiji nema trafostanica s dostupnom telemetrijom.',
+    otherCountry:
+      'Ova država nije aktivna. Za njezine trafostanice i alarme odaberi državu u Postavke → Regije.',
+    loading: 'Učitavanje granica…',
+    loadError: 'Granice regija nisu učitane. Pokušaj ponovno.',
+    retry: 'Pokušaj ponovno',
+    noCountryStations: 'Nema telemetrije za odabranu državu',
+    boundaryNote:
+      'Granice: geoBoundaries gbOpen, razina ADM1. Razina podjele i godina podataka ovise o državi. Pojednostavljene granice služe za pregled, a nisu katastarska podloga.',
+    search: 'Pretraži regije',
+    noMatches: 'Nema pronađenih regija.',
+    customTitle: 'Spremljene vlastite regije',
+    customHelp:
+      'Uvezi GeoJSON FeatureCollection s imenovanim Polygon ili MultiPolygon značajkama. Odaberi naziv konfiguracije; pojavit će se kao zasebna opcija uz države. Regije mogu prelaziti državne granice.',
+    customLimits:
+      'WGS84 / EPSG:4326 · koordinate [geografska dužina, širina] · zatvoreni prsteni · do 2 MB, 200 regija i 100.000 vrhova.',
+    chooseFile: 'Odaberi GeoJSON',
+    fileTooLarge: 'Datoteka prelazi dopuštenih 2 MB.',
+    sample: 'Preuzmi primjer',
+    export: 'Izvezi moje regije',
+    restore: 'Vrati regije iz izvora',
+    importSuccess: 'Vlastita regija je spremljena i odabrana.',
+    localOnly:
+      'Država i vlastite regije spremaju se u ovom pregledniku. Izvezi datoteku za sigurnosnu kopiju ili prijenos drugom korisniku.',
+    sources: 'Izvori, godine i licence',
+    previewTitle: 'Pregled prije uvoza',
+    overlapNote:
+      'Trafostanice se pridružuju prema koordinatama. Regije se mogu preklapati: trafostanica doprinosi svakoj regiji u kojoj se nalazi, ali se u ukupnim podacima sustava broji jednom.',
+    cancel: 'Odustani',
+    apply: 'Primijeni regije',
+    sampleName: 'Moja operativna regija',
+    invalidFile:
+      'Neispravan GeoJSON. Provjeri FeatureCollection, nazive, Polygon/MultiPolygon geometriju, zatvorene prstene i WGS84 koordinate.',
+    wrongCountry: 'Svaka vlastita regija mora se barem dijelom nalaziti u odabranoj državi.',
+    storageError:
+      'Postavke nisu spremljene. Provjeri dostupan prostor i dozvole pohrane preglednika.',
+    unassigned:
+      'Trafostanice izvan vlastitih regija: {count}. One su i dalje uključene u podatke države.',
+    firstFifty: 'Prikazano je prvih 50 trafostanica.',
+  },
   thresholdLabels: {
+    compact_pin_zoom: 'Zoom prag za male pinove',
+    forecast_load_warning: 'Prognozirano opterećenje · upozorenje (žuto)',
+    forecast_load_critical: 'Prognozirano opterećenje · kritično (crveno)',
     health_warning: 'Health score · upozorenje ispod',
     health_critical: 'Health score · kritično ispod',
     overload: 'Struja · kritično',
@@ -90,6 +165,13 @@ export default {
     alarmImpact: 'Aktivan telemetrijski alarm; vrijeme kvara nije predviđeno',
   },
   settings: {
+    forecastLoadHelp:
+      'Postotak nominalnog kapaciteta. Prag upozorenja mora biti niži od kritičnog.',
+    miscellaneous: 'Ostalo',
+    compactPinZoom: 'Zoom prag za male pinove',
+    compactPinZoomHelp:
+      'Ispod ovog zooma trafostanice postaju male točke. Zadano: 11 · raspon: 0–22. Veća vrijednost prebacuje na točke ranije pri udaljavanju. Sprema se u ovom pregledniku.',
+
     general: 'Općenito',
     generalDescription: 'Osobne postavke za ovu platformu.',
     language: 'Jezik sučelja',
@@ -128,6 +210,14 @@ export default {
     oil: 'Zaštita ulja i plinova',
   },
   dashboard: {
+    noRegionAlarms: 'Nema aktivnih alarma u odabranoj regiji.',
+    stationGrouping: 'Grupiranje trafostanica',
+    stationGroupingHint:
+      'Prikaži kontrolu Pinovi / Grupe. Kada je skrivena, koriste se pojedinačni pinovi.',
+    expandMapHint: 'Prikaži kontrolu proširenja i smanjenja uz navigaciju mape.',
+
+    expandMap: 'Proširi mapu',
+    minimizeMap: 'Smanji mapu',
     noVisibleComponents: 'Sve komponente dashboarda su skrivene. Uključite ih u postavkama.',
     mapMarkerCounts: 'Markeri na karti',
     markerLive: 'Uživo',
@@ -276,6 +366,13 @@ export default {
     lowUpper: 'NISKO',
     lowRisk: 'NIZAK RIZIK',
     maintenance: 'Održavanje',
+    stationDisplay: 'Prikaz trafostanica',
+    individualPins: 'Pinovi',
+    groupedPins: 'Grupe',
+    stationDisplayHint: 'Grupiraj obližnje trafostanice. Klik na grupu približava mapu.',
+    mapClustering: 'Grupiraj obližnje pinove',
+    resizeMap: 'Podesi visinu mape',
+    resizeMapHint: 'Povuci za promjenu visine · Dvoklik za početni raspored',
     mapLayers: 'SLOJEVI KARTE',
     medium: 'SREDNJE',
     moisture: 'Vlaga',

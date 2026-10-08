@@ -6,11 +6,14 @@
 import { onMounted, onBeforeUnmount, watch } from 'vue';
 import type { PropType } from 'vue';
 import mapboxgl from 'mapbox-gl';
+import { addMarkerClusters } from '../markerClusters';
 import { useSensorStore } from '../../../../stores/sensorStore';
 import { useI18n } from '../../../../i18n';
+import { compactPinZoom } from '../../../../stores/mapDisplayPreferences';
 import { stationAlarms } from '../../../../services/stationAlarms';
 
 const props = defineProps({
+  clustering: { type: Boolean, default: false },
   map: { type: Object as PropType<any>, required: true },
   stations: { type: Array as PropType<any[]>, default: () => [] },
   visibleStatuses: {
@@ -29,6 +32,11 @@ const { t } = useI18n();
 
 const sourceId = 'substations-source';
 
+const dotLayerId = 'substations-dots';
+
+// Switch immediately to compact dots when zooming out.
+const compactZoom = compactPinZoom;
+
 const glowLayerId = 'substations-glow';
 
 const ringLayerId = 'substations-ring';
@@ -40,6 +48,8 @@ const coreLayerId = 'substations-core';
 const iconLayerId = 'substations-icon';
 
 const labelLayerId = 'substations-labels';
+
+let removeClusters = () => {};
 
 let activePopup = null;
 
@@ -110,36 +120,32 @@ function stationFeature(station) {
 function buildGeoJson() {
   return {
     type: 'FeatureCollection',
-    features: props.stations.map(stationFeature),
+    features: props.stations
+      .map(stationFeature)
+      .filter((feature) => props.visibleStatuses.includes(feature.properties.status)),
   };
 }
 
 function statusFilter() {
-  return ['in', ['get', 'status'], ['literal', props.visibleStatuses]];
+  return [
+    'all',
+    ['!', ['has', 'point_count']],
+    ['in', ['get', 'status'], ['literal', props.visibleStatuses]],
+  ];
 }
 
 function applyStatusFilter() {
-  [glowLayerId, ringLayerId, layerId, coreLayerId, iconLayerId, labelLayerId].forEach((id) => {
-    if (props.map.getLayer(id)) {
-      props.map.setFilter(id, statusFilter());
-    }
-  });
+  [dotLayerId, glowLayerId, ringLayerId, layerId, coreLayerId, iconLayerId, labelLayerId].forEach(
+    (id) => {
+      if (props.map.getLayer(id)) {
+        props.map.setFilter(id, statusFilter());
+      }
+    },
+  );
 }
 
 function markerRadius(baseSmall, baseLarge) {
-  return [
-    'interpolate',
-    ['linear'],
-    ['zoom'],
-    6,
-    baseSmall,
-    9,
-    baseSmall + 1.5,
-    12,
-    baseLarge,
-    15,
-    baseLarge + 2,
-  ];
+  return ['interpolate', ['linear'], ['zoom'], 11, baseSmall, 12, baseLarge, 15, baseLarge + 2];
 }
 
 function popupHtml(p) {
@@ -272,22 +278,59 @@ function addLayer() {
   props.map.addSource(sourceId, {
     type: 'geojson',
     data: buildGeoJson(),
+    cluster: props.clustering,
+    clusterMaxZoom: 11,
+    clusterRadius: 50,
+    clusterProperties: {
+      critical: ['+', ['case', ['==', ['get', 'status'], 'critical'], 1, 0]],
+      warning: ['+', ['case', ['==', ['get', 'status'], 'warning'], 1, 0]],
+      offline: ['+', ['case', ['==', ['get', 'status'], 'offline'], 1, 0]],
+    },
+  });
+
+  props.map.addLayer({
+    id: dotLayerId,
+    type: 'circle',
+    source: sourceId,
+    maxzoom: compactZoom.value,
+    paint: {
+      'circle-radius': [
+        'interpolate',
+        ['linear'],
+        ['zoom'],
+        0,
+        0.75,
+        6,
+        1,
+        8,
+        1.5,
+        9.8,
+        2,
+        11,
+        2.5,
+      ],
+      'circle-color': statusColor,
+      'circle-opacity': 1,
+      'circle-blur': 0,
+    },
   });
 
   props.map.addLayer({
     id: glowLayerId,
+    minzoom: compactZoom.value,
     type: 'circle',
     source: sourceId,
     paint: {
       'circle-radius': markerRadius(6, 14),
       'circle-color': statusColor,
-      'circle-opacity': ['interpolate', ['linear'], ['zoom'], 6, 0.16, 10, 0.26, 14, 0.36],
+      'circle-opacity': 0.26,
       'circle-blur': 0.72,
     },
   });
 
   props.map.addLayer({
     id: ringLayerId,
+    minzoom: compactZoom.value,
     type: 'circle',
     source: sourceId,
     paint: {
@@ -303,6 +346,7 @@ function addLayer() {
 
   props.map.addLayer({
     id: layerId,
+    minzoom: compactZoom.value,
     type: 'circle',
     source: sourceId,
     paint: {
@@ -315,6 +359,7 @@ function addLayer() {
 
   props.map.addLayer({
     id: coreLayerId,
+    minzoom: compactZoom.value,
     type: 'circle',
     source: sourceId,
     paint: {
@@ -326,6 +371,7 @@ function addLayer() {
 
   props.map.addLayer({
     id: iconLayerId,
+    minzoom: compactZoom.value,
     type: 'symbol',
     source: sourceId,
     layout: {
@@ -338,7 +384,7 @@ function addLayer() {
       'text-color': statusColor,
       'text-halo-color': '#02060b',
       'text-halo-width': 1.1,
-      'text-opacity': ['interpolate', ['linear'], ['zoom'], 6, 0, 7.5, 0.75, 10, 1],
+      'text-opacity': 1,
     },
   });
 
@@ -360,11 +406,16 @@ function addLayer() {
     },
   });
 
+  if (props.clustering) removeClusters = addMarkerClusters(props.map, sourceId);
+
   applyStatusFilter();
 
   props.map.on('click', ringLayerId, openPopup);
+  props.map.on('click', dotLayerId, openPopup);
   props.map.on('mouseenter', ringLayerId, setPointer);
+  props.map.on('mouseenter', dotLayerId, setPointer);
   props.map.on('mouseleave', ringLayerId, clearPointer);
+  props.map.on('mouseleave', dotLayerId, clearPointer);
 
   handleFocusRequest(props.focusStation);
 }
@@ -398,6 +449,12 @@ function updateLayer() {
 }
 
 onMounted(addLayer);
+watch(compactZoom, (zoom) => {
+  if (props.map.getLayer(dotLayerId)) props.map.setLayerZoomRange(dotLayerId, 0, zoom);
+  for (const id of [glowLayerId, ringLayerId, layerId, coreLayerId, iconLayerId]) {
+    if (props.map.getLayer(id)) props.map.setLayerZoomRange(id, zoom, 24);
+  }
+});
 
 watch(
   () => props.stations,
@@ -411,12 +468,27 @@ watch(
   { deep: true },
 );
 
-watch(() => props.visibleStatuses, applyStatusFilter, { deep: true });
+watch(
+  () => props.visibleStatuses,
+  () => {
+    updateLayer();
+    applyStatusFilter();
+  },
+  { deep: true },
+);
 
 watch(() => props.focusStation, handleFocusRequest);
 
 onBeforeUnmount(() => {
   activePopup?.remove();
+  removeClusters();
+
+  if (props.map.getLayer(dotLayerId)) {
+    props.map.off('click', dotLayerId, openPopup);
+    props.map.off('mouseenter', dotLayerId, setPointer);
+    props.map.off('mouseleave', dotLayerId, clearPointer);
+    props.map.removeLayer(dotLayerId);
+  }
 
   if (props.map.getLayer(ringLayerId)) {
     props.map.off('click', ringLayerId, openPopup);

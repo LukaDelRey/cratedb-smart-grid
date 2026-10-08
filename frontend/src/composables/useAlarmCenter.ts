@@ -1,4 +1,5 @@
-import { computed, onMounted, onUnmounted, ref } from 'vue';
+import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
+import { selectedCountry } from '../stores/regionPreferences';
 
 import {
   acknowledgePersistentAlarm,
@@ -77,6 +78,7 @@ export function useAlarmCenter(autoRefresh = true) {
 
   async function refresh() {
     loading.value = true;
+    const country = selectedCountry.value;
 
     try {
       const [alarmRows, totals] = await Promise.all([
@@ -84,6 +86,7 @@ export function useAlarmCenter(autoRefresh = true) {
         fetchAlarmStats(),
       ]);
 
+      if (country !== selectedCountry.value) return;
       alarms.value = alarmRows;
       stats.value = totals;
       error.value = null;
@@ -152,6 +155,14 @@ export function useAlarmCenter(autoRefresh = true) {
 
     return 'blue-grey';
   }
+
+  watch(selectedCountry, () => {
+    alarms.value = [];
+    stats.value = { ...EMPTY_STATS };
+    selectedAlarm.value = null;
+    audit.value = [];
+    void refresh();
+  });
 
   onMounted(() => {
     void refresh();

@@ -87,7 +87,9 @@ const route = useRoute();
 
 const { t } = useI18n();
 
-const firstRegion = computed(() => store.regions[0]?.id || 'REGION-NORTH');
+const firstRegion = computed(
+  () => [...store.regions].sort((a, b) => (b.stations || 0) - (a.stations || 0))[0]?.id || '',
+);
 
 const firstSubstation = computed(() => store.stations[0]?.station_id || 'TS-001');
 
@@ -104,7 +106,9 @@ const navItems = computed(() => [
   {
     label: t('dashboard.regionTwin'),
     icon: 'public',
-    to: `/regions/${firstRegion.value}`,
+    to: firstRegion.value
+      ? `/regions/${encodeURIComponent(firstRegion.value)}`
+      : '/settings?tab=regions',
     active: route.path.startsWith('/regions/'),
   },
   {

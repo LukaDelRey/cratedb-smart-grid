@@ -3,6 +3,8 @@ import { reactive, watch } from 'vue';
 const defaults = {
   showMap: true,
   showMapControls: true,
+  showSubstationGrouping: true,
+  showMapExpand: true,
   showMetrics: true,
   showAlarms: true,
   showCorrelation: true,
@@ -21,6 +23,8 @@ const defaults = {
 export const displayPreferenceKeys = [
   'showMap',
   'showMapControls',
+  'showSubstationGrouping',
+  'showMapExpand',
   'showMetrics',
   'showAlarms',
   'showCorrelation',

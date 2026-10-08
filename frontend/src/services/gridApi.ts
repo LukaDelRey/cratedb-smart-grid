@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { selectedCountry, selectedCustomProfile } from '../stores/regionPreferences';
 import type {
   AlarmCorrelation,
   AlarmAuditEntry,
@@ -38,6 +39,47 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 const api = axios.create({
   baseURL: API_URL,
   timeout: 10000,
+});
+
+const registeredScopes = new WeakMap<object, Promise<string>>();
+async function scopeToken(data: object): Promise<string> {
+  let pending = registeredScopes.get(data);
+  if (!pending) {
+    pending = (async () => {
+      const response = await fetch(`${API_URL}/api/region-scopes`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+        signal: AbortSignal.timeout(10000),
+      });
+      if (!response.ok) throw new Error('Could not register custom region');
+      return (await response.json()).id as string;
+    })();
+    registeredScopes.set(data, pending);
+    pending.catch(() => registeredScopes.delete(data));
+  }
+  return pending;
+}
+api.interceptors.request.use(async (config) => {
+  const profile = selectedCustomProfile.value;
+  if (profile) {
+    config.headers.delete('X-System-Country');
+    config.headers.set('X-System-Scope', await scopeToken(profile.data));
+  } else {
+    config.headers.delete('X-System-Scope');
+    config.headers.set('X-System-Country', selectedCountry.value);
+  }
+  return config;
+});
+api.interceptors.response.use(undefined, async (error) => {
+  const config = error.config;
+  const profile = selectedCustomProfile.value;
+  if (error.response?.status === 409 && config && !config.scopeRetried && profile) {
+    registeredScopes.delete(profile.data);
+    config.scopeRetried = true;
+    return api.request(config);
+  }
+  return Promise.reject(error);
 });
 
 export async function fetchLatestStations(): Promise<Station[]> {

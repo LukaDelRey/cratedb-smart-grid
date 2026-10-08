@@ -52,6 +52,7 @@ export type Station = {
 };
 
 export type Region = {
+  stationIds?: string[];
   id: string;
   name?: string;
   stations?: number;
