@@ -21,9 +21,7 @@ def _line_value(line, *keys):
 
 def simulate_grid_physics(stations, lines, failed_asset_id=None):
     station_map = {
-        _station_id(station): station
-        for station in stations
-        if _station_id(station)
+        _station_id(station): station for station in stations if _station_id(station)
     }
     adjacency = defaultdict(list)
 
@@ -101,38 +99,62 @@ def simulate_grid_physics(stations, lines, failed_asset_id=None):
         if load_pct >= 100:
             overloaded += 1
 
-        edges.append({
-            "id": _line_value(line, "line_id", "id") or f"{source}-{target}",
-            "from": source,
-            "to": target,
-            "flowMW": round(flow_mw, 3),
-            "capacityMW": round(capacity_mw, 2),
-            "loadPct": round(load_pct, 1),
-            "lossMW": round(loss_mw, 4),
-            "status": "CRITICAL" if load_pct >= 100 else "WARNING" if load_pct >= 80 else "ONLINE",
-        })
+        edges.append(
+            {
+                "id": _line_value(line, "line_id", "id") or f"{source}-{target}",
+                "from": source,
+                "to": target,
+                "flowMW": round(flow_mw, 3),
+                "capacityMW": round(capacity_mw, 2),
+                "loadPct": round(load_pct, 1),
+                "lossMW": round(loss_mw, 4),
+                "status": (
+                    "CRITICAL"
+                    if load_pct >= 100
+                    else "WARNING" if load_pct >= 80 else "ONLINE"
+                ),
+            }
+        )
 
     nodes = []
     low_voltage_nodes = 0
     for node_id, state in node_state.items():
         depth = affected_depth.get(node_id)
         propagation_penalty = 0 if depth is None else max(0.0, 0.18 - depth * 0.045)
-        voltage_pu = 0 if state["failed"] else max(
-            0.65,
-            state["measuredVoltagePu"] - state["loadPu"] * 0.018 - propagation_penalty,
+        voltage_pu = (
+            0
+            if state["failed"]
+            else max(
+                0.65,
+                state["measuredVoltagePu"]
+                - state["loadPu"] * 0.018
+                - propagation_penalty,
+            )
         )
-        current = float(nested_value(station_map[node_id], "electrical", "current_a") or 0)
+        current = float(
+            nested_value(station_map[node_id], "electrical", "current_a") or 0
+        )
         thermal_loss_index = (current / 500) ** 2
         if voltage_pu < 0.95:
             low_voltage_nodes += 1
 
-        nodes.append({
-            **state,
-            "voltagePu": round(voltage_pu, 4),
-            "thermalLossIndex": round(thermal_loss_index, 4),
-            "cascadeDepth": depth,
-            "stress": "FAILED" if state["failed"] else "HIGH" if voltage_pu < 0.95 or thermal_loss_index > 1 else "NORMAL",
-        })
+        nodes.append(
+            {
+                **state,
+                "voltagePu": round(voltage_pu, 4),
+                "thermalLossIndex": round(thermal_loss_index, 4),
+                "cascadeDepth": depth,
+                "stress": (
+                    "FAILED"
+                    if state["failed"]
+                    else (
+                        "HIGH"
+                        if voltage_pu < 0.95 or thermal_loss_index > 1
+                        else "NORMAL"
+                    )
+                ),
+            }
+        )
 
     cascade_risk = _clamp(
         len(affected_depth) / max(len(nodes), 1) * 100

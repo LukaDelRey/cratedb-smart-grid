@@ -82,29 +82,13 @@ def voltage_health_penalty(voltage):
 
 def calculate_station_health(station):
 
-    oil_temp = nested_value(
-        station,
-        "thermal",
-        "oil_temp_c"
-    )
+    oil_temp = nested_value(station, "thermal", "oil_temp_c")
 
-    current = nested_value(
-        station,
-        "electrical",
-        "current_a"
-    )
+    current = nested_value(station, "electrical", "current_a")
 
-    voltage = nested_value(
-        station,
-        "electrical",
-        "voltage_kv"
-    )
+    voltage = nested_value(station, "electrical", "voltage_kv")
 
-    thd = nested_value(
-        station,
-        "electrical",
-        "harmonics_thd"
-    )
+    thd = nested_value(station, "electrical", "harmonics_thd")
 
     score = 100
     score -= oil_temp * 0.28
@@ -116,43 +100,20 @@ def calculate_station_health(station):
         if alarm_enabled(station, alarm_name):
             score -= penalty
 
-    return max(
-        0,
-        min(100, round(score))
-    )
+    return max(0, min(100, round(score)))
 
 
 def calculate_station_risk(station):
 
-    oil_temp = nested_value(
-        station,
-        "thermal",
-        "oil_temp_c"
-    )
+    oil_temp = nested_value(station, "thermal", "oil_temp_c")
 
-    current = nested_value(
-        station,
-        "electrical",
-        "current_a"
-    )
+    current = nested_value(station, "electrical", "current_a")
 
-    active_power = nested_value(
-        station,
-        "electrical",
-        "active_power_kw"
-    )
+    active_power = nested_value(station, "electrical", "active_power_kw")
 
-    thd = nested_value(
-        station,
-        "electrical",
-        "harmonics_thd"
-    )
+    thd = nested_value(station, "electrical", "harmonics_thd")
 
-    hydrogen = nested_value(
-        station,
-        "oil_gas",
-        "hydrogen_ppm"
-    )
+    hydrogen = nested_value(station, "oil_gas", "hydrogen_ppm")
 
     risk = 5
     risk += max(0, oil_temp - 60) * 0.8
@@ -165,7 +126,4 @@ def calculate_station_risk(station):
         if alarm_enabled(station, alarm_name):
             risk += penalty
 
-    return min(
-        100,
-        max(0, round(risk))
-    )
+    return min(100, max(0, round(risk)))

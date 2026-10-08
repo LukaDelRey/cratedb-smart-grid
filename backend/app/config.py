@@ -1,6 +1,5 @@
 import os
 
-
 CRATE_URL = os.getenv("CRATE_URL", "http://cratedb:4200")
 MQTT_HOST = os.getenv("MQTT_HOST", "emqx")
 MQTT_PORT = int(os.getenv("MQTT_PORT", "1883"))

@@ -4,7 +4,6 @@ from crate import client
 
 from app.config import CRATE_URL
 
-
 REQUIRED_OBJECTS = ("electrical", "thermal", "oil_gas", "alarms")
 
 
@@ -101,14 +100,12 @@ def station_history(station_id, hours=24, limit=500):
 def recent_telemetry(limit=500):
     safe_limit = max(1, min(int(limit), 5000))
     cursor = _connection().cursor()
-    cursor.execute(
-        f"""
+    cursor.execute(f"""
         SELECT timestamp, station_id, station_name, location,
                electrical, thermal, oil_gas, alarms
         FROM trafostanice_sensors
         ORDER BY timestamp DESC
         LIMIT {safe_limit}
-        """
-    )
+        """)
     columns = [column[0] for column in cursor.description]
     return [dict(zip(columns, row)) for row in cursor.fetchall()]

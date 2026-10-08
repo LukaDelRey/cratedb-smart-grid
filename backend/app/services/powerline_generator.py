@@ -105,12 +105,7 @@ from math import sqrt
 
 def parse_location(location):
 
-    match = (
-        location
-        .replace("(", "")
-        .replace(")", "")
-        .split(",")
-    )
+    match = location.replace("(", "").replace(")", "").split(",")
 
     lon = float(match[0])
     lat = float(match[1])
@@ -122,29 +117,16 @@ def normalize_station(station):
 
     if "station_id" in station:
 
-        lat, lon = parse_location(
-            station["location"]
-        )
+        lat, lon = parse_location(station["location"])
 
-        return {
-            "id": station["station_id"],
-            "lat": lat,
-            "lon": lon
-        }
+        return {"id": station["station_id"], "lat": lat, "lon": lon}
 
-    return {
-        "id": station["id"],
-        "lat": station["lat"],
-        "lon": station["lon"]
-    }
+    return {"id": station["id"], "lat": station["lat"], "lon": station["lon"]}
 
 
 def distance(a, b):
 
-    return sqrt(
-        (a["lat"] - b["lat"]) ** 2 +
-        (a["lon"] - b["lon"]) ** 2
-    )
+    return sqrt((a["lat"] - b["lat"]) ** 2 + (a["lon"] - b["lon"]) ** 2)
 
 
 def get_line_status(load_pct):
@@ -162,17 +144,12 @@ class UnionFind:
 
     def __init__(self, items):
 
-        self.parent = {
-            item: item
-            for item in items
-        }
+        self.parent = {item: item for item in items}
 
     def find(self, item):
 
         if self.parent[item] != item:
-            self.parent[item] = self.find(
-                self.parent[item]
-            )
+            self.parent[item] = self.find(self.parent[item])
 
         return self.parent[item]
 
@@ -195,10 +172,7 @@ def generate_power_lines(source_stations):
         normalize_station(station)
         for station in source_stations
         if station.get("location")
-        or (
-            station.get("lat") is not None
-            and station.get("lon") is not None
-        )
+        or (station.get("lat") is not None and station.get("lon") is not None)
     ]
 
     if len(nodes) < 2:
@@ -208,22 +182,13 @@ def generate_power_lines(source_stations):
 
     for i, a in enumerate(nodes):
 
-        for b in nodes[i + 1:]:
+        for b in nodes[i + 1 :]:
 
-            edges.append({
-                "from": a,
-                "to": b,
-                "distance": distance(a, b)
-            })
+            edges.append({"from": a, "to": b, "distance": distance(a, b)})
 
-    edges.sort(
-        key=lambda edge: edge["distance"]
-    )
+    edges.sort(key=lambda edge: edge["distance"])
 
-    uf = UnionFind([
-        node["id"]
-        for node in nodes
-    ])
+    uf = UnionFind([node["id"] for node in nodes])
 
     lines = []
     used_edges = set()
@@ -237,13 +202,9 @@ def generate_power_lines(source_stations):
         if not uf.union(a["id"], b["id"]):
             continue
 
-        used_edges.add(
-            tuple(sorted([a["id"], b["id"]]))
-        )
+        used_edges.add(tuple(sorted([a["id"], b["id"]])))
 
-        lines.append(
-            build_line(lines, a, b)
-        )
+        lines.append(build_line(lines, a, b))
 
         if len(lines) >= len(nodes) - 1:
             break
@@ -259,18 +220,14 @@ def generate_power_lines(source_stations):
         a = edge["from"]
         b = edge["to"]
 
-        key = tuple(
-            sorted([a["id"], b["id"]])
-        )
+        key = tuple(sorted([a["id"], b["id"]]))
 
         if key in used_edges:
             continue
 
         used_edges.add(key)
 
-        lines.append(
-            build_line(lines, a, b)
-        )
+        lines.append(build_line(lines, a, b))
 
         extra_limit -= 1
 
@@ -281,27 +238,15 @@ def build_line(lines, a, b):
 
     load_pct = 35 + (len(lines) % 55)
 
-    voltage = (
-        400
-        if len(lines) % 19 == 0
-        else 220
-        if len(lines) % 7 == 0
-        else 110
-    )
+    voltage = 400 if len(lines) % 19 == 0 else 220 if len(lines) % 7 == 0 else 110
 
     return {
         "line_id": f"LINE-{len(lines) + 1:04}",
         "from_station": a["id"],
         "to_station": b["id"],
-        "from_coords": [
-            a["lat"],
-            a["lon"]
-        ],
-        "to_coords": [
-            b["lat"],
-            b["lon"]
-        ],
+        "from_coords": [a["lat"], a["lon"]],
+        "to_coords": [b["lat"], b["lon"]],
         "voltage_kv": voltage,
         "load_pct": load_pct,
-        "status": get_line_status(load_pct)
+        "status": get_line_status(load_pct),
     }

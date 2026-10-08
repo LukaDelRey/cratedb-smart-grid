@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Local snapshot and comparison workspace for the styling refactor.
+.style-refactor-backup/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

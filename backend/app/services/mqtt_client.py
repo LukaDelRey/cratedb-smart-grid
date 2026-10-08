@@ -7,7 +7,6 @@ import paho.mqtt.client as mqtt
 from app.config import MQTT_HOST, MQTT_PORT
 from app.services.event_bus import event_queue
 
-
 main_loop = None
 mqtt_connection = None
 
@@ -20,23 +19,16 @@ def on_connect(client_mqtt, userdata, flags, rc, properties=None):
 
     print("Connected to EMQX")
 
-    client_mqtt.subscribe(
-        "trafostanice/+/sensors"
-    )
+    client_mqtt.subscribe("trafostanice/+/sensors")
 
 
 def on_message(client_mqtt, userdata, msg):
 
     try:
 
-        payload = json.loads(
-            msg.payload.decode()
-        )
+        payload = json.loads(msg.payload.decode())
 
-        asyncio.run_coroutine_threadsafe(
-            event_queue.put(payload),
-            main_loop
-        )
+        asyncio.run_coroutine_threadsafe(event_queue.put(payload), main_loop)
 
     except Exception as e:
 

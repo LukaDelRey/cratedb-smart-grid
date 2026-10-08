@@ -1,12 +1,11 @@
 services:
-
   cratedb:
     image: crate:latest
     container_name: cratedb
 
     ports:
-      - "4200:4200"
-      - "5432:5432"
+      - '4200:4200'
+      - '5432:5432'
 
     command: >
       crate
@@ -22,15 +21,15 @@ services:
     container_name: emqx
 
     ports:
-      - "1883:1883"
-      - "18083:18083"
+      - '1883:1883'
+      - '18083:18083'
 
     volumes:
       - emqx_data:/opt/emqx/data
       - emqx_log:/opt/emqx/log
 
     healthcheck:
-      test: ["CMD", "/opt/emqx/bin/emqx_ctl", "status"]
+      test: ['CMD', '/opt/emqx/bin/emqx_ctl', 'status']
       interval: 10s
       timeout: 5s
       retries: 12
@@ -43,7 +42,7 @@ services:
     container_name: backend
 
     ports:
-      - "8000:8000"
+      - '8000:8000'
 
     environment:
       CRATE_URL: http://cratedb:4200
@@ -51,7 +50,7 @@ services:
       MQTT_PORT: 1883
       # EMQX rule is the canonical CrateDB writer. Keep this disabled to avoid
       # duplicate telemetry rows while the backend consumes the same topic.
-      PERSIST_MQTT_TELEMETRY: "false"
+      PERSIST_MQTT_TELEMETRY: 'false'
       TELEMETRY_RETENTION_DAYS: 7
       CORS_ORIGINS: http://localhost:5173,http://127.0.0.1:5173
 
@@ -64,7 +63,7 @@ services:
     container_name: frontend
 
     ports:
-      - "5173:5173"
+      - '5173:5173'
 
     depends_on:
       - backend
@@ -80,7 +79,7 @@ services:
       - emqx
 
     ports:
-      - "8089:8089"
+      - '8089:8089'
 
 volumes:
   cratedb_data:

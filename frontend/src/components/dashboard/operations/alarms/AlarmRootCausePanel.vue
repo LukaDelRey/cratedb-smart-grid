@@ -1,8 +1,15 @@
 <template>
-  <q-card flat bordered class="scada-card root-cause-panel">
-    <q-card-section class="root-cause-panel-header row items-center justify-between">
+  <q-card
+    bordered
+    class="scada-card root-cause-panel full-height no-wrap column"
+    flat
+    style="min-height: 0"
+  >
+    <q-card-section class="root-cause-panel-header row items-center justify-between col-auto">
       <div>
-        <div class="section-kicker-light">{{ t('dashboard.rootCauseAnalysis') }}</div>
+        <div class="section-kicker-light text-caption text-weight-bold text-uppercase">
+          {{ t('dashboard.rootCauseAnalysis') }}
+        </div>
       </div>
 
       <q-badge
@@ -13,36 +20,125 @@
       </q-badge>
     </q-card-section>
 
-    <q-card-section v-if="rootCause" class="root-cause-body q-pa-none">
-      <div class="root-cause-layout">
-        <aside class="root-cause-summary-stack">
-          <div class="root-cause-summary-card incident-title-card">
-            <span>{{ t('dashboard.incident') }}</span>
-            <strong>{{ translateText(rootCause.summary) }}</strong>
+    <q-card-section
+      v-if="rootCause"
+      class="root-cause-body q-pa-none"
+      style="min-height: 0"
+    >
+      <div
+        class="root-cause-layout full-height scada-min-height-0 q-pt-none q-pb-sm q-px-sm"
+        style="display: grid; grid-template-columns: minmax(210px, 0.38fr) minmax(0, 1fr); gap: 9px"
+      >
+        <aside
+          class="root-cause-summary-stack scada-min-height-0 overflow-auto"
+          style="
+            display: grid;
+            grid-template-rows: repeat(3, minmax(58px, 1fr));
+            gap: 7px;
+            scrollbar-width: thin;
+          "
+        >
+          <div
+            class="root-cause-summary-card incident-title-card scada-min-width-0 scada-min-height-0 justify-center q-py-xs q-px-sm column"
+          >
+            <span
+              class="overflow-hidden text-no-wrap"
+              style="line-height: 1.2; font-size: 10px"
+            >
+              {{ t('dashboard.incident') }}
+            </span>
+
+            <strong
+              class="block q-mt-xs overflow-hidden text-body2"
+              style="line-height: 1.25"
+            >
+              {{ translateText(rootCause.summary) }}
+            </strong>
           </div>
 
-          <div class="root-cause-summary-card">
-            <span>{{ t('dashboard.affected') }}</span>
-            <strong>{{ rootCause.affectedAssets.length }} {{ t('dashboard.assetsLower') }}</strong>
-            <small :title="affectedAssetsLabel">{{ affectedAssetsLabel }}</small>
+          <div
+            class="root-cause-summary-card scada-min-width-0 scada-min-height-0 justify-center q-py-xs q-px-sm column"
+          >
+            <span
+              class="overflow-hidden text-no-wrap"
+              style="line-height: 1.2; font-size: 10px"
+            >
+              {{ t('dashboard.affected') }}
+            </span>
+
+            <strong
+              class="block q-mt-xs overflow-hidden text-body2"
+              style="line-height: 1.25"
+            >
+              {{ rootCause.affectedAssets.length }} {{ t('dashboard.assetsLower') }}
+            </strong>
+
+            <small
+              class="overflow-hidden text-no-wrap q-mt-xs"
+              style="line-height: 1.2; font-size: 10px"
+              :title="affectedAssetsLabel"
+            >
+              {{ affectedAssetsLabel }}
+            </small>
           </div>
 
-          <div class="root-cause-summary-card">
-            <span>{{ t('dashboard.severity') }}</span>
-            <strong :class="severityTextClass(rootCause.severity)">
+          <div
+            class="root-cause-summary-card scada-min-width-0 scada-min-height-0 justify-center q-py-xs q-px-sm column"
+          >
+            <span
+              class="overflow-hidden text-no-wrap"
+              style="line-height: 1.2; font-size: 10px"
+            >
+              {{ t('dashboard.severity') }}
+            </span>
+
+            <strong
+              class="block q-mt-xs overflow-hidden text-body2"
+              style="line-height: 1.25"
+              :class="severityTextClass(rootCause.severity)"
+            >
               {{ translateStatus(rootCause.severity) }}
             </strong>
-            <small :title="recommendedAction">{{ recommendedAction }}</small>
+
+            <small
+              class="overflow-hidden text-no-wrap q-mt-xs"
+              style="line-height: 1.2; font-size: 10px"
+              :title="recommendedAction"
+            >
+              {{ recommendedAction }}
+            </small>
           </div>
         </aside>
 
-        <section class="root-cause-graph-panel">
-          <div class="root-cause-graph-head">
+        <section
+          class="root-cause-graph-panel scada-min-width-0 overflow-hidden"
+          style="
+            display: grid;
+            grid-template-rows: auto minmax(0, 1fr);
+            background: rgba(5, 12, 22, 0.52);
+          "
+        >
+          <div
+            class="root-cause-graph-head items-center justify-between q-pa-sm q-gutter-x-sm q-ml-none row no-wrap"
+            style="min-height: 30px; border-bottom: 1px solid rgba(255, 255, 255, 0.06)"
+          >
             <div>
-              <span>{{ t('dashboard.causalityGraph') }}</span>
-              <strong>{{ rootCause.chain.length }} {{ t('dashboard.steps') }}</strong>
+              <span
+                class="block"
+                style="font-size: 10px"
+              >
+                {{ t('dashboard.causalityGraph') }}
+              </span>
+
+              <strong class="block text-caption">
+                {{ rootCause.chain.length }} {{ t('dashboard.steps') }}
+              </strong>
             </div>
-            <q-badge color="cyan" text-color="black">
+
+            <q-badge
+              color="cyan"
+              text-color="black"
+            >
               AI RCA
             </q-badge>
           </div>
@@ -52,201 +148,72 @@
       </div>
     </q-card-section>
 
-    <q-card-section v-else class="root-cause-empty">
-      <q-icon name="account_tree" color="blue-grey-3" size="28px" />
+    <q-card-section
+      v-else
+      class="root-cause-empty full-height items-center justify-center row no-wrap"
+    >
+      <q-icon
+        color="blue-grey-3"
+        name="account_tree"
+        size="28px"
+      />
+
       <div>
-        <strong>{{ t('dashboard.noActiveIncidentSelected') }}</strong>
-        <span>{{ t('dashboard.rootCauseAnalysisWillPopulateWhenTheAlarmCorrelationEngineGroupsAnIncident') }}</span>
+        <strong class="block">{{ t('dashboard.noActiveIncidentSelected') }}</strong>
+
+        <span class="block">
+          {{
+            t(
+              'dashboard.rootCauseAnalysisWillPopulateWhenTheAlarmCorrelationEngineGroupsAnIncident',
+            )
+          }}
+        </span>
       </div>
     </q-card-section>
   </q-card>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import type { PropType } from 'vue'
-import RootCauseGraph from './RootCauseGraph.vue'
-import { useI18n } from '../../../../i18n'
+// Keep component selector isolation for the shared stylesheet.
+defineOptions({ __scopeId: 'data-v-ui-e6f55fc4' });
 
-const { t, translateText, translateStatus } = useI18n()
+import { computed } from 'vue';
+import type { PropType } from 'vue';
+import RootCauseGraph from './RootCauseGraph.vue';
+import { useI18n } from '../../../../i18n';
+
+const { t, translateText, translateStatus } = useI18n();
 
 const props = defineProps({
-  rootCause:{
-    type:Object as PropType<Record<string, any>>,
-    default:null
-  }
-})
+  rootCause: {
+    type: Object as PropType<Record<string, any>>,
+    default: null,
+  },
+});
 
-const affectedAssetsLabel = computed(() =>
-  (props.rootCause?.affectedAssets || []).slice(0, 3).join(', ') || t('dashboard.noImpactedAssets')
-)
+const affectedAssetsLabel = computed(
+  () =>
+    (props.rootCause?.affectedAssets || []).slice(0, 3).join(', ') ||
+    t('dashboard.noImpactedAssets'),
+);
 
 const recommendedAction = computed(() =>
-  translateText(props.rootCause?.chain?.at(-1)?.title || 'Awaiting operator action')
-)
+  translateText(props.rootCause?.chain?.at(-1)?.title || 'Awaiting operator action'),
+);
 
-function severityColor(severity){
-  if(severity === 'CRITICAL') return 'negative'
-  if(severity === 'WARNING') return 'warning'
-  return 'info'
+function severityColor(severity) {
+  if (severity === 'CRITICAL') return 'negative';
+
+  if (severity === 'WARNING') return 'warning';
+
+  return 'info';
 }
 
-function severityTextClass(severity){
-  if(severity === 'CRITICAL') return 'text-negative'
-  if(severity === 'WARNING') return 'text-warning'
-  return 'text-cyan'
+function severityTextClass(severity) {
+  if (severity === 'CRITICAL') return 'text-negative';
+
+  if (severity === 'WARNING') return 'text-warning';
+
+  return 'text-cyan';
 }
 </script>
-
-<style scoped>
-.root-cause-panel{
-  display:flex;
-  flex-direction:column;
-  height:100%;
-  min-height:0;
-}
-
-.root-cause-panel-header{
-  flex:0 0 auto;
-  min-height:36px !important;
-  padding:6px 10px !important;
-}
-
-.root-cause-body{
-  flex:1 1 auto;
-  min-height:0;
-  max-height:none !important;
-  overflow:hidden !important;
-  padding:0 !important;
-}
-
-.root-cause-layout{
-  height:100%;
-  min-height:0;
-  display:grid;
-  grid-template-columns:minmax(210px,.38fr) minmax(0,1fr);
-  gap:9px;
-  padding:0 10px 10px;
-}
-
-.root-cause-summary-stack{
-  min-height:0;
-  display:grid;
-  grid-template-rows:repeat(3,minmax(58px,1fr));
-  gap:7px;
-  overflow:auto;
-  scrollbar-width:thin;
-}
-
-.root-cause-summary-card{
-  min-width:0;
-  min-height:0;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  padding:5px 8px;
-  border:1px solid rgba(255,255,255,.075);
-  border-radius:8px;
-  background:rgba(255,255,255,.028);
-}
-
-.root-cause-summary-card span,
-.root-cause-summary-card small{
-  flex-shrink:0;
-  line-height:1.2;
-  overflow:hidden;
-  color:#8fa9b8;
-  font-size:10px;
-  text-overflow:ellipsis;
-  white-space:nowrap;
-}
-
-.root-cause-summary-card strong{
-  display:block;
-  margin-top:3px;
-  overflow:hidden;
-  color:#f5fbff;
-  font-size:14px;
-  line-height:1.25;
-  flex-shrink:0;
-  text-overflow:ellipsis;
-}
-
-.incident-title-card strong{
-  display:-webkit-box;
-  -webkit-line-clamp:2;
-  -webkit-box-orient:vertical;
-  white-space:normal;
-}
-
-.root-cause-summary-card small{margin-top:2px}
-
-.root-cause-graph-panel{
-  min-width:0;
-  min-height:0;
-  display:grid;
-  grid-template-rows:auto minmax(0,1fr);
-  overflow:hidden;
-  border:1px solid rgba(64,196,255,.13);
-  border-radius:8px;
-  background:rgba(5,12,22,.52);
-}
-
-.root-cause-graph-panel :deep(.root-flow){
-  height:100%;
-  min-height:0;
-  border:0;
-  border-radius:0;
-}
-
-.root-cause-graph-head{
-  min-height:30px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:10px;
-  padding:6px 8px;
-  border-bottom:1px solid rgba(255,255,255,.06);
-}
-
-.root-cause-graph-head span,
-.root-cause-graph-head strong{
-  display:block;
-}
-
-.root-cause-graph-head span{
-  color:#8fa9b8;
-  font-size:10px;
-}
-
-.root-cause-graph-head strong{
-  color:#f5fbff;
-  font-size:12px;
-}
-
-.root-cause-empty{
-  height:100%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:12px;
-  color:#8fa9b8;
-}
-
-.root-cause-empty strong,
-.root-cause-empty span{
-  display:block;
-}
-
-.root-cause-empty strong{
-  color:#f5fbff;
-}
-</style>
-
-<style>
-.root-cause-body{
-  max-height:168px;
-  overflow:auto;
-  scrollbar-width:thin;
-}
-</style>

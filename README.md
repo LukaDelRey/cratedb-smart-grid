@@ -75,6 +75,11 @@ Alarm engine kombinira eksplicitne zastavice iz simulatora s dinamicnim pragovim
 
 ## Lokalni razvoj frontenda
 
+Struktura izvornog koda i naredbe za formatiranje opisane su u
+[tools/README.md](tools/README.md). Iz korijena projekta koristi `npm run format`
+za formatiranje i `npm run format:check` za provjeru Vue atributa i Prettier stila.
+Prije toga instaliraj ovisnosti u korijenu i u `frontend` folderu.
+
 ```powershell
 cd frontend
 npm install
@@ -85,14 +90,14 @@ Frontend prema zadanim postavkama koristi `http://localhost:8000`. Drugi URL moz
 
 ## Konfiguracija backenda
 
-| Varijabla | Zadana vrijednost | Namjena |
-| --- | --- | --- |
-| `CRATE_URL` | `http://cratedb:4200` | CrateDB HTTP endpoint |
-| `MQTT_HOST` | `emqx` | MQTT broker |
-| `MQTT_PORT` | `1883` | MQTT port |
-| `PERSIST_MQTT_TELEMETRY` | `false` | Opcionalni rezervni backend writer; EMQX pravilo je zadano |
-| `TELEMETRY_RETENTION_DAYS` | `7` | Zadrzavanje sirove telemetrije |
-| `CORS_ORIGINS` | lokalni frontend URL-ovi | Dopusteni browser origins |
+| Varijabla                  | Zadana vrijednost        | Namjena                                                    |
+| -------------------------- | ------------------------ | ---------------------------------------------------------- |
+| `CRATE_URL`                | `http://cratedb:4200`    | CrateDB HTTP endpoint                                      |
+| `MQTT_HOST`                | `emqx`                   | MQTT broker                                                |
+| `MQTT_PORT`                | `1883`                   | MQTT port                                                  |
+| `PERSIST_MQTT_TELEMETRY`   | `false`                  | Opcionalni rezervni backend writer; EMQX pravilo je zadano |
+| `TELEMETRY_RETENTION_DAYS` | `7`                      | Zadrzavanje sirove telemetrije                             |
+| `CORS_ORIGINS`             | lokalni frontend URL-ovi | Dopusteni browser origins                                  |
 
 CrateDB, EMQX podaci i EMQX logovi koriste named volumene, pa podaci prezivljavaju ponovno stvaranje kontejnera.
 

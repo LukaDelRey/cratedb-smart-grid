@@ -6,6 +6,7 @@ import paho.mqtt.client as mqtt
 
 from shared.generate_stations import stations as stations
 
+
 class TrafostanicaUser(User):
 
     wait_time = between(1, 3)
@@ -68,8 +69,13 @@ class TrafostanicaUser(User):
         harmonics = round(random.uniform(1.0, 5.0), 2)
 
         if voltage_instability:
-            voltage = round(random.choice((random.uniform(7.5, 8.8), random.uniform(11.1, 11.8))), 2)
-            frequency = round(random.choice((random.uniform(48.8, 49.4), random.uniform(50.6, 51.1))), 2)
+            voltage = round(
+                random.choice((random.uniform(7.5, 8.8), random.uniform(11.1, 11.8))), 2
+            )
+            frequency = round(
+                random.choice((random.uniform(48.8, 49.4), random.uniform(50.6, 51.1))),
+                2,
+            )
 
         if harmonics_spike:
             harmonics = round(random.uniform(8.0, 15.0), 2)
@@ -106,68 +112,37 @@ class TrafostanicaUser(User):
             active_power = 0
 
         payload = {
-
-            "timestamp": time.strftime(
-                "%Y-%m-%d %H:%M:%S",
-                time.gmtime()
-            ),
-
+            "timestamp": time.strftime("%Y-%m-%d %H:%M:%S", time.gmtime()),
             "station_id": station["id"],
-
             "station_name": station["name"],
-
             "location": f"({station['lon']},{station['lat']})",
-
             "electrical": {
-
                 "voltage_kv": voltage,
-
                 "current_a": current,
-
                 "frequency_hz": frequency,
-
                 "active_power_kw": active_power,
-
                 "reactive_power_kvar": random.randint(100, 500),
-
-                "harmonics_thd": harmonics
+                "harmonics_thd": harmonics,
             },
-
             "thermal": {
-
                 "oil_temp_c": oil_temp,
-
                 "winding_temp_c": winding_temp,
-
                 "busbar_temp_c": random.randint(30, 70),
-
-                "ambient_temp_c": random.randint(-5, 35)
+                "ambient_temp_c": random.randint(-5, 35),
             },
-
             "oil_gas": {
-
                 "oil_level_percent": oil_level,
-
                 "oil_pressure_bar": oil_pressure,
-
                 "humidity_ppm": random.randint(5, 40),
-
                 "hydrogen_ppm": hydrogen,
-
                 "methane_ppm": methane,
-
-                "acetylene_ppm": acetylene
+                "acetylene_ppm": acetylene,
             },
-
             "alarms": {
                 "overload": overload,
-
                 "overheating": overheating,
-
                 "sensor_failure": sensor_failure,
-
                 "offline": offline,
-
                 "voltage_drop": voltage_drop,
                 "short_circuit": short_circuit,
                 "voltage_instability": voltage_instability,
@@ -178,8 +153,8 @@ class TrafostanicaUser(User):
                 "oil_leak": oil_leak,
                 "arc_discharge": arc_discharge,
                 "feeder_failure": feeder_failure,
-                "transformer_trip": transformer_trip
-            }
+                "transformer_trip": transformer_trip,
+            },
         }
 
         result = self.mqtt_client.publish(

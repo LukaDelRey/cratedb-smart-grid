@@ -240,25 +240,4 @@ const powerLines = [
 
 </script> -->
 
-<style>
-.grid-map-panel{
-  height:100%;
-  position:relative;
-  overflow:hidden;
-}
-
-.grid-map-legend{
-  width:220px;
-}
-
-.grid-popup-card{
-  min-width:260px;
-}
-
-.map-overlay{
-  position:absolute;
-  z-index:1000;
-  top:20px;
-  left:20px;
-}
-</style>
+Legacy prototype styles are preserved in .style-refactor-backup/frontend-before.zip.

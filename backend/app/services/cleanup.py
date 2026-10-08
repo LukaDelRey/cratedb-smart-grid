@@ -3,6 +3,7 @@ from crate import client
 
 from app.config import CRATE_URL, TELEMETRY_RETENTION_DAYS
 
+
 async def cleanup_old_data():
 
     while True:

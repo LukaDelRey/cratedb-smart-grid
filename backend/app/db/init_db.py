@@ -3,6 +3,7 @@ from crate import client
 
 from app.config import CRATE_URL
 
+
 def wait_for_cratedb():
     while True:
         try:
@@ -19,7 +20,7 @@ def wait_for_cratedb():
             print(e)
 
             time.sleep(5)
-            
+
 
 def init_db():
 
@@ -186,6 +187,8 @@ def init_db():
     CLUSTERED INTO 2 SHARDS
     """)
 
-    cursor.execute("CREATE TABLE IF NOT EXISTS application_settings (id TEXT PRIMARY KEY, config_json TEXT) CLUSTERED INTO 1 SHARDS")
+    cursor.execute(
+        "CREATE TABLE IF NOT EXISTS application_settings (id TEXT PRIMARY KEY, config_json TEXT) CLUSTERED INTO 1 SHARDS"
+    )
 
     print("Database initialized!")

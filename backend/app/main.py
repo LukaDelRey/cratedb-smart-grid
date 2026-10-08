@@ -19,7 +19,13 @@ from pydantic import StrictFloat
 from app.config import CRATE_URL, PERSIST_MQTT_TELEMETRY, cors_origins
 from app.services.mqtt_client import is_mqtt_connected, start_mqtt, stop_mqtt
 from app.db.init_db import init_db
-from app.services.threshold_settings import load_settings, save_settings, settings_snapshot, DEFAULTS, threshold
+from app.services.threshold_settings import (
+    load_settings,
+    save_settings,
+    settings_snapshot,
+    DEFAULTS,
+    threshold,
+)
 from app.services.event_bus import event_queue
 from app.services.websocket_manager import manager
 from app.services.cleanup import cleanup_old_data
@@ -44,16 +50,12 @@ from shared.generate_stations import stations
 from app.services.grid_analytics import (
     calculate_station_health,
     calculate_station_risk,
-    nested_value
+    nested_value,
 )
 
-from app.services.blackout_prediction import (
-    calculate_blackout_probability
-)
+from app.services.blackout_prediction import calculate_blackout_probability
 
-from app.services.powerline_generator import (
-    generate_power_lines
-)
+from app.services.powerline_generator import generate_power_lines
 from app.services.load_forecast import grid_load_forecast
 from app.services.asset_intelligence import station_prediction, training_record
 from app.services.grid_physics import simulate_grid_physics
@@ -123,12 +125,7 @@ def get_connection():
 
 def location_to_lat_lon(location):
 
-    match = (
-        location
-        .replace("(", "")
-        .replace(")", "")
-        .split(",")
-    )
+    match = location.replace("(", "").replace(")", "").split(",")
 
     lon = float(match[0])
     lat = float(match[1])
@@ -148,20 +145,12 @@ def station_id(station):
 
 def station_name(station):
 
-    return (
-        station.get("station_name") or
-        station.get("name") or
-        station_id(station)
-    )
+    return station.get("station_name") or station.get("name") or station_id(station)
 
 
 def safe_average(values, default=0):
 
-    clean_values = [
-        value
-        for value in values
-        if value is not None
-    ]
+    clean_values = [value for value in values if value is not None]
 
     if not clean_values:
         return default
@@ -173,9 +162,7 @@ def station_region(station):
 
     try:
 
-        lat, lon = location_to_lat_lon(
-            station["location"]
-        )
+        lat, lon = location_to_lat_lon(station["location"])
 
         return "NORTH" if lat >= 46.38 else "SOUTH"
 
@@ -189,19 +176,17 @@ def build_forecast_points(stations, hours=12):
     if not stations:
         return []
 
-    base_load = sum([
-        nested_value(
-            station,
-            "electrical",
-            "active_power_kw"
+    base_load = (
+        sum(
+            [
+                nested_value(station, "electrical", "active_power_kw")
+                for station in stations
+            ]
         )
-        for station in stations
-    ]) / 1000
+        / 1000
+    )
 
-    risk = safe_average([
-        calculate_station_risk(station)
-        for station in stations
-    ])
+    risk = safe_average([calculate_station_risk(station) for station in stations])
 
     points = []
 
@@ -210,48 +195,36 @@ def build_forecast_points(stations, hours=12):
         demand_shape = 1 + ((hour % 6) - 2) * 0.035
         risk_shape = risk * (0.85 + (hour % 4) * 0.06)
 
-        points.append({
-            "label": f"+{hour + 1}h",
-            "loadMW": round(base_load * demand_shape, 1),
-            "risk": min(100, round(risk_shape, 1)),
-            "confidence": None,
-            "method": "heuristic"
-        })
+        points.append(
+            {
+                "label": f"+{hour + 1}h",
+                "loadMW": round(base_load * demand_shape, 1),
+                "risk": min(100, round(risk_shape, 1)),
+                "confidence": None,
+                "method": "heuristic",
+            }
+        )
 
     return points
 
 
 def build_weather_payload(stations):
 
-    risk = safe_average([
-        calculate_station_risk(station)
-        for station in stations
-    ])
+    risk = safe_average([calculate_station_risk(station) for station in stations])
 
-    avg_temp = safe_average([
-        nested_value(
-            station,
-            "thermal",
-            "ambient_temp_c",
-            24
-        )
-        for station in stations
-    ], 24)
-
-    wind_risk = min(
-        100,
-        round(18 + risk * 0.28)
+    avg_temp = safe_average(
+        [
+            nested_value(station, "thermal", "ambient_temp_c", 24)
+            for station in stations
+        ],
+        24,
     )
 
-    lightning_risk = min(
-        100,
-        round(10 + risk * 0.42)
-    )
+    wind_risk = min(100, round(18 + risk * 0.28))
 
-    storm_risk = min(
-        100,
-        round(14 + risk * 0.36)
-    )
+    lightning_risk = min(100, round(10 + risk * 0.42))
+
+    storm_risk = min(100, round(14 + risk * 0.36))
 
     return {
         "temperatureC": avg_temp,
@@ -261,21 +234,20 @@ def build_weather_payload(stations):
         "lightningRisk": lightning_risk,
         "stormRisk": storm_risk,
         "gridImpact": min(
-            100,
-            round((wind_risk + lightning_risk + storm_risk + risk) / 4)
+            100, round((wind_risk + lightning_risk + storm_risk + risk) / 4)
         ),
         "alerts": [
             {
                 "title": "Wind loading watch",
                 "severity": "WARNING" if wind_risk > 45 else "INFO",
-                "asset": "North transmission corridor"
+                "asset": "North transmission corridor",
             },
             {
                 "title": "Lightning exposure",
                 "severity": "CRITICAL" if lightning_risk > 65 else "INFO",
-                "asset": "Outdoor substations"
-            }
-        ]
+                "asset": "Outdoor substations",
+            },
+        ],
     }
 
 
@@ -287,27 +259,64 @@ def build_ai_insights(stations):
     insights = []
     for station in stations:
         rules = [
-            ("overload", nested_value(station, "electrical", "current_a") >= threshold("overload"),
-             "High current threshold exceeded", "Review loading and available transfer capacity."),
-            ("cooling", nested_value(station, "thermal", "oil_temp_c") >= 85,
-             "Oil temperature threshold exceeded", "Inspect cooling and compare the temperature history."),
-            ("maintenance", calculate_station_risk(station) >= 70,
-             "Elevated heuristic risk score", "Review this asset before planning maintenance."),
+            (
+                "overload",
+                nested_value(station, "electrical", "current_a")
+                >= threshold("overload"),
+                "High current threshold exceeded",
+                "Review loading and available transfer capacity.",
+            ),
+            (
+                "cooling",
+                nested_value(station, "thermal", "oil_temp_c") >= 85,
+                "Oil temperature threshold exceeded",
+                "Inspect cooling and compare the temperature history.",
+            ),
+            (
+                "maintenance",
+                calculate_station_risk(station) >= 70,
+                "Elevated heuristic risk score",
+                "Review this asset before planning maintenance.",
+            ),
         ]
         alarms = station.get("alarms") or {}
         alarm_insights = [
-            ("voltage", ("voltage_drop", "overvoltage", "voltage_instability"),
-             "Voltage quality alarm active", "Check voltage regulation, tap settings and feeder conditions."),
-            ("frequency", ("frequency_instability",),
-             "Frequency instability alarm active", "Compare frequency across nearby stations and review grid balance."),
-            ("harmonics", ("harmonics_spike",),
-             "Harmonic distortion alarm active", "Review nonlinear loads and inspect harmonic filtering."),
-            ("insulation", ("insulation_degradation",),
-             "Insulation degradation alarm active", "Review dissolved gas trends and schedule insulation diagnostics."),
-            ("oil", ("oil_leak",),
-             "Low oil level alarm active", "Inspect for oil leakage and verify the oil level sensor."),
-            ("discharge", ("arc_discharge",),
-             "Arc discharge alarm active", "Urgently review protection signals and dissolved gas measurements."),
+            (
+                "voltage",
+                ("voltage_drop", "overvoltage", "voltage_instability"),
+                "Voltage quality alarm active",
+                "Check voltage regulation, tap settings and feeder conditions.",
+            ),
+            (
+                "frequency",
+                ("frequency_instability",),
+                "Frequency instability alarm active",
+                "Compare frequency across nearby stations and review grid balance.",
+            ),
+            (
+                "harmonics",
+                ("harmonics_spike",),
+                "Harmonic distortion alarm active",
+                "Review nonlinear loads and inspect harmonic filtering.",
+            ),
+            (
+                "insulation",
+                ("insulation_degradation",),
+                "Insulation degradation alarm active",
+                "Review dissolved gas trends and schedule insulation diagnostics.",
+            ),
+            (
+                "oil",
+                ("oil_leak",),
+                "Low oil level alarm active",
+                "Inspect for oil leakage and verify the oil level sensor.",
+            ),
+            (
+                "discharge",
+                ("arc_discharge",),
+                "Arc discharge alarm active",
+                "Urgently review protection signals and dissolved gas measurements.",
+            ),
         ]
         rules.extend(
             (kind, any(bool(alarms.get(flag)) for flag in flags), title, recommendation)
@@ -315,25 +324,29 @@ def build_ai_insights(stations):
         )
         for kind, triggered, title, recommendation in rules:
             if triggered:
-                insights.append({
-                    "id": f"insight-{station_id(station)}-{kind}",
-                    "type": kind, "title": title, "assetId": station_id(station),
-                    "impact": ("Active telemetry alarm; no predicted failure time"
-                               if kind in {entry[0] for entry in alarm_insights}
-                               else "Current telemetry threshold; no predicted failure time"),
-                    "confidence": None, "method": "heuristic",
-                    "severity": "WARNING", "recommendation": recommendation,
-                })
+                insights.append(
+                    {
+                        "id": f"insight-{station_id(station)}-{kind}",
+                        "type": kind,
+                        "title": title,
+                        "assetId": station_id(station),
+                        "impact": (
+                            "Active telemetry alarm; no predicted failure time"
+                            if kind in {entry[0] for entry in alarm_insights}
+                            else "Current telemetry threshold; no predicted failure time"
+                        ),
+                        "confidence": None,
+                        "method": "heuristic",
+                        "severity": "WARNING",
+                        "recommendation": recommendation,
+                    }
+                )
     return insights
 
 
 def build_alarm_correlations(stations):
 
-    alarmed = [
-        station
-        for station in stations
-        if has_alarm(station)
-    ]
+    alarmed = [station for station in stations if has_alarm(station)]
 
     grouped = []
 
@@ -352,33 +365,30 @@ def build_alarm_correlations(stations):
         ("feeder_failure", "Feeder Failure", "CRITICAL"),
         ("transformer_trip", "Transformer Trip", "CRITICAL"),
         ("sensor_failure", "Telemetry Degradation", "INFO"),
-        ("offline", "Asset Offline", "CRITICAL")
+        ("offline", "Asset Offline", "CRITICAL"),
     ]
 
     for key, title, severity in cause_map:
 
         assets = [
-            station
-            for station in alarmed
-            if (station.get("alarms") or {}).get(key)
+            station for station in alarmed if (station.get("alarms") or {}).get(key)
         ]
 
         if not assets:
             continue
 
-        grouped.append({
-            "id": f"corr-{key}",
-            "title": title,
-            "severity": severity,
-            "confidence": min(98, 72 + len(assets) * 4),
-            "affectedAssets": [
-                station_id(station)
-                for station in assets[:8]
-            ],
-            "relatedAlarmCount": len(assets),
-            "rootCause": title,
-            "nextAction": "Open digital twin and run contingency analysis."
-        })
+        grouped.append(
+            {
+                "id": f"corr-{key}",
+                "title": title,
+                "severity": severity,
+                "confidence": min(98, 72 + len(assets) * 4),
+                "affectedAssets": [station_id(station) for station in assets[:8]],
+                "relatedAlarmCount": len(assets),
+                "rootCause": title,
+                "nextAction": "Open digital twin and run contingency analysis.",
+            }
+        )
 
     return grouped
 
@@ -413,44 +423,52 @@ def build_topology(
                 "id": "locust",
                 "label": "Locust Simulator",
                 "status": statuses[0],
-                "metric": f"{len(stations)} active station states" if telemetry_active else "waiting for telemetry"
+                "metric": (
+                    f"{len(stations)} active station states"
+                    if telemetry_active
+                    else "waiting for telemetry"
+                ),
             },
             {
                 "id": "emqx",
                 "label": "EMQX MQTT",
                 "status": statuses[1],
-                "metric": "connected" if mqtt_connected else "disconnected"
+                "metric": "connected" if mqtt_connected else "disconnected",
             },
             {
                 "id": "fastapi",
                 "label": "FastAPI Gateway",
                 "status": statuses[2],
-                "metric": f"{websocket_clients} websocket clients"
+                "metric": f"{websocket_clients} websocket clients",
             },
             {
                 "id": "cratedb",
                 "label": "CrateDB",
                 "status": statuses[3],
-                "metric": f"{len(stations)} latest states" if database_connected else "unavailable"
+                "metric": (
+                    f"{len(stations)} latest states"
+                    if database_connected
+                    else "unavailable"
+                ),
             },
             {
                 "id": "dashboard",
                 "label": "Vue Dashboard",
                 "status": statuses[4],
-                "metric": "realtime"
+                "metric": "realtime",
             },
             {
                 "id": "ai",
                 "label": "Predictive Analytics",
                 "status": statuses[5],
-                "metric": "health, risk, anomaly and lifetime scoring"
+                "metric": "health, risk, anomaly and lifetime scoring",
             },
             {
                 "id": "physics",
                 "label": "Grid Physics",
                 "status": statuses[6],
-                "metric": "load flow, thermal loss and cascade model"
-            }
+                "metric": "load flow, thermal loss and cascade model",
+            },
         ],
         "edges": [
             ["locust", "emqx"],
@@ -460,8 +478,8 @@ def build_topology(
             ["ai", "cratedb"],
             ["physics", "cratedb"],
             ["fastapi", "dashboard"],
-            ["fastapi", "cratedb"]
-        ]
+            ["fastapi", "cratedb"],
+        ],
     }
 
 
@@ -538,18 +556,13 @@ def fetch_latest_station_states(limit=10000, force_refresh=False):
 
             rows = cursor.fetchall()
 
-            columns = [
-                col[0]
-                for col in cursor.description
-            ]
+            columns = [col[0] for col in cursor.description]
 
             latest = {}
 
             for row in rows:
 
-                station = dict(
-                    zip(columns, row)
-                )
+                station = dict(zip(columns, row))
 
                 current_station_id = station.get("station_id")
 
@@ -562,7 +575,9 @@ def fetch_latest_station_states(limit=10000, force_refresh=False):
             # The external DB writer can lag behind MQTT. Never roll live state back.
             for cached in _latest_station_cache:
                 cached_id = station_id(cached)
-                if cached_id not in latest or telemetry_time(cached) >= telemetry_time(latest[cached_id]):
+                if cached_id not in latest or telemetry_time(cached) >= telemetry_time(
+                    latest[cached_id]
+                ):
                     latest[cached_id] = cached
             _latest_station_cache = list(latest.values())
             _latest_station_cache_at = monotonic()
@@ -578,11 +593,18 @@ def fetch_latest_station_states(limit=10000, force_refresh=False):
 def current_power_lines(station_states):
     global _power_line_cache, _power_line_cache_key
 
-    cache_key = tuple(sorted(
-        (str(station_id(station)), str(station.get("location") or ""),
-         str(station.get("lat")), str(station.get("lon")))
-        for station in station_states if station_id(station)
-    ))
+    cache_key = tuple(
+        sorted(
+            (
+                str(station_id(station)),
+                str(station.get("location") or ""),
+                str(station.get("lat")),
+                str(station.get("lon")),
+            )
+            for station in station_states
+            if station_id(station)
+        )
+    )
     with _power_line_cache_lock:
         if _power_line_cache and cache_key == _power_line_cache_key:
             return list(_power_line_cache)
@@ -595,17 +617,13 @@ def current_power_lines(station_states):
 @app.get("/")
 def root():
 
-    return {
-        "status": "Smart Grid backend running"
-    }
+    return {"status": "Smart Grid backend running"}
 
 
 @app.get("/health")
 def health():
 
-    return {
-        "status": "healthy"
-    }
+    return {"status": "healthy"}
 
 
 @app.get("/api/health/cratedb")
@@ -624,7 +642,7 @@ def cratedb_health():
             "latencyMs": latency_ms,
             "nodes": 1,
             "mqttConnected": is_mqtt_connected(),
-            "telemetryPersistence": "backend" if PERSIST_MQTT_TELEMETRY else "external"
+            "telemetryPersistence": "backend" if PERSIST_MQTT_TELEMETRY else "external",
         }
 
     except Exception as exc:
@@ -636,7 +654,7 @@ def cratedb_health():
             "latencyMs": 0,
             "nodes": 0,
             "mqttConnected": is_mqtt_connected(),
-            "telemetryPersistence": "unavailable"
+            "telemetryPersistence": "unavailable",
         }
 
 
@@ -661,19 +679,11 @@ def get_sensors():
 
     rows = cursor.fetchall()
 
-    columns = [
-        col[0]
-        for col in cursor.description
-    ]
+    columns = [col[0] for col in cursor.description]
 
-    result = [
-        dict(zip(columns, row))
-        for row in rows
-    ]
+    result = [dict(zip(columns, row)) for row in rows]
 
-    return {
-        "data": result
-    }
+    return {"data": result}
 
 
 @app.get("/api/stations/{station_id}/history")
@@ -700,9 +710,7 @@ def get_station_history(
 @app.get("/latest-stations")
 def latest_stations():
 
-    return {
-        "data": fetch_latest_station_states()
-    }
+    return {"data": fetch_latest_station_states()}
 
 
 @app.get("/alarms")
@@ -710,15 +718,9 @@ def get_alarms():
 
     latest_stations = fetch_latest_station_states()
 
-    alarms = [
-        station
-        for station in latest_stations
-        if has_alarm(station)
-    ]
+    alarms = [station for station in latest_stations if has_alarm(station)]
 
-    return {
-        "data": alarms
-    }
+    return {"data": alarms}
 
 
 @app.get("/api/alarms")
@@ -737,7 +739,9 @@ def get_alarm_register(
             limit=limit,
         )
     except Exception as exc:
-        raise HTTPException(status_code=503, detail="Alarm register unavailable") from exc
+        raise HTTPException(
+            status_code=503, detail="Alarm register unavailable"
+        ) from exc
     return {"data": data}
 
 
@@ -832,27 +836,25 @@ def nearby(lat: float, lon: float):
 
         try:
 
-            station_lat, station_lon = location_to_lat_lon(
-                station["location"]
-            )
+            station_lat, station_lon = location_to_lat_lon(station["location"])
 
             distance_lat = abs(station_lat - lat)
             distance_lon = abs(station_lon - lon)
 
             if distance_lat < 0.05 and distance_lon < 0.05:
 
-                result.append({
-                    "station_id": station["station_id"],
-                    "station_name": station["station_name"],
-                    "location": station["location"]
-                })
+                result.append(
+                    {
+                        "station_id": station["station_id"],
+                        "station_name": station["station_name"],
+                        "location": station["location"],
+                    }
+                )
 
         except Exception:
             pass
 
-    return {
-        "data": result[:20]
-    }
+    return {"data": result[:20]}
 
 
 @app.get("/grid/summary")
@@ -862,22 +864,11 @@ def grid_summary():
 
     if not latest_stations:
 
-        return {
-            "gridHealth": 100,
-            "blackoutRisk": 0,
-            "activeAlarms": 0,
-            "stations": 0
-        }
+        return {"gridHealth": 100, "blackoutRisk": 0, "activeAlarms": 0, "stations": 0}
 
-    health_scores = [
-        calculate_station_health(station)
-        for station in latest_stations
-    ]
+    health_scores = [calculate_station_health(station) for station in latest_stations]
 
-    risk_scores = [
-        calculate_station_risk(station)
-        for station in latest_stations
-    ]
+    risk_scores = [calculate_station_risk(station) for station in latest_stations]
 
     active_alarms = sum(len(station["active_alarms"]) for station in latest_stations)
 
@@ -885,7 +876,7 @@ def grid_summary():
         "gridHealth": round(mean(health_scores), 1),
         "blackoutRisk": round(mean(risk_scores), 1),
         "activeAlarms": active_alarms,
-        "stations": len(latest_stations)
+        "stations": len(latest_stations),
     }
 
 
@@ -901,9 +892,7 @@ def get_regions():
 
         try:
 
-            lat, lon = location_to_lat_lon(
-                station["location"]
-            )
+            lat, lon = location_to_lat_lon(station["location"])
 
             if lat >= 46.38:
                 north.append(station)
@@ -923,18 +912,12 @@ def get_regions():
                 "stations": 0,
                 "healthScore": 100,
                 "blackoutRisk": 0,
-                "activeAlarms": 0
+                "activeAlarms": 0,
             }
 
-        health = mean([
-            calculate_station_health(station)
-            for station in data
-        ])
+        health = mean([calculate_station_health(station) for station in data])
 
-        risk = mean([
-            calculate_station_risk(station)
-            for station in data
-        ])
+        risk = mean([calculate_station_risk(station) for station in data])
 
         active_alarms = sum(len(station["active_alarms"]) for station in data)
 
@@ -944,21 +927,13 @@ def get_regions():
             "stations": len(data),
             "healthScore": round(health, 1),
             "blackoutRisk": round(risk, 1),
-            "activeAlarms": active_alarms
+            "activeAlarms": active_alarms,
         }
 
     return {
         "regions": [
-            build_region(
-                "REGION-NORTH",
-                "North Grid",
-                north
-            ),
-            build_region(
-                "REGION-SOUTH",
-                "South Grid",
-                south
-            )
+            build_region("REGION-NORTH", "North Grid", north),
+            build_region("REGION-SOUTH", "South Grid", south),
         ]
     }
 
@@ -968,24 +943,22 @@ def blackout_prediction():
 
     latest_stations = fetch_latest_station_states()
 
-    probability = calculate_blackout_probability(
-        latest_stations
-    )
+    probability = calculate_blackout_probability(latest_stations)
 
     critical_stations = [
         station
         for station in latest_stations
         if (
-            station.get("thermal", {}).get("oil_temp_c", 0) > threshold("overheating") or
-            station.get("electrical", {}).get("current_a", 0) > threshold("overload") or
-            has_alarm(station)
+            station.get("thermal", {}).get("oil_temp_c", 0) > threshold("overheating")
+            or station.get("electrical", {}).get("current_a", 0) > threshold("overload")
+            or has_alarm(station)
         )
     ]
 
     return {
         "probability": probability,
         "affectedStations": len(critical_stations),
-        "estimatedMinutes": int(probability * 4)
+        "estimatedMinutes": int(probability * 4),
     }
 
 
@@ -1002,9 +975,7 @@ def get_power_lines():
 
     latest_stations = fetch_latest_station_states()
 
-    return {
-        "data": current_power_lines(latest_stations)
-    }
+    return {"data": current_power_lines(latest_stations)}
 
 
 @app.get("/grid/forecast")
@@ -1017,11 +988,7 @@ def get_ai_insights():
 
     latest_stations = fetch_latest_station_states()
 
-    return {
-        "insights": build_ai_insights(
-            latest_stations
-        )
-    }
+    return {"insights": build_ai_insights(latest_stations)}
 
 
 @app.get("/ai/stations/{requested_station_id}")
@@ -1076,9 +1043,7 @@ def get_weather_grid_impact():
 
     latest_stations = fetch_latest_station_states()
 
-    return build_weather_payload(
-        latest_stations
-    )
+    return build_weather_payload(latest_stations)
 
 
 @app.get("/alarm-correlations")
@@ -1086,35 +1051,21 @@ def get_alarm_correlations():
 
     latest_stations = fetch_latest_station_states()
 
-    return {
-        "correlations": build_alarm_correlations(
-            latest_stations
-        )
-    }
+    return {"correlations": build_alarm_correlations(latest_stations)}
 
 
 @app.get("/root-cause/{correlation_id}")
 def get_root_cause(correlation_id: str):
 
     latest_stations = fetch_latest_station_states()
-    correlations = build_alarm_correlations(
-        latest_stations
-    )
+    correlations = build_alarm_correlations(latest_stations)
 
     correlation = next(
-        (
-            item
-            for item in correlations
-            if item["id"] == correlation_id
-        ),
-        None
+        (item for item in correlations if item["id"] == correlation_id), None
     )
 
     if not correlation:
-        raise HTTPException(
-            status_code=404,
-            detail="Correlation not found"
-        )
+        raise HTTPException(status_code=404, detail="Correlation not found")
 
     return {
         "id": correlation_id,
@@ -1123,27 +1074,19 @@ def get_root_cause(correlation_id: str):
         "confidence": correlation["confidence"],
         "affectedAssets": correlation["affectedAssets"],
         "chain": [
-            {
-                "step": "Signal",
-                "title": "Realtime SCADA anomaly",
-                "confidence": 93
-            },
+            {"step": "Signal", "title": "Realtime SCADA anomaly", "confidence": 93},
             {
                 "step": "Cause",
                 "title": correlation["rootCause"],
-                "confidence": correlation["confidence"]
+                "confidence": correlation["confidence"],
             },
             {
                 "step": "Impact",
                 "title": "Local overload and customer impact risk",
-                "confidence": 81
+                "confidence": 81,
             },
-            {
-                "step": "Action",
-                "title": correlation["nextAction"],
-                "confidence": 76
-            }
-        ]
+            {"step": "Action", "title": correlation["nextAction"], "confidence": 76},
+        ],
     }
 
 
@@ -1152,12 +1095,8 @@ def get_contingency(asset_id: str):
 
     latest_stations = fetch_latest_station_states()
     match = next(
-        (
-            station
-            for station in latest_stations
-            if station_id(station) == asset_id
-        ),
-        None
+        (station for station in latest_stations if station_id(station) == asset_id),
+        None,
     )
 
     if not match:
@@ -1169,9 +1108,7 @@ def get_contingency(asset_id: str):
         failed_asset_id=asset_id,
     )
     affected_nodes = [
-        node
-        for node in physics["nodes"]
-        if node.get("cascadeDepth") is not None
+        node for node in physics["nodes"] if node.get("cascadeDepth") is not None
     ]
     base_risk = calculate_station_risk(match)
 
@@ -1182,9 +1119,7 @@ def get_contingency(asset_id: str):
         "risk": (
             "High"
             if physics["summary"]["cascadeRisk"] > 70
-            else "Medium"
-            if physics["summary"]["cascadeRisk"] > 35
-            else "Low"
+            else "Medium" if physics["summary"]["cascadeRisk"] > 35 else "Low"
         ),
         "recommendedAction": "Transfer load and isolate the affected corridor.",
         "cascadeRisk": physics["summary"]["cascadeRisk"],
@@ -1222,19 +1157,12 @@ def get_digital_twin(asset_type: str, asset_id: str):
 
     latest_stations = fetch_latest_station_states()
     match = next(
-        (
-            station
-            for station in latest_stations
-            if station_id(station) == asset_id
-        ),
-        None
+        (station for station in latest_stations if station_id(station) == asset_id),
+        None,
     )
 
     if not match:
-        raise HTTPException(
-            status_code=404,
-            detail="Asset not found"
-        )
+        raise HTTPException(status_code=404, detail="Asset not found")
 
     return {
         "assetType": asset_type,
@@ -1246,14 +1174,9 @@ def get_digital_twin(asset_type: str, asset_id: str):
         "forecast": build_forecast_points([match], 8),
         "prediction": station_prediction(match),
         "contingency": {
-            "affectedCustomers": round(
-                1200 + calculate_station_risk(match) * 46
-            ),
-            "overloadedAssets": max(
-                1,
-                round(calculate_station_risk(match) / 20)
-            )
-        }
+            "affectedCustomers": round(1200 + calculate_station_risk(match) * 46),
+            "overloadedAssets": max(1, round(calculate_station_risk(match) / 20)),
+        },
     }
 
 
@@ -1310,8 +1233,14 @@ async def bootstrap_alarm_register():
             # Normal snapshots also resolve alarms left open before a restart.
             async with _alarm_reconcile_lock:
                 with _latest_station_cache_lock:
-                    current = next((cached for cached in _latest_station_cache
-                                    if station_id(cached) == station_id(station)), station)
+                    current = next(
+                        (
+                            cached
+                            for cached in _latest_station_cache
+                            if station_id(cached) == station_id(station)
+                        ),
+                        station,
+                    )
                 await asyncio.to_thread(reconcile_alarm_payload, current)
 
         print("Alarm register initialized from latest station state")

@@ -60,9 +60,7 @@ def station_prediction(station):
     health = calculate_station_health(station)
     risk = calculate_station_risk(station)
     predicted_current = current * (1.02 + min(0.16, degradation / 700))
-    blackout_probability = _clamp(
-        100 / (1 + exp(-((risk - 55) / 10)))
-    )
+    blackout_probability = _clamp(100 / (1 + exp(-((risk - 55) / 10))))
     remaining_life_days = max(
         30,
         round(25 * 365 * (health / 100) * (1 - degradation / 140)),
@@ -77,7 +75,9 @@ def station_prediction(station):
         "riskScore": risk,
         "anomalyScore": round(_clamp((risk + degradation) / 2), 1),
         "predictedLoadA": round(predicted_current, 1),
-        "predictedLoadMW": round(power / 1000 * (predicted_current / max(current, 1)), 2),
+        "predictedLoadMW": round(
+            power / 1000 * (predicted_current / max(current, 1)), 2
+        ),
         "blackoutProbability": round(blackout_probability, 1),
         "remainingLifeDays": remaining_life_days,
         "degradationPercent": round(degradation, 1),

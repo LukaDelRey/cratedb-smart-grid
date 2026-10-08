@@ -15,7 +15,7 @@ for i in range(1000):
         "id": f"TS-{i+1:04}",
         "name": f"Trafostanica {i+1}",
         "lat": round(CENTER_LAT + lat_offset, 6),
-        "lon": round(CENTER_LON + lon_offset, 6)
+        "lon": round(CENTER_LON + lon_offset, 6),
     }
 
     stations.append(station)

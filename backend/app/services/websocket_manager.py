@@ -2,6 +2,7 @@ import asyncio
 
 from fastapi import WebSocket
 
+
 class ConnectionManager:
 
     def __init__(self):
@@ -39,7 +40,9 @@ class ConnectionManager:
                 print("Broadcast error:", exc)
                 return connection
 
-        results = await asyncio.gather(*(send(connection) for connection in connections))
+        results = await asyncio.gather(
+            *(send(connection) for connection in connections)
+        )
         for connection in results:
             if connection is not None:
                 self.disconnect(connection)

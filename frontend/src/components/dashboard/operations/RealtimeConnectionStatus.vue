@@ -1,29 +1,47 @@
 <template>
-  <q-card flat bordered class="connection-card row items-center justify-end q-gutter-md text-white">
+  <q-card
+    bordered
+    class="connection-card row items-center justify-end q-gutter-md text-white q-pa-md"
+    flat
+    style="min-height: 68px"
+  >
     <div class="row items-center q-gutter-sm">
       <q-icon
-        :name="connection.websocketConnected ? 'wifi' : 'wifi_off'"
-        :color="statusColor"
         size="22px"
+        :color="statusColor"
+        :name="connection.websocketConnected ? 'wifi' : 'wifi_off'"
       />
+
       <div>
         <div class="text-caption text-blue-grey-3">{{ t('dashboard.realtimeFeed') }}</div>
+
         <div class="text-weight-bold">{{ t(connection.quality.toUpperCase()) }}</div>
       </div>
     </div>
 
-    <q-separator vertical dark />
+    <q-separator
+      dark
+      vertical
+    />
 
     <div class="status-pill">
-      <span>EMQX</span>
-      <strong :class="connection.mqttConnected ? 'text-positive' : 'text-negative'">
+      <span class="block">EMQX</span>
+
+      <strong
+        class="text-body2 text-weight-bold block"
+        :class="connection.mqttConnected ? 'text-positive' : 'text-negative'"
+      >
         {{ connection.mqttConnected ? t('dashboard.online') : t('dashboard.offline') }}
       </strong>
     </div>
 
     <div class="status-pill">
-      <span>CrateDB</span>
-      <strong :class="connection.crateConnected ? 'text-positive' : 'text-negative'">
+      <span class="block">CrateDB</span>
+
+      <strong
+        class="text-body2 text-weight-bold block"
+        :class="connection.crateConnected ? 'text-positive' : 'text-negative'"
+      >
         {{ connection.crateConnected ? `${connection.latencyMs} ms` : t('dashboard.down') }}
       </strong>
     </div>
@@ -31,39 +49,24 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
-import type { PropType } from 'vue'
-import { useI18n } from '../../../i18n'
+import { computed } from 'vue';
+import type { PropType } from 'vue';
+import { useI18n } from '../../../i18n';
 
-const { t } = useI18n()
+const { t } = useI18n();
 
 const props = defineProps({
-  connection:{
-    type:Object as PropType<Record<string, any>>,
-    required:true
-  }
-})
+  connection: {
+    type: Object as PropType<Record<string, any>>,
+    required: true,
+  },
+});
 
 const statusColor = computed(() => {
-  if(props.connection.quality === 'excellent') return 'positive'
-  if(props.connection.quality === 'degraded') return 'warning'
-  return 'negative'
-})
+  if (props.connection.quality === 'excellent') return 'positive';
+
+  if (props.connection.quality === 'degraded') return 'warning';
+
+  return 'negative';
+});
 </script>
-
-<style>
-.connection-card{
-  min-height:68px;
-  padding:12px 18px;
-  background:rgba(5,12,24,.88);
-  border-color:rgba(0,229,255,.18);
-  border-radius:8px;
-}
-
-@media (max-width: 760px){
-.connection-card{
-    justify-content:flex-start;
-    flex-wrap:wrap;
-  }
-}
-</style>

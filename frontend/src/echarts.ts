@@ -1,8 +1,8 @@
-import { use } from 'echarts/core'
+import { use } from 'echarts/core';
 
-import { CanvasRenderer } from 'echarts/renderers'
+import { CanvasRenderer } from 'echarts/renderers';
 
-import { LineChart } from 'echarts/charts'
+import { LineChart } from 'echarts/charts';
 
 import {
   GridComponent,
@@ -10,8 +10,8 @@ import {
   TitleComponent,
   LegendComponent,
   DatasetComponent,
-  TransformComponent
-} from 'echarts/components'
+  TransformComponent,
+} from 'echarts/components';
 
 use([
   CanvasRenderer,
@@ -25,5 +25,5 @@ use([
   LegendComponent,
 
   DatasetComponent,
-  TransformComponent
-])
+  TransformComponent,
+]);

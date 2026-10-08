@@ -8,7 +8,6 @@ from crate import client
 from app.config import CRATE_URL
 from app.services.mqtt_client import publish_sensor_payload
 
-
 PUBLISH_INTERVAL_SECONDS = 2
 
 SCENARIO_DEFINITIONS = {
@@ -171,11 +170,7 @@ def _station_priority(station):
 
 
 def _public_run(run):
-    return {
-        key: value
-        for key, value in run.items()
-        if key not in {"baselines"}
-    }
+    return {key: value for key, value in run.items() if key not in {"baselines"}}
 
 
 def scenario_definitions():
@@ -238,18 +233,32 @@ def _fault_payload(baseline, scenario_type, target_index):
     oil_gas = payload.setdefault("oil_gas", {})
     alarms = payload.setdefault("alarms", {})
 
-    for alarm_name in ("overload", "overheating", "sensor_failure", "offline", "voltage_drop"):
+    for alarm_name in (
+        "overload",
+        "overheating",
+        "sensor_failure",
+        "offline",
+        "voltage_drop",
+    ):
         alarms.setdefault(alarm_name, False)
 
     effective_type = scenario_type
     if scenario_type == "cascade":
-        effective_type = ("overload", "voltage_drop", "overheating", "offline")[target_index % 4]
+        effective_type = ("overload", "voltage_drop", "overheating", "offline")[
+            target_index % 4
+        ]
     elif scenario_type == "storm":
-        effective_type = ("feeder_failure", "voltage_instability", "sensor_failure")[target_index % 3]
+        effective_type = ("feeder_failure", "voltage_instability", "sensor_failure")[
+            target_index % 3
+        ]
 
     if effective_type == "overload":
-        electrical["current_a"] = max(float(electrical.get("current_a") or 0), 650 + target_index * 12)
-        electrical["active_power_kw"] = max(float(electrical.get("active_power_kw") or 0), 4200)
+        electrical["current_a"] = max(
+            float(electrical.get("current_a") or 0), 650 + target_index * 12
+        )
+        electrical["active_power_kw"] = max(
+            float(electrical.get("active_power_kw") or 0), 4200
+        )
         alarms["overload"] = True
     elif effective_type == "overheating":
         thermal["oil_temp_c"] = max(float(thermal.get("oil_temp_c") or 0), 112)
@@ -271,7 +280,9 @@ def _fault_payload(baseline, scenario_type, target_index):
         alarms["voltage_instability"] = True
         alarms["frequency_instability"] = True
     elif effective_type == "harmonics_spike":
-        electrical["harmonics_thd"] = max(float(electrical.get("harmonics_thd") or 0), 12)
+        electrical["harmonics_thd"] = max(
+            float(electrical.get("harmonics_thd") or 0), 12
+        )
         alarms["harmonics_spike"] = True
     elif effective_type == "cooling_failure":
         thermal["oil_temp_c"] = max(float(thermal.get("oil_temp_c") or 0), 108)
@@ -284,8 +295,12 @@ def _fault_payload(baseline, scenario_type, target_index):
         oil_gas["methane_ppm"] = max(float(oil_gas.get("methane_ppm") or 0), 34)
         alarms["insulation_degradation"] = True
     elif effective_type == "oil_leak":
-        oil_gas["oil_level_percent"] = min(float(oil_gas.get("oil_level_percent") or 100), 48)
-        oil_gas["oil_pressure_bar"] = min(float(oil_gas.get("oil_pressure_bar") or 1.5), 0.6)
+        oil_gas["oil_level_percent"] = min(
+            float(oil_gas.get("oil_level_percent") or 100), 48
+        )
+        oil_gas["oil_pressure_bar"] = min(
+            float(oil_gas.get("oil_pressure_bar") or 1.5), 0.6
+        )
         alarms["oil_leak"] = True
     elif effective_type == "arc_discharge":
         oil_gas["acetylene_ppm"] = max(float(oil_gas.get("acetylene_ppm") or 0), 18)
@@ -310,7 +325,9 @@ def _fault_payload(baseline, scenario_type, target_index):
         alarms["overheating"] = thermal["oil_temp_c"] >= 90
     elif effective_type == "peak_consumption":
         electrical["current_a"] = float(electrical.get("current_a") or 250) * 1.4
-        electrical["active_power_kw"] = float(electrical.get("active_power_kw") or 1800) * 1.4
+        electrical["active_power_kw"] = (
+            float(electrical.get("active_power_kw") or 1800) * 1.4
+        )
         alarms["overload"] = electrical["current_a"] >= 500
     elif effective_type in {"offline", "blackout"}:
         electrical["voltage_kv"] = 0
@@ -337,7 +354,9 @@ async def _execute_scenario(run):
 
         while asyncio.get_running_loop().time() < deadline:
             for index, baseline in enumerate(run["baselines"]):
-                publish_sensor_payload(_fault_payload(baseline, run["scenario_type"], index))
+                publish_sensor_payload(
+                    _fault_payload(baseline, run["scenario_type"], index)
+                )
                 run["emitted_events"] += 1
 
             remaining = max(0, deadline - asyncio.get_running_loop().time())
@@ -355,7 +374,9 @@ async def _execute_scenario(run):
     finally:
         for index, baseline in enumerate(run["baselines"]):
             try:
-                publish_sensor_payload(_restored_payload(baseline, run["scenario_type"], index))
+                publish_sensor_payload(
+                    _restored_payload(baseline, run["scenario_type"], index)
+                )
             except Exception as exc:
                 run["error"] = run.get("error") or f"State restoration failed: {exc}"
 
@@ -385,15 +406,31 @@ async def start_scenario(
     multi_asset = SCENARIO_DEFINITIONS[scenario_type]["multiAsset"]
     if not multi_asset:
         target_count = 1
-    elif scenario_type in {"blackout", "cascade", "feeder_failure", "heatwave", "peak_consumption", "storm"}:
+    elif scenario_type in {
+        "blackout",
+        "cascade",
+        "feeder_failure",
+        "heatwave",
+        "peak_consumption",
+        "storm",
+    }:
         target_count = max(3, target_count)
 
     candidates = sorted(stations, key=_station_priority, reverse=True)
     if station_id:
-        selected = next((station for station in candidates if station.get("station_id") == station_id), None)
+        selected = next(
+            (
+                station
+                for station in candidates
+                if station.get("station_id") == station_id
+            ),
+            None,
+        )
         if selected is None:
             raise ValueError("Selected station was not found")
-        candidates = [selected] + [station for station in candidates if station is not selected]
+        candidates = [selected] + [
+            station for station in candidates if station is not selected
+        ]
 
     baselines = [deepcopy(station) for station in candidates[:target_count]]
     started_at = _utcnow()
@@ -422,14 +459,12 @@ async def start_scenario(
 def _database_runs(limit=100):
     cursor = _connection().cursor()
     safe_limit = max(1, min(int(limit), 500))
-    cursor.execute(
-        f"""
+    cursor.execute(f"""
         SELECT *
         FROM scenario_runs
         ORDER BY started_at DESC
         LIMIT {safe_limit}
-        """
-    )
+        """)
     columns = [column[0] for column in cursor.description]
     results = []
 
@@ -440,7 +475,9 @@ def _database_runs(limit=100):
             for station_id in (item.get("target_station_ids") or "").split(",")
             if station_id
         ]
-        item["progress"] = 1 if item.get("status") in {"COMPLETED", "STOPPED", "FAILED"} else 0
+        item["progress"] = (
+            1 if item.get("status") in {"COMPLETED", "STOPPED", "FAILED"} else 0
+        )
         results.append(item)
 
     return results
@@ -450,7 +487,9 @@ async def list_scenario_runs(limit=100):
     stored = await asyncio.to_thread(_database_runs, limit)
     merged = {item["id"]: item for item in stored}
     merged.update({run_id: _public_run(run) for run_id, run in _runs.items()})
-    return sorted(merged.values(), key=lambda item: item.get("started_at") or "", reverse=True)[:limit]
+    return sorted(
+        merged.values(), key=lambda item: item.get("started_at") or "", reverse=True
+    )[:limit]
 
 
 async def stop_scenario(run_id):
